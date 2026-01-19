@@ -59,35 +59,33 @@
       Robots are used in a wide variety of applications across many industries:
     </p>
 
-    <p>
-      <dl>
-        <li>
-          <title>Manufacturing</title>
-          <p>Industrial robots perform welding, painting, assembly, and material handling 
-             with high precision and consistency.</p>
-        </li>
-        <li>
-          <title>Healthcare</title>
-          <p>Surgical robots assist doctors with minimally invasive procedures, while 
-             rehabilitation robots help patients recover motor functions.</p>
-        </li>
-        <li>
-          <title>Exploration</title>
-          <p>Robots explore environments too dangerous or remote for humans, from deep 
-             ocean trenches to distant planets.</p>
-        </li>
-        <li>
-          <title>Service and Domestic</title>
-          <p>Vacuum cleaners, lawn mowers, and delivery robots are becoming increasingly 
-             common in our daily lives.</p>
-        </li>
-        <li>
-          <title>Transportation</title>
-          <p>Autonomous vehicles and drones are revolutionizing how we move people and 
-             goods.</p>
-        </li>
-      </dl>
-    </p>
+    <dl>
+      <li>
+        <title>Manufacturing</title>
+        <p>Industrial robots perform welding, painting, assembly, and material handling 
+           with high precision and consistency.</p>
+      </li>
+      <li>
+        <title>Healthcare</title>
+        <p>Surgical robots assist doctors with minimally invasive procedures, while 
+           rehabilitation robots help patients recover motor functions.</p>
+      </li>
+      <li>
+        <title>Exploration</title>
+        <p>Robots explore environments too dangerous or remote for humans, from deep 
+           ocean trenches to distant planets.</p>
+      </li>
+      <li>
+        <title>Service and Domestic</title>
+        <p>Vacuum cleaners, lawn mowers, and delivery robots are becoming increasingly 
+           common in our daily lives.</p>
+      </li>
+      <li>
+        <title>Transportation</title>
+        <p>Autonomous vehicles and drones are revolutionizing how we move people and 
+           goods.</p>
+      </li>
+    </dl>
   </subsection>
 
   <subsection xml:id="subsec_challenges">

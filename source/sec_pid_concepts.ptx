@@ -217,33 +217,31 @@
       and <m>K_d</m>. Several methods exist:
     </p>
 
-    <p>
-      <dl>
-        <li>
-          <title>Manual Tuning</title>
-          <p>
-            Start with all gains at zero. Increase <m>K_p</m> until the system responds 
-            reasonably quickly but oscillates. Add <m>K_d</m> to reduce oscillations. 
-            Finally, add <m>K_i</m> if steady-state error must be eliminated.
-          </p>
-        </li>
-        <li>
-          <title>Ziegler-Nichols Method</title>
-          <p>
-            A classical tuning method that uses the system's response to determine 
-            initial gain values. It involves increasing <m>K_p</m> until sustained 
-            oscillations occur, then calculating gains based on the oscillation period.
-          </p>
-        </li>
-        <li>
-          <title>Software Tools</title>
-          <p>
-            Modern control systems often include auto-tuning features that automatically 
-            adjust gains based on observed system response.
-          </p>
-        </li>
-      </dl>
-    </p>
+    <dl>
+      <li>
+        <title>Manual Tuning</title>
+        <p>
+          Start with all gains at zero. Increase <m>K_p</m> until the system responds 
+          reasonably quickly but oscillates. Add <m>K_d</m> to reduce oscillations. 
+          Finally, add <m>K_i</m> if steady-state error must be eliminated.
+        </p>
+      </li>
+      <li>
+        <title>Ziegler-Nichols Method</title>
+        <p>
+          A classical tuning method that uses the system's response to determine 
+          initial gain values. It involves increasing <m>K_p</m> until sustained 
+          oscillations occur, then calculating gains based on the oscillation period.
+        </p>
+      </li>
+      <li>
+        <title>Software Tools</title>
+        <p>
+          Modern control systems often include auto-tuning features that automatically 
+          adjust gains based on observed system response.
+        </p>
+      </li>
+    </dl>
   </subsection>
 
   <subsection xml:id="subsec_pid_limitations">

@@ -107,26 +107,24 @@
       Planning operates at multiple levels:
     </p>
 
-    <p>
-      <dl>
-        <li>
-          <title>Task Planning</title>
-          <p>High-level decision making about which tasks to perform and in what order</p>
-        </li>
-        <li>
-          <title>Path Planning</title>
-          <p>Computing a collision-free path from the current position to a goal</p>
-        </li>
-        <li>
-          <title>Motion Planning</title>
-          <p>Generating detailed trajectories that the robot's actuators can follow</p>
-        </li>
-        <li>
-          <title>Behavior Planning</title>
-          <p>Selecting appropriate behaviors based on the current situation</p>
-        </li>
-      </dl>
-    </p>
+    <dl>
+      <li>
+        <title>Task Planning</title>
+        <p>High-level decision making about which tasks to perform and in what order</p>
+      </li>
+      <li>
+        <title>Path Planning</title>
+        <p>Computing a collision-free path from the current position to a goal</p>
+      </li>
+      <li>
+        <title>Motion Planning</title>
+        <p>Generating detailed trajectories that the robot's actuators can follow</p>
+      </li>
+      <li>
+        <title>Behavior Planning</title>
+        <p>Selecting appropriate behaviors based on the current situation</p>
+      </li>
+    </dl>
 
     <example xml:id="example_planning">
       <title>Mobile Robot Navigation</title>

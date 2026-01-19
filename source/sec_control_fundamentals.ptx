@@ -133,34 +133,32 @@
       A typical closed-loop control system consists of several key components:
     </p>
 
-    <p>
-      <dl>
-        <li>
-          <title>Reference Input (Setpoint)</title>
-          <p>The desired value of the output (e.g., desired position, velocity, or temperature)</p>
-        </li>
-        <li>
-          <title>Controller</title>
-          <p>Processes the error signal and generates the control command</p>
-        </li>
-        <li>
-          <title>Actuator</title>
-          <p>Applies the control command to the system (e.g., motor, heater)</p>
-        </li>
-        <li>
-          <title>Plant (Process)</title>
-          <p>The system being controlled (e.g., robot, heating system)</p>
-        </li>
-        <li>
-          <title>Sensor</title>
-          <p>Measures the actual output of the system</p>
-        </li>
-        <li>
-          <title>Error Signal</title>
-          <p>The difference between the reference input and the measured output: <m>e(t) = r(t) - y(t)</m></p>
-        </li>
-      </dl>
-    </p>
+    <dl>
+      <li>
+        <title>Reference Input (Setpoint)</title>
+        <p>The desired value of the output (e.g., desired position, velocity, or temperature)</p>
+      </li>
+      <li>
+        <title>Controller</title>
+        <p>Processes the error signal and generates the control command</p>
+      </li>
+      <li>
+        <title>Actuator</title>
+        <p>Applies the control command to the system (e.g., motor, heater)</p>
+      </li>
+      <li>
+        <title>Plant (Process)</title>
+        <p>The system being controlled (e.g., robot, heating system)</p>
+      </li>
+      <li>
+        <title>Sensor</title>
+        <p>Measures the actual output of the system</p>
+      </li>
+      <li>
+        <title>Error Signal</title>
+        <p>The difference between the reference input and the measured output: <m>e(t) = r(t) - y(t)</m></p>
+      </li>
+    </dl>
 
     <figure xml:id="fig_closedloop">
       <caption>Block Diagram of a Closed-Loop Control System</caption>
