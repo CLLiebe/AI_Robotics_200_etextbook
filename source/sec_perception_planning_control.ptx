@@ -37,9 +37,11 @@
         <description>Flowchart showing: Environment -> Sensors -> Perception -> Planning -> Control -> Actuators -> Environment (completing the loop)</description>
         <latex-image>
           \begin{tikzpicture}[node distance=2cm, auto]
-            \tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=5em, text centered, rounded corners, minimum height=3em]
-            \tikzstyle{cloud} = [ellipse, draw, fill=green!20, text width=5em, text centered, minimum height=3em]
-            \tikzstyle{line} = [draw, -latex']
+            \tikzset{
+              block/.style={rectangle, draw, fill=blue!20, text width=5em, text centered, rounded corners, minimum height=3em},
+              cloud/.style={ellipse, draw, fill=green!20, text width=5em, text centered, minimum height=3em},
+              line/.style={draw, -latex'}
+            }
             
             \node [cloud] (env) {Environment};
             \node [block, below of=env] (sensors) {Sensors};

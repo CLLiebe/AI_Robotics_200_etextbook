@@ -169,6 +169,13 @@
         <description>Block diagram with: Reference Input -> Comparator -> Error -> Controller -> Actuator -> Plant -> Output, with Sensor feeding back from Output to Comparator</description>
         <latex-image>
           \begin{tikzpicture}[auto, node distance=2cm, >=latex']
+            \tikzset{
+              input/.style={coordinate},
+              output/.style={coordinate},
+              block/.style={rectangle, draw, fill=blue!20, text width=5em, text centered, rounded corners, minimum height=2em},
+              sum/.style={circle, draw, fill=blue!20, minimum size=6mm, node contents={}}
+            }
+            
             \node [input] (input) {};
             \node [sum, right of=input] (sum) {};
             \node [block, right of=sum, node distance=2.5cm] (controller) {Controller};

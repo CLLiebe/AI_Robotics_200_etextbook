@@ -47,34 +47,28 @@
       They can be categorized into two main types:
     </p>
 
-    <p>
-      <dl>
-        <li>
-          <title>Proprioceptive Sensors</title>
-          <p>Measure the robot's internal state, such as:</p>
-          <p>
-            <ul>
-              <li><em>Encoders:</em> Measure joint positions and velocities</li>
-              <li><em>Inertial Measurement Units (IMUs):</em> Measure acceleration and angular velocity</li>
-              <li><em>Force/Torque Sensors:</em> Measure forces applied to joints or end-effectors</li>
-            </ul>
-          </p>
-        </li>
-        <li>
-          <title>Exteroceptive Sensors</title>
-          <p>Measure properties of the external environment:</p>
-          <p>
-            <ul>
-              <li><em>Cameras:</em> Provide visual information about the environment</li>
-              <li><em>LIDAR:</em> Uses laser beams to measure distances and create 3D maps</li>
-              <li><em>Ultrasonic Sensors:</em> Measure distance using sound waves</li>
-              <li><em>Touch/Tactile Sensors:</em> Detect contact with objects</li>
-              <li><em>GPS:</em> Provides outdoor location information</li>
-            </ul>
-          </p>
-        </li>
-      </dl>
-    </p>
+    <dl>
+      <li>
+        <title>Proprioceptive Sensors</title>
+        <p>Measure the robot's internal state, such as:</p>
+        <ul>
+          <li><em>Encoders:</em> Measure joint positions and velocities</li>
+          <li><em>Inertial Measurement Units (IMUs):</em> Measure acceleration and angular velocity</li>
+          <li><em>Force/Torque Sensors:</em> Measure forces applied to joints or end-effectors</li>
+        </ul>
+      </li>
+      <li>
+        <title>Exteroceptive Sensors</title>
+        <p>Measure properties of the external environment:</p>
+        <ul>
+          <li><em>Cameras:</em> Provide visual information about the environment</li>
+          <li><em>LIDAR:</em> Uses laser beams to measure distances and create 3D maps</li>
+          <li><em>Ultrasonic Sensors:</em> Measure distance using sound waves</li>
+          <li><em>Touch/Tactile Sensors:</em> Detect contact with objects</li>
+          <li><em>GPS:</em> Provides outdoor location information</li>
+        </ul>
+      </li>
+    </dl>
   </subsection>
 
   <subsection xml:id="subsec_computation">
