@@ -1,2 +1,3 @@
-# AI_Robotics_200_etextbook
-Runestone etextbook in PreTxT
+# My Great Book
+
+Visit <https://pretextbook.org/documentation.html> to learn more.
