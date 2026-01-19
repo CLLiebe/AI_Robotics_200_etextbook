@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='utf-8'?>
+<section xml:id="sec_control_fundamentals" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Control Fundamentals: Open-Loop vs. Closed-Loop</title>
+
+  <introduction>
+    <p>
+      Control systems are the mechanisms by which robots achieve desired behaviors. 
+      Understanding the difference between open-loop and closed-loop control is 
+      essential for designing effective robotic systems.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec_openloop">
+    <title>Open-Loop Control</title>
+    <p>
+      <term>Open-loop control</term> (also called <term>feedforward control</term>) 
+      is a control strategy where the controller generates commands based solely on 
+      the desired output, without measuring the actual output.
+    </p>
+
+    <definition xml:id="def_openloop">
+      <statement>
+        <p>
+          An <term>open-loop control system</term> operates without feedback. The 
+          controller generates control signals based only on a reference input and 
+          a model of the system, without comparing the actual output to the desired output.
+        </p>
+      </statement>
+    </definition>
+
+    <p>
+      Characteristics of open-loop control:
+      <ul>
+        <li>Simple to implement and understand</li>
+        <li>Fast, with no measurement delays</li>
+        <li>Cannot compensate for disturbances</li>
+        <li>Cannot correct for modeling errors</li>
+        <li>Accuracy depends entirely on the accuracy of the system model</li>
+      </ul>
+    </p>
+
+    <example xml:id="example_openloop">
+      <title>Toaster as Open-Loop System</title>
+      <p>
+        A traditional toaster is an open-loop system. You set the darkness level 
+        (the input), and the toaster heats for a predetermined time based on that 
+        setting. The toaster doesn't measure how brown the bread actually is; it 
+        just runs for the programmed duration. If the bread starts out frozen or 
+        if the room temperature changes, the toast may come out under- or over-cooked 
+        because the system cannot adapt.
+      </p>
+    </example>
+
+    <example xml:id="example_openloop_robot">
+      <title>Open-Loop Robot Motion</title>
+      <p>
+        Consider a robot commanded to move forward 1 meter. In open-loop control, 
+        the system might:
+        <ol>
+          <li>Calculate that the motors should run at a specific speed for 2 seconds</li>
+          <li>Send this command to the motors</li>
+          <li>Wait 2 seconds</li>
+          <li>Stop the motors</li>
+        </ol>
+        If the robot encounters unexpected friction, a slippery surface, or carries 
+        a heavy load, it may not travel exactly 1 meter because there's no feedback 
+        to detect and correct the error.
+      </p>
+    </example>
+  </subsection>
+
+  <subsection xml:id="subsec_closedloop">
+    <title>Closed-Loop Control</title>
+    <p>
+      <term>Closed-loop control</term> (also called <term>feedback control</term>) 
+      is a control strategy that measures the actual output and adjusts the control 
+      signal to minimize the difference between the desired and actual outputs.
+    </p>
+
+    <definition xml:id="def_closedloop">
+      <statement>
+        <p>
+          A <term>closed-loop control system</term> uses feedback from sensors to 
+          continuously measure the system's output and adjust the control signal to 
+          reduce the <term>error</term> (the difference between the desired output 
+          and the actual output).
+        </p>
+      </statement>
+    </definition>
+
+    <p>
+      Characteristics of closed-loop control:
+      <ul>
+        <li>Can compensate for disturbances and modeling errors</li>
+        <li>More accurate and robust than open-loop control</li>
+        <li>Requires sensors to measure the output</li>
+        <li>More complex to design and implement</li>
+        <li>May suffer from stability issues if not properly tuned</li>
+      </ul>
+    </p>
+
+    <example xml:id="example_closedloop">
+      <title>Thermostat as Closed-Loop System</title>
+      <p>
+        A home thermostat is a closed-loop system. It continuously measures the 
+        room temperature (the output) and compares it to the desired temperature 
+        (the setpoint). If the room is too cold, it turns on the heater. If it's 
+        too warm, it turns off the heater or turns on the air conditioning. This 
+        feedback allows the system to maintain the desired temperature despite 
+        changes in outside temperature, open windows, or people entering the room.
+      </p>
+    </example>
+
+    <example xml:id="example_closedloop_robot">
+      <title>Closed-Loop Robot Motion</title>
+      <p>
+        Using closed-loop control, the same robot moving 1 meter would:
+        <ol>
+          <li>Continuously measure its position using wheel encoders or other sensors</li>
+          <li>Calculate the error (desired position minus current position)</li>
+          <li>Adjust motor speeds based on the error</li>
+          <li>Continue until the error is nearly zero (reached the goal)</li>
+        </ol>
+        This approach automatically compensates for friction, slopes, or load variations, 
+        ensuring the robot reaches the target accurately.
+      </p>
+    </example>
+  </subsection>
+
+  <subsection xml:id="subsec_feedback_components">
+    <title>Components of a Feedback Control System</title>
+    <p>
+      A typical closed-loop control system consists of several key components:
+    </p>
+
+    <p>
+      <dl>
+        <li>
+          <title>Reference Input (Setpoint)</title>
+          <p>The desired value of the output (e.g., desired position, velocity, or temperature)</p>
+        </li>
+        <li>
+          <title>Controller</title>
+          <p>Processes the error signal and generates the control command</p>
+        </li>
+        <li>
+          <title>Actuator</title>
+          <p>Applies the control command to the system (e.g., motor, heater)</p>
+        </li>
+        <li>
+          <title>Plant (Process)</title>
+          <p>The system being controlled (e.g., robot, heating system)</p>
+        </li>
+        <li>
+          <title>Sensor</title>
+          <p>Measures the actual output of the system</p>
+        </li>
+        <li>
+          <title>Error Signal</title>
+          <p>The difference between the reference input and the measured output: <m>e(t) = r(t) - y(t)</m></p>
+        </li>
+      </dl>
+    </p>
+
+    <figure xml:id="fig_closedloop">
+      <caption>Block Diagram of a Closed-Loop Control System</caption>
+      <description>Block diagram showing feedback control loop</description>
+      <image width="80%">
+        <description>Block diagram with: Reference Input -> Comparator -> Error -> Controller -> Actuator -> Plant -> Output, with Sensor feeding back from Output to Comparator</description>
+        <latex-image>
+          \begin{tikzpicture}[auto, node distance=2cm, >=latex']
+            \node [input] (input) {};
+            \node [sum, right of=input] (sum) {};
+            \node [block, right of=sum, node distance=2.5cm] (controller) {Controller};
+            \node [block, right of=controller, node distance=2.5cm] (actuator) {Actuator};
+            \node [block, right of=actuator, node distance=2.5cm] (plant) {Plant};
+            \node [output, right of=plant, node distance=2cm] (output) {};
+            \node [block, below of=plant] (sensor) {Sensor};
+            
+            \draw [->] (input) -- node {$r(t)$} (sum);
+            \draw [->] (sum) -- node {$e(t)$} (controller);
+            \draw [->] (controller) -- node {$u(t)$} (actuator);
+            \draw [->] (actuator) -- (plant);
+            \draw [->] (plant) -- node [name=y] {$y(t)$} (output);
+            \draw [->] (y) |- (sensor);
+            \draw [->] (sensor) -| node [pos=0.95] {$-$} (sum);
+          \end{tikzpicture}
+        </latex-image>
+      </image>
+    </figure>
+  </subsection>
+
+  <subsection xml:id="subsec_comparison">
+    <title>When to Use Open-Loop vs. Closed-Loop</title>
+    <p>
+      Choosing between open-loop and closed-loop control depends on the application 
+      requirements:
+    </p>
+
+    <p>
+      <em>Use open-loop control when:</em>
+      <ul>
+        <li>The system is simple and well-understood</li>
+        <li>Disturbances are minimal or predictable</li>
+        <li>Sensors are unavailable, unreliable, or too expensive</li>
+        <li>Speed is critical and feedback delays are unacceptable</li>
+        <li>High accuracy is not required</li>
+      </ul>
+    </p>
+
+    <p>
+      <em>Use closed-loop control when:</em>
+      <ul>
+        <li>High accuracy is required</li>
+        <li>The system is subject to disturbances</li>
+        <li>The system model is uncertain or changes over time</li>
+        <li>Reliable sensors are available</li>
+        <li>The benefits of accuracy outweigh the added complexity</li>
+      </ul>
+    </p>
+
+    <p>
+      In practice, many robotic systems use a combination of both: feedforward control 
+      (based on models) provides the main control effort, while feedback control makes 
+      small corrections to handle uncertainties and disturbances.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_performance">
+    <title>Control Performance Metrics</title>
+    <p>
+      When evaluating control systems, we consider several performance metrics:
+    </p>
+
+    <p>
+      <ul>
+        <li><em>Steady-State Error:</em> The difference between desired and actual output after transients have died out</li>
+        <li><em>Rise Time:</em> How quickly the system responds to a change in setpoint</li>
+        <li><em>Settling Time:</em> How long it takes to reach and stay within a specified range of the setpoint</li>
+        <li><em>Overshoot:</em> How much the system exceeds the setpoint before settling</li>
+        <li><em>Stability:</em> Whether the system remains bounded and converges to the setpoint</li>
+      </ul>
+    </p>
+
+    <p>
+      These metrics help us design and tune control systems to meet specific application requirements.
+    </p>
+  </subsection>
+
+  <conclusion>
+    <p>
+      Understanding the difference between open-loop and closed-loop control is 
+      fundamental to robotics. While open-loop control is simpler, closed-loop control 
+      with feedback is essential for achieving the accuracy and robustness required in 
+      most robotic applications. In the next section, we'll explore one of the most 
+      widely used feedback control strategies: PID control.
+    </p>
+  </conclusion>
+</section>

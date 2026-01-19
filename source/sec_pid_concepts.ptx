@@ -1,0 +1,314 @@
+<?xml version='1.0' encoding='utf-8'?>
+<section xml:id="sec_pid_concepts" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Basic PID Concepts</title>
+
+  <introduction>
+    <p>
+      <term>PID control</term> (Proportional-Integral-Derivative control) is one of 
+      the most widely used feedback control strategies in robotics and industrial 
+      automation. Despite being developed nearly a century ago, PID controllers remain 
+      popular due to their effectiveness, simplicity, and ease of tuning.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec_pid_overview">
+    <title>What is PID Control?</title>
+    <p>
+      A PID controller calculates a control signal <m>u(t)</m> based on the error 
+      <m>e(t)</m> between the desired setpoint and the measured output. The control 
+      signal has three components:
+    </p>
+
+    <p>
+      <ul>
+        <li><em>Proportional (P):</em> Responds to the current error</li>
+        <li><em>Integral (I):</em> Responds to the accumulation of past errors</li>
+        <li><em>Derivative (D):</em> Responds to the rate of change of the error</li>
+      </ul>
+    </p>
+
+    <p>
+      The complete PID control equation is:
+      <me>u(t) = K_p e(t) + K_i \int_0^t e(\tau) \, d\tau + K_d \frac{de(t)}{dt}</me>
+      where <m>K_p</m>, <m>K_i</m>, and <m>K_d</m> are the proportional, integral, 
+      and derivative gains, respectively.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_proportional">
+    <title>Proportional Control (P)</title>
+    <p>
+      The <term>proportional term</term> produces a control output that is directly 
+      proportional to the current error:
+      <me>u_p(t) = K_p e(t)</me>
+    </p>
+
+    <p>
+      <em>Effect of Proportional Control:</em>
+      <ul>
+        <li>Larger errors produce larger control actions</li>
+        <li>As the system approaches the setpoint, the control effort decreases</li>
+        <li>Fast response to errors</li>
+        <li>Higher <m>K_p</m> means faster response but may cause oscillations</li>
+        <li>Typically results in steady-state error (the system never quite reaches the setpoint)</li>
+      </ul>
+    </p>
+
+    <example xml:id="example_p_control">
+      <title>Proportional Control for Robot Position</title>
+      <p>
+        A robot trying to reach position <m>x = 10</m> meters starts at <m>x = 0</m>. 
+        With proportional control using <m>K_p = 0.5</m>:
+        <ul>
+          <li>At <m>x = 0</m>: error <m>e = 10</m>, control <m>u = 0.5 \times 10 = 5</m> (move at speed 5)</li>
+          <li>At <m>x = 5</m>: error <m>e = 5</m>, control <m>u = 0.5 \times 5 = 2.5</m> (move at speed 2.5)</li>
+          <li>At <m>x = 9</m>: error <m>e = 1</m>, control <m>u = 0.5 \times 1 = 0.5</m> (move at speed 0.5)</li>
+        </ul>
+        The robot slows down as it approaches the target, but friction might prevent 
+        it from ever reaching exactly <m>x = 10</m>, resulting in steady-state error.
+      </p>
+    </example>
+  </subsection>
+
+  <subsection xml:id="subsec_integral">
+    <title>Integral Control (I)</title>
+    <p>
+      The <term>integral term</term> accumulates the error over time and produces a 
+      control output based on this sum:
+      <me>u_i(t) = K_i \int_0^t e(\tau) \, d\tau</me>
+    </p>
+
+    <p>
+      <em>Effect of Integral Control:</em>
+      <ul>
+        <li>Eliminates steady-state error</li>
+        <li>Increases as long as error persists</li>
+        <li>Compensates for constant disturbances (like friction or gravity)</li>
+        <li>Can cause overshoot and oscillations if too large</li>
+        <li>May cause "integral windup" in saturated systems</li>
+      </ul>
+    </p>
+
+    <p>
+      In discrete time (typical for digital controllers), the integral is approximated as:
+      <me>u_i[k] = K_i \sum_{j=0}^{k} e[j] \Delta t</me>
+      where <m>\Delta t</m> is the time step.
+    </p>
+
+    <example xml:id="example_i_control">
+      <title>Why Integral Control Eliminates Steady-State Error</title>
+      <p>
+        Consider the robot from the previous example stuck at <m>x = 9.5</m> due to 
+        friction, with an error of <m>e = 0.5</m> that persists. The proportional term 
+        alone produces only <m>u_p = 0.5 \times 0.5 = 0.25</m>, which isn't enough to 
+        overcome friction.
+      </p>
+      <p>
+        With integral control, the error accumulates over time. After 10 time steps 
+        (each lasting 0.1 seconds), with <m>K_i = 0.1</m>:
+        <me>u_i = 0.1 \times (0.5 + 0.5 + \ldots + 0.5) \times 0.1 = 0.1 \times 10 \times 0.5 \times 0.1 = 0.05</me>
+        The integral term keeps growing until the total control effort is sufficient 
+        to overcome friction and eliminate the error.
+      </p>
+    </example>
+  </subsection>
+
+  <subsection xml:id="subsec_derivative">
+    <title>Derivative Control (D)</title>
+    <p>
+      The <term>derivative term</term> produces a control output based on the rate of 
+      change of the error:
+      <me>u_d(t) = K_d \frac{de(t)}{dt}</me>
+    </p>
+
+    <p>
+      <em>Effect of Derivative Control:</em>
+      <ul>
+        <li>Provides damping, reducing overshoot and oscillations</li>
+        <li>Anticipates future error based on current trend</li>
+        <li>Opposes rapid changes in error</li>
+        <li>Has no effect when error is constant (even if non-zero)</li>
+        <li>Can amplify high-frequency noise from sensors</li>
+      </ul>
+    </p>
+
+    <p>
+      In discrete time, the derivative is approximated as:
+      <me>u_d[k] = K_d \frac{e[k] - e[k-1]}{\Delta t}</me>
+    </p>
+
+    <example xml:id="example_d_control">
+      <title>Derivative Control Reduces Overshoot</title>
+      <p>
+        Imagine a robot rapidly approaching its target at <m>x = 10</m> meters. 
+        At position <m>x = 8</m>, the error is decreasing quickly (say, at 5 meters/second).
+      </p>
+      <p>
+        The derivative term with <m>K_d = 0.2</m> produces:
+        <me>u_d = 0.2 \times (-5) = -1.0</me>
+        This negative control signal opposes the motion, acting like a brake to slow 
+        the robot down and prevent it from overshooting the target.
+      </p>
+    </example>
+  </subsection>
+
+  <subsection xml:id="subsec_pid_combined">
+    <title>Combining P, I, and D</title>
+    <p>
+      A full PID controller combines all three terms:
+      <me>u(t) = K_p e(t) + K_i \int_0^t e(\tau) \, d\tau + K_d \frac{de(t)}{dt}</me>
+    </p>
+
+    <p>
+      Each term plays a distinct role:
+      <ul>
+        <li><em>P term:</em> Provides the main control effort proportional to current error</li>
+        <li><em>I term:</em> Eliminates steady-state error</li>
+        <li><em>D term:</em> Provides damping to reduce oscillations and overshoot</li>
+      </ul>
+    </p>
+
+    <p>
+      The art of PID control is tuning the three gains (<m>K_p</m>, <m>K_i</m>, <m>K_d</m>) 
+      to achieve desired performance.
+    </p>
+
+    <assemblage xml:id="assemblage_pid_effects">
+      <title>Effects of Increasing PID Gains</title>
+      <p>
+        <tabular>
+          <row header="yes">
+            <cell>Gain</cell>
+            <cell>Rise Time</cell>
+            <cell>Overshoot</cell>
+            <cell>Settling Time</cell>
+            <cell>Steady-State Error</cell>
+          </row>
+          <row>
+            <cell><m>K_p</m></cell>
+            <cell>Decrease</cell>
+            <cell>Increase</cell>
+            <cell>Small change</cell>
+            <cell>Decrease</cell>
+          </row>
+          <row>
+            <cell><m>K_i</m></cell>
+            <cell>Decrease</cell>
+            <cell>Increase</cell>
+            <cell>Increase</cell>
+            <cell>Eliminate</cell>
+          </row>
+          <row>
+            <cell><m>K_d</m></cell>
+            <cell>Small change</cell>
+            <cell>Decrease</cell>
+            <cell>Decrease</cell>
+            <cell>No effect</cell>
+          </row>
+        </tabular>
+      </p>
+    </assemblage>
+  </subsection>
+
+  <subsection xml:id="subsec_tuning">
+    <title>Tuning PID Controllers</title>
+    <p>
+      Tuning a PID controller means finding appropriate values for <m>K_p</m>, <m>K_i</m>, 
+      and <m>K_d</m>. Several methods exist:
+    </p>
+
+    <p>
+      <dl>
+        <li>
+          <title>Manual Tuning</title>
+          <p>
+            Start with all gains at zero. Increase <m>K_p</m> until the system responds 
+            reasonably quickly but oscillates. Add <m>K_d</m> to reduce oscillations. 
+            Finally, add <m>K_i</m> if steady-state error must be eliminated.
+          </p>
+        </li>
+        <li>
+          <title>Ziegler-Nichols Method</title>
+          <p>
+            A classical tuning method that uses the system's response to determine 
+            initial gain values. It involves increasing <m>K_p</m> until sustained 
+            oscillations occur, then calculating gains based on the oscillation period.
+          </p>
+        </li>
+        <li>
+          <title>Software Tools</title>
+          <p>
+            Modern control systems often include auto-tuning features that automatically 
+            adjust gains based on observed system response.
+          </p>
+        </li>
+      </dl>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_pid_limitations">
+    <title>Limitations of PID Control</title>
+    <p>
+      While PID control is powerful and widely applicable, it has limitations:
+    </p>
+
+    <p>
+      <ul>
+        <li>Works best for linear, time-invariant systems</li>
+        <li>May perform poorly for highly nonlinear systems</li>
+        <li>Cannot handle constraints on control inputs or states directly</li>
+        <li>Derivative term is sensitive to measurement noise</li>
+        <li>Integral windup can occur when actuators saturate</li>
+        <li>Single set of gains may not work well across different operating conditions</li>
+      </ul>
+    </p>
+
+    <p>
+      Despite these limitations, PID controllers are used in countless applications 
+      due to their simplicity, effectiveness, and the deep understanding of their behavior.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_pid_applications">
+    <title>PID Control in Robotics</title>
+    <p>
+      PID controllers are used extensively in robotics for:
+    </p>
+
+    <p>
+      <ul>
+        <li>Motor speed and position control</li>
+        <li>Temperature control in 3D printers</li>
+        <li>Altitude and attitude control in drones</li>
+        <li>Line following in mobile robots</li>
+        <li>Force control in robotic manipulators</li>
+        <li>Balance control in self-balancing robots</li>
+      </ul>
+    </p>
+
+    <example xml:id="example_pid_drone">
+      <title>PID Control in a Quadcopter</title>
+      <p>
+        A quadcopter drone uses multiple cascaded PID controllers:
+        <ul>
+          <li>Attitude control: PID controllers maintain desired roll, pitch, and yaw angles</li>
+          <li>Rate control: Inner PID loops control angular velocities</li>
+          <li>Position control: Outer PID loops maintain desired position in 3D space</li>
+          <li>Altitude control: PID controller maintains desired height</li>
+        </ul>
+        Each motor speed is adjusted based on the combined output of these controllers, 
+        enabling stable flight and precise maneuvering.
+      </p>
+    </example>
+  </subsection>
+
+  <conclusion>
+    <p>
+      PID control is a fundamental tool in the roboticist's toolkit. Understanding 
+      how the proportional, integral, and derivative terms work together enables you 
+      to design control systems for a wide variety of robotic applications. While 
+      more advanced control methods exist, PID control remains the starting point 
+      for most control problems and often provides entirely adequate performance.
+    </p>
+  </conclusion>
+</section>

@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='utf-8'?>
+<section xml:id="sec_robot_subsystems" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Robot Subsystems</title>
+
+  <introduction>
+    <p>
+      A robot is a complex system composed of multiple interconnected subsystems. 
+      Understanding these subsystems and how they work together is essential for 
+      designing, building, and programming robotic systems.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec_mechanical_structure">
+    <title>Mechanical Structure and Actuation</title>
+    <p>
+      The <term>mechanical structure</term> provides the physical framework of the robot, 
+      including the body, links, joints, and end-effectors (such as grippers or wheels).
+    </p>
+
+    <p>
+      <term>Actuators</term> are the "muscles" of a robot, converting electrical energy 
+      into mechanical motion. Common types include:
+      <ul>
+        <li><em>Electric Motors:</em> DC motors, servo motors, and stepper motors provide 
+            rotational motion</li>
+        <li><em>Pneumatic Actuators:</em> Use compressed air for high-force applications</li>
+        <li><em>Hydraulic Actuators:</em> Use pressurized fluid for very high-force applications</li>
+        <li><em>Linear Actuators:</em> Provide direct linear motion</li>
+      </ul>
+    </p>
+
+    <example xml:id="example_robotic_arm">
+      <title>Robotic Arm Actuators</title>
+      <p>
+        A typical industrial robotic arm has multiple joints, each controlled by an 
+        electric motor. A 6-axis robot arm, for example, has six servo motors that 
+        allow it to position and orient its end-effector (gripper or tool) in 
+        three-dimensional space with great precision.
+      </p>
+    </example>
+  </subsection>
+
+  <subsection xml:id="subsec_sensors">
+    <title>Sensors and Perception</title>
+    <p>
+      <term>Sensors</term> allow robots to perceive their environment and internal state. 
+      They can be categorized into two main types:
+    </p>
+
+    <p>
+      <dl>
+        <li>
+          <title>Proprioceptive Sensors</title>
+          <p>Measure the robot's internal state, such as:</p>
+          <p>
+            <ul>
+              <li><em>Encoders:</em> Measure joint positions and velocities</li>
+              <li><em>Inertial Measurement Units (IMUs):</em> Measure acceleration and angular velocity</li>
+              <li><em>Force/Torque Sensors:</em> Measure forces applied to joints or end-effectors</li>
+            </ul>
+          </p>
+        </li>
+        <li>
+          <title>Exteroceptive Sensors</title>
+          <p>Measure properties of the external environment:</p>
+          <p>
+            <ul>
+              <li><em>Cameras:</em> Provide visual information about the environment</li>
+              <li><em>LIDAR:</em> Uses laser beams to measure distances and create 3D maps</li>
+              <li><em>Ultrasonic Sensors:</em> Measure distance using sound waves</li>
+              <li><em>Touch/Tactile Sensors:</em> Detect contact with objects</li>
+              <li><em>GPS:</em> Provides outdoor location information</li>
+            </ul>
+          </p>
+        </li>
+      </dl>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_computation">
+    <title>Computation and Processing</title>
+    <p>
+      The <term>computational subsystem</term> is the "brain" of the robot, responsible 
+      for processing sensor data, making decisions, and generating control commands.
+    </p>
+
+    <p>
+      Modern robots use various computing platforms:
+      <ul>
+        <li><em>Microcontrollers:</em> Low-power processors for simple, real-time control tasks</li>
+        <li><em>Single-board Computers:</em> Such as Raspberry Pi or NVIDIA Jetson for 
+            more complex processing</li>
+        <li><em>Industrial PCs:</em> High-performance computers for demanding applications</li>
+        <li><em>Specialized Hardware:</em> GPUs for vision processing, FPGAs for custom algorithms</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_power">
+    <title>Power Supply</title>
+    <p>
+      The <term>power subsystem</term> provides electrical energy to all components. 
+      Power requirements vary greatly depending on the robot's size and application.
+    </p>
+
+    <p>
+      Common power sources include:
+      <ul>
+        <li><em>Batteries:</em> Lithium-ion or lithium-polymer for mobile robots</li>
+        <li><em>Wall Power:</em> AC power for stationary industrial robots</li>
+        <li><em>Solar Panels:</em> For long-term outdoor operation</li>
+        <li><em>Fuel Cells:</em> For extended autonomous operation</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_communication">
+    <title>Communication and Networking</title>
+    <p>
+      The <term>communication subsystem</term> enables the robot to exchange information 
+      with other systems, including:
+    </p>
+
+    <p>
+      <ul>
+        <li>Wireless communication (Wi-Fi, Bluetooth, cellular) for remote control and monitoring</li>
+        <li>Wired connections (Ethernet, USB) for high-bandwidth data transfer</li>
+        <li>Internal communication buses (CAN, I2C, SPI) connecting subsystems</li>
+        <li>Robot-to-robot communication for multi-robot coordination</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_integration">
+    <title>System Integration</title>
+    <p>
+      All these subsystems must work together seamlessly. The challenge of robotics 
+      is not just building each subsystem, but integrating them into a cohesive whole 
+      that can:
+    </p>
+
+    <p>
+      <ul>
+        <li>Read sensors at appropriate rates</li>
+        <li>Process data efficiently</li>
+        <li>Generate timely control commands</li>
+        <li>Handle failures gracefully</li>
+        <li>Operate safely around humans and other objects</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <conclusion>
+    <p>
+      Understanding robot subsystems provides insight into the complexity of robotic 
+      systems. Each subsystem plays a critical role, and their integration is what 
+      enables robots to perceive, think, and act in the world. In the next section, 
+      we'll explore how these subsystems work together in the perception-planning-control 
+      loop.
+    </p>
+  </conclusion>
+</section>

@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Chapter 1: Introduction to Robotics -->
+<chapter xml:id="ch_intro_robotics" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <title>Introduction to Robotics</title>
+
+  <!-- Chapter Introduction -->
+  <introduction>
+    <p>
+      Welcome to the world of robotics! This chapter introduces the fundamental concepts 
+      that form the foundation of modern robotics systems. We'll explore what makes a 
+      robot a robot, how different subsystems work together, and the basic principles 
+      of robot control.
+    </p>
+    <p>
+      By the end of this chapter, you will understand:
+      <ul>
+        <li>The key components that make up a robotic system</li>
+        <li>How robots perceive, plan, and control their actions</li>
+        <li>The difference between open-loop and closed-loop control</li>
+        <li>The fundamentals of PID control for precise robot movements</li>
+      </ul>
+    </p>
+  </introduction>
+
+  <!-- Include sections -->
+  <xi:include href="./sec_what_is_robotics.ptx" />
+  <xi:include href="./sec_robot_subsystems.ptx" />
+  <xi:include href="./sec_perception_planning_control.ptx" />
+  <xi:include href="./sec_control_fundamentals.ptx" />
+  <xi:include href="./sec_pid_concepts.ptx" />
+
+  <!-- Exercises -->
+  <xi:include href="./ex_intro_robotics.ptx"/>
+
+  <!-- Chapter Conclusion -->
+  <conclusion>
+    <p>
+      In this chapter, we've covered the essential building blocks of robotic systems. 
+      You've learned about robot subsystems, the perception-planning-control loop, and 
+      fundamental control concepts including PID control. These concepts will be the 
+      foundation for everything we explore in this course.
+    </p>
+    <p>
+      In the next chapters, we'll dive deeper into each of these areas, exploring 
+      advanced sensing techniques, intelligent planning algorithms, and sophisticated 
+      control methods that enable robots to operate in complex, real-world environments.
+    </p>
+  </conclusion>
+
+</chapter>

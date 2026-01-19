@@ -5,6 +5,11 @@
 <!--  settings.                                              -->
 <docinfo xmlns:xi="http://www.w3.org/2001/XInclude">
 
+<!-- Course information -->
+<blurb shelf="AI and Robotics">
+  An introductory course on AI and Robotics for 200-level students.
+</blurb>
+
 <!-- The next three lines are likely for mature projects only: -->
 
 <!-- <brandlogo url="" source="images/cover.png"/> -->

@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='utf-8'?>
+<section xml:id="sec_perception_planning_control" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>The Perception-Planning-Control Loop</title>
+
+  <introduction>
+    <p>
+      The <term>perception-planning-control loop</term> is the fundamental operating 
+      principle of autonomous robots. This continuous cycle enables robots to interact 
+      with dynamic environments and accomplish complex tasks.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec_loop_overview">
+    <title>The Loop Architecture</title>
+    <p>
+      The perception-planning-control loop consists of three main stages that execute 
+      continuously:
+    </p>
+
+    <p>
+      <ol>
+        <li><em>Perception:</em> Sense the environment and internal state</li>
+        <li><em>Planning:</em> Decide what actions to take</li>
+        <li><em>Control:</em> Execute the planned actions</li>
+      </ol>
+    </p>
+
+    <p>
+      This loop repeats continuously, allowing the robot to respond to changes in its 
+      environment and adapt its behavior accordingly.
+    </p>
+
+    <figure xml:id="fig_ppc_loop">
+      <caption>The Perception-Planning-Control Loop</caption>
+      <description>A diagram showing the cyclical relationship between perception, planning, and control</description>
+      <image width="60%">
+        <description>Flowchart showing: Environment -> Sensors -> Perception -> Planning -> Control -> Actuators -> Environment (completing the loop)</description>
+        <latex-image>
+          \begin{tikzpicture}[node distance=2cm, auto]
+            \tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=5em, text centered, rounded corners, minimum height=3em]
+            \tikzstyle{cloud} = [ellipse, draw, fill=green!20, text width=5em, text centered, minimum height=3em]
+            \tikzstyle{line} = [draw, -latex']
+            
+            \node [cloud] (env) {Environment};
+            \node [block, below of=env] (sensors) {Sensors};
+            \node [block, below of=sensors] (perception) {Perception};
+            \node [block, right of=perception, node distance=4cm] (planning) {Planning};
+            \node [block, right of=planning, node distance=4cm] (control) {Control};
+            \node [block, above of=control] (actuators) {Actuators};
+            
+            \path [line] (env) -- (sensors);
+            \path [line] (sensors) -- (perception);
+            \path [line] (perception) -- (planning);
+            \path [line] (planning) -- (control);
+            \path [line] (control) -- (actuators);
+            \path [line] (actuators) -- (env);
+          \end{tikzpicture}
+        </latex-image>
+      </image>
+    </figure>
+  </subsection>
+
+  <subsection xml:id="subsec_perception_stage">
+    <title>Perception: Understanding the World</title>
+    <p>
+      <term>Perception</term> is the process of acquiring, processing, and interpreting 
+      sensory information to build an understanding of the environment.
+    </p>
+
+    <p>
+      Perception involves several steps:
+      <ul>
+        <li><em>Sensing:</em> Collecting raw data from sensors (cameras, LIDAR, etc.)</li>
+        <li><em>Filtering:</em> Removing noise and irrelevant information</li>
+        <li><em>Feature Extraction:</em> Identifying important patterns or features in the data</li>
+        <li><em>State Estimation:</em> Determining the robot's position, orientation, and velocity</li>
+        <li><em>Object Recognition:</em> Identifying and locating objects in the environment</li>
+      </ul>
+    </p>
+
+    <example xml:id="example_perception">
+      <title>Autonomous Vehicle Perception</title>
+      <p>
+        An autonomous car uses cameras to capture images of the road, LIDAR to create 
+        a 3D map of obstacles, and radar to detect vehicles. The perception system 
+        processes this data to identify:
+        <ul>
+          <li>Lane markings and road boundaries</li>
+          <li>Other vehicles, pedestrians, and cyclists</li>
+          <li>Traffic signs and signals</li>
+          <li>The car's position within the lane</li>
+        </ul>
+      </p>
+    </example>
+  </subsection>
+
+  <subsection xml:id="subsec_planning_stage">
+    <title>Planning: Deciding What to Do</title>
+    <p>
+      <term>Planning</term> is the process of determining what actions the robot should 
+      take to accomplish its goals, given the current understanding of the environment.
+    </p>
+
+    <p>
+      Planning operates at multiple levels:
+    </p>
+
+    <p>
+      <dl>
+        <li>
+          <title>Task Planning</title>
+          <p>High-level decision making about which tasks to perform and in what order</p>
+        </li>
+        <li>
+          <title>Path Planning</title>
+          <p>Computing a collision-free path from the current position to a goal</p>
+        </li>
+        <li>
+          <title>Motion Planning</title>
+          <p>Generating detailed trajectories that the robot's actuators can follow</p>
+        </li>
+        <li>
+          <title>Behavior Planning</title>
+          <p>Selecting appropriate behaviors based on the current situation</p>
+        </li>
+      </dl>
+    </p>
+
+    <example xml:id="example_planning">
+      <title>Mobile Robot Navigation</title>
+      <p>
+        A warehouse robot planning to move from storage area A to packing station B must:
+        <ul>
+          <li>Identify the destination (task planning)</li>
+          <li>Compute a path that avoids obstacles and other robots (path planning)</li>
+          <li>Generate velocity commands to follow the path smoothly (motion planning)</li>
+          <li>Decide whether to wait, slow down, or reroute if another robot blocks the path (behavior planning)</li>
+        </ul>
+      </p>
+    </example>
+  </subsection>
+
+  <subsection xml:id="subsec_control_stage">
+    <title>Control: Executing Actions</title>
+    <p>
+      <term>Control</term> is the process of generating commands for the robot's actuators 
+      to execute the planned actions accurately and safely.
+    </p>
+
+    <p>
+      Control systems must address several challenges:
+      <ul>
+        <li>Converting high-level plans into low-level motor commands</li>
+        <li>Compensating for physical effects like friction and inertia</li>
+        <li>Responding quickly to unexpected disturbances</li>
+        <li>Maintaining smooth and stable motion</li>
+        <li>Ensuring safety constraints are satisfied</li>
+      </ul>
+    </p>
+
+    <p>
+      We'll explore control systems in much more detail in the following sections.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_loop_timing">
+    <title>Loop Timing and Real-Time Considerations</title>
+    <p>
+      The perception-planning-control loop must execute fast enough to respond to 
+      changes in the environment. Different applications have different timing requirements:
+    </p>
+
+    <p>
+      <ul>
+        <li><em>Fast loops (1-10 ms):</em> Motor control, balance control</li>
+        <li><em>Medium loops (10-100 ms):</em> Trajectory following, reactive behaviors</li>
+        <li><em>Slow loops (100-1000 ms):</em> Path planning, task planning</li>
+      </ul>
+    </p>
+
+    <p>
+      Many robots use multiple loops running at different rates, with faster loops 
+      handling time-critical tasks and slower loops handling more complex computations.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_feedback">
+    <title>The Importance of Feedback</title>
+    <p>
+      A key feature of the perception-planning-control loop is <term>feedback</term>: 
+      the robot continuously observes the results of its actions and adjusts accordingly.
+    </p>
+
+    <p>
+      Without feedback, robots would operate in <term>open-loop</term> mode, executing 
+      preprogrammed actions without adapting to actual conditions. With feedback, robots 
+      operate in <term>closed-loop</term> mode, constantly correcting for errors and 
+      disturbances.
+    </p>
+
+    <p>
+      This distinction between open-loop and closed-loop control is fundamental to 
+      robotics, which we'll explore in depth in the next section.
+    </p>
+  </subsection>
+
+  <conclusion>
+    <p>
+      The perception-planning-control loop provides a unifying framework for understanding 
+      how robots operate. By continuously sensing, thinking, and acting, robots can 
+      accomplish complex tasks in dynamic, uncertain environments. This loop is the 
+      foundation upon which all robotic behaviors are built.
+    </p>
+  </conclusion>
+</section>
