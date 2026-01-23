@@ -4,6 +4,7 @@
     project. To edit the content of your document, open `source/main.ptx`
     (default location).
 -->
+
 <project>
   <targets>
     <!-- To build this target, run `pretext build web` -->
@@ -35,6 +36,10 @@
            in your subset build -->
       <xmlid-root>ch_first</xmlid-root>
     </target>
+    <target name="runestone" 
+            format="html" 
+            publication="publication/runestone.ptx" 
+            output-dir="published/ai-robotics" />
   </targets>
   <executables>
       <latex>latex</latex>
