@@ -6,7 +6,11 @@
 <!-- of publication-file options, see                                     -->
 <!-- https://pretextbook.org/doc/guide/html/publisher-file-reference.html -->
 
-
+<publication>
+    <html>
+        <platform host="runestone"/>
+    </html>
+</publication>
 
 <publication>
   <!-- Set where external assets and generated assets will be   -->
