@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_image_processing_basics" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Introduction to Image Processing</title>
+  <introduction>
+    <p>Before a robot can reason about what it sees, raw camera pixels must be converted into simpler, structured information. Two of the most common first steps are color thresholding and bounding-box extraction.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_color_thresholding">
+    <title>Color Thresholding</title>
+    <p>Color thresholding converts each pixel to either "match" or "no match" based on whether its color values fall within a target range. For example, a bright orange ball can be isolated from a classroom background by keeping only pixels whose red, green, and blue values fall within an orange-colored range, and discarding the rest.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_bounding_boxes">
+    <title>Bounding Boxes</title>
+    <p>Once matching pixels are identified, a bounding box is the smallest rectangle that contains all of them, described by a minimum and maximum row and column, or equivalently by a corner coordinate, width, and height. Bounding boxes give a robot a compact estimate of an object's location and size without needing to reason about every individual pixel.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_vision_pipeline_flow">
+    <title>From Pixels to Decisions</title>
+    <p>A typical pipeline applies color thresholding to isolate a region of interest, computes a bounding box around that region, and then passes the box's center coordinate and size to downstream planning or control code, such as the ball-tracking logic used in the soccer competition lab.</p>
+  </subsection>
+</section>

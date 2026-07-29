@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_activecode_reactive_wall_avoidance_state_machine" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>ActiveCode Exercise: Reactive Wall Avoidance State Machine</title>
+  <introduction>
+    <p>This exercise models a reactive controller that uses three distance inputs: left, front, and right. The goal is to return one steering command at each update step: move forward, steer left, or steer right.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_state_machine_rules">
+    <title>Controller Rules</title>
+    <p>Use a clear-path threshold of 1.0 meter and a danger threshold of 0.5 meters.</p>
+    <ul>
+      <li><p>If front distance is under 0.5 meters, turn toward the side with more open space.</p></li>
+      <li><p>If left distance is under 0.5 meters, steer right.</p></li>
+      <li><p>If right distance is under 0.5 meters, steer left.</p></li>
+      <li><p>If none of the danger conditions apply, continue forward.</p></li>
+    </ul>
+  </subsection>
+
+  <subsection xml:id="subsec_state_machine_activecode">
+    <title>Try It</title>
+    <p>Run the code below, then edit the <c>front</c>, <c>left</c>, and <c>right</c> values in <c>test_cases</c> to explore other sensor readings.</p>
+    <program xml:id="ac_reactive_wall_avoidance" interactive="activecode" language="python">
+      <input>
+DANGER = 0.5
+
+def choose_action(front, left, right):
+    if front &lt; DANGER:
+        return "STEER_LEFT" if left &gt;= right else "STEER_RIGHT"
+    elif left &lt; DANGER:
+        return "STEER_RIGHT"
+    elif right &lt; DANGER:
+        return "STEER_LEFT"
+    else:
+        return "FORWARD"
+
+test_cases = [
+    (0.4, 1.2, 0.3),
+    (1.2, 1.0, 1.0),
+    (1.2, 0.3, 1.0),
+    (1.2, 1.0, 0.2),
+]
+
+for front, left, right in test_cases:
+    action = choose_action(front, left, right)
+    print(f"front={front}, left={left}, right={right} -&gt; {action}")
+</input>
+    </program>
+  </subsection>
+
+  <subsection xml:id="subsec_test_case_interpretation">
+    <title>Test Case Interpretation</title>
+    <p>Example sensor readings are front = 0.4 m, left = 1.2 m, and right = 0.3 m. Since the front path is blocked and the left side has more clearance than the right side, the expected action is to steer left.</p>
+  </subsection>
+</section>

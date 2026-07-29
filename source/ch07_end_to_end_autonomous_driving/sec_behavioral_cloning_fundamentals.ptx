@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_behavioral_cloning_fundamentals" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Behavioral Cloning Fundamentals</title>
+  <introduction>
+    <p>Behavioral cloning trains a model to imitate a human or expert controller by learning a direct mapping from raw sensor input, such as a camera image, to motor control outputs. Rather than hand-coding perception, planning, and control as separate stages, the model learns to reproduce the demonstrated behavior end to end.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_input_output_mapping">
+    <title>From Camera Frame to Control Command</title>
+    <p>A behavioral cloning model takes a raw image as input and outputs a control command, typically linear velocity <m>v</m> and angular velocity <m>\omega</m>. During training, each recorded frame is paired with the command a human driver issued at that moment, so the model learns to associate visual patterns, such as an approaching wall or a curve in the track, with the correct steering response.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_cloning_vs_modular">
+    <title>Contrast with Modular Pipelines</title>
+    <p>Earlier chapters built modular pipelines: perception estimates state, planning computes a path, and control follows it. Behavioral cloning collapses all three stages into a single learned function. This can simplify development, since no explicit map or planner is required, but it also means the model's decisions are harder to inspect or verify stage by stage.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_cloning_robotics_examples">
+    <title>Robotics Examples</title>
+    <p>A VEX robot could be driven manually around a course while camera frames and joystick commands are logged, then a model trained on those logs could attempt to replay similar driving behavior autonomously. The same idea scales up to full-size autonomous vehicles trained on hours of recorded human driving.</p>
+  </subsection>
+</section>

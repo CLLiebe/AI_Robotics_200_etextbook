@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<chapter xml:id="ch02_robot_kinematics_coordinate_spaces" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Robot Kinematics &amp; Coordinate Spaces</title>
+  <introduction>
+    <p>This chapter develops the geometric language needed to model robot motion. You will work with coordinate frames, transformations, and the distinction between forward and inverse kinematics. These tools let us move between joint-level commands and task-space goals. A strong kinematics foundation is essential for planning, control, and perception in later chapters.</p>
+  </introduction>
+  <xi:include href="./sec_kinematic_configurations_differential_drive.ptx" />
+  <xi:include href="./sec_forward_kinematics_odometry.ptx" />
+  <xi:include href="./sec_inverse_kinematics_applications.ptx" />
+  <xi:include href="./Glossary.ptx" />
+</chapter>

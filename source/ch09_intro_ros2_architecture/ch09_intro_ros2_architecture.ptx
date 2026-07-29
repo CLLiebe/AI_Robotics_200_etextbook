@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<chapter xml:id="ch09_intro_ros2_architecture" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Introduction to ROS2 Architecture</title>
+  <introduction>
+    <p>This chapter introduces ROS2 as the middleware framework used to connect the modular robot software you have designed conceptually in earlier chapters. You will learn the roles of nodes, topics, messages, and the workspace environment in a distributed robot application, and practice parsing structured sensor data and reading a running system's state from the command line. Understanding these foundations is a prerequisite for writing the publisher and subscriber code introduced in the next chapter.</p>
+  </introduction>
+  <xi:include href="./sec_ros2_middleware_graph.ptx" />
+  <xi:include href="./sec_nodes_topics_messages_workspace.ptx" />
+  <xi:include href="./sec_activecode_message_parsing.ptx" />
+  <xi:include href="./sec_conceptual_check_ros2_cli_tools.ptx" />
+  <xi:include href="./Glossary.ptx" />
+</chapter>

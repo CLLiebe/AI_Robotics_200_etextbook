@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_data_collection_training_loops" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Data Collection and Training Loops</title>
+  <introduction>
+    <p>An end-to-end model is only as good as the demonstrations it learns from. Building a useful training set, and iterating on it, is often the most time-consuming part of behavioral cloning.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_recording_demonstrations">
+    <title>Recording Demonstrations</title>
+    <p>Data collection typically involves driving the robot manually through the range of situations it will need to handle, recording synchronized camera frames and control commands at each timestep. Coverage matters: if the human demonstrator never recovers from a near-collision, the model has no examples to learn that behavior from.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_training_evaluation_loop">
+    <title>The Train-Evaluate-Collect Loop</title>
+    <p>A practical workflow trains a model on the current dataset, evaluates it by running the model on the robot or in simulation, identifies situations where it fails, and collects additional targeted demonstrations for those situations before retraining. This loop often matters more than any single architectural choice, since a model can only be as capable as its data allows.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_data_quality_notes">
+    <title>Data Quality Considerations</title>
+    <ul>
+      <li><p>Demonstrations should include recovery behavior, not just ideal driving.</p></li>
+      <li><p>Recording conditions, such as lighting, should roughly match deployment conditions.</p></li>
+      <li><p>An imbalanced dataset, such as one dominated by a single maneuver, biases the model toward that maneuver.</p></li>
+    </ul>
+  </subsection>
+</section>

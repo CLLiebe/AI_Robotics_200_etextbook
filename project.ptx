@@ -36,10 +36,12 @@
            in your subset build -->
       <xmlid-root>ch_first</xmlid-root>
     </target>
-    <target name="runestone" 
-            format="html" 
-            publication="publication/runestone.ptx" 
-            output-dir="published/ai-robotics" />
+        <target name="runestone">
+          <format>html</format>
+          <source>source/main.ptx</source>
+          <publication>publication/runestone.ptx</publication>
+          <output-dir>published/airobotics200</output-dir>
+        </target>
   </targets>
   <executables>
       <latex>latex</latex>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_sensor_driven_reactive_behaviors" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Sensor-Driven Reactive Behaviors</title>
+  <introduction>
+    <p>In reactive navigation, a robot couples sensing and actuation in a tight loop to avoid delays and reduce collision risk. Instead of constructing a full world model first, control updates are computed directly from immediate sensor measurements.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_reactive_loop">
+    <title>Direct Sense-Act Control Loop</title>
+    <p>Reactive control follows a simple architecture: detect local conditions, compute a steering correction, and apply new wheel commands. If a sensor detects an object within a danger threshold, the controller immediately adjusts linear and angular velocity to turn away from the obstacle.</p>
+    <p>This design supports low-latency behavior in dynamic environments where object locations can change too quickly for heavy replanning.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_reactive_strengths_limits">
+    <title>Strengths and Limits</title>
+    <ul>
+      <li><p><em>Strength:</em> fast response to local hazards and robust operation with partial map information.</p></li>
+      <li><p><em>Strength:</em> simple implementation for introductory mobile-robot control systems.</p></li>
+      <li><p><em>Limit:</em> local methods can make short-sighted choices and may become trapped in geometrically difficult layouts.</p></li>
+    </ul>
+  </subsection>
+</section>

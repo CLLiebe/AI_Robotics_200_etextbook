@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_homework_turtlesim_navigation" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Homework: Initial TurtleSim Simulation Navigation</title>
+  <introduction>
+    <p>TurtleSim is a lightweight ROS2 simulator that displays a simple turtle-shaped robot in a 2D window and accepts velocity commands over the <c>cmd_vel</c> topic. It is the standard first hands-on introduction to a live ROS2 graph because it requires no physical hardware.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_turtlesim_homework_tasks">
+    <title>Assignment</title>
+    <ol>
+      <li><p>Launch the TurtleSim node and confirm it appears in the output of <c>ros2 node list</c>.</p></li>
+      <li><p>Use <c>ros2 topic pub</c> to manually publish a <c>Twist</c> message to the turtle's <c>cmd_vel</c> topic and observe the turtle move.</p></li>
+      <li><p>Write a publisher node, following the pattern practiced in this chapter, that drives the turtle in a simple square or circular path using timed velocity commands.</p></li>
+      <li><p>Use <c>ros2 topic echo</c> on the turtle's pose topic while your node runs, and record how the reported <m>(x, y, \theta)</m> values change as the turtle moves.</p></li>
+    </ol>
+  </subsection>
+
+  <subsection xml:id="subsec_turtlesim_homework_goal">
+    <title>Purpose</title>
+    <p>This assignment is meant to connect every concept introduced in Chapters 9 and 10, from the ROS2 graph and command-line tools to publisher nodes and callback-driven subscribers, in a single working, observable system before you move on to more complex robot software.</p>
+  </subsection>
+</section>

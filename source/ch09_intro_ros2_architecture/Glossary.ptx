@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="ch09_intro_ros2_architecture_glossary" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Glossary</title>
+  <dl>
+    <li>
+      <title>Middleware</title>
+      <p>Software layer that handles discovery, message passing, and timing between separate programs so they can cooperate without direct wiring.</p>
+    </li>
+    <li>
+      <title>ROS2 Graph</title>
+      <p>The set of running nodes and the communication links between them at a given point in time.</p>
+    </li>
+    <li>
+      <title>Node</title>
+      <p>A single running ROS2 program that performs one logical piece of work.</p>
+    </li>
+    <li>
+      <title>Topic</title>
+      <p>A named communication channel that nodes use to publish or subscribe to data.</p>
+    </li>
+    <li>
+      <title>Publish</title>
+      <p>The act of a node sending data onto a topic.</p>
+    </li>
+    <li>
+      <title>Subscribe</title>
+      <p>The act of a node receiving data from a topic.</p>
+    </li>
+    <li>
+      <title>Message (.msg)</title>
+      <p>A structured data definition describing the fields and types exchanged over a topic.</p>
+    </li>
+    <li>
+      <title>Workspace</title>
+      <p>The directory structure containing a ROS2 project's source code, build artifacts, and installed packages.</p>
+    </li>
+    <li>
+      <title><c>ros2 node list</c></title>
+      <p>A command-line tool that lists the names of all currently running nodes.</p>
+    </li>
+    <li>
+      <title><c>ros2 topic echo</c></title>
+      <p>A command-line tool that prints messages as they arrive on a specified topic.</p>
+    </li>
+    <li>
+      <title><c>ros2 topic pub</c></title>
+      <p>A command-line tool that manually publishes a message onto a specified topic.</p>
+    </li>
+  </dl>
+</section>

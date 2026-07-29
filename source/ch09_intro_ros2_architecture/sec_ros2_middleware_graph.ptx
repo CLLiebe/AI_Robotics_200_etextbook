@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_ros2_middleware_graph" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Middleware Mechanics and the ROS2 Graph</title>
+  <introduction>
+    <p>ROS2 is a middleware framework: software that sits between individual robot programs and handles the details of discovery, message passing, and timing so that separate programs can cooperate without being directly wired together.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_middleware_role">
+    <title>What Middleware Provides</title>
+    <p>Instead of writing custom networking code, a ROS2 program declares what data it produces or needs, and the middleware handles finding other matching programs, delivering messages, and managing timing. This lets a perception program and a control program run as separate processes, possibly on separate machines, while still exchanging data reliably.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_ros2_graph_concept">
+    <title>The ROS2 Graph</title>
+    <p>The collection of running programs and their communication links is called the <term>ROS2 graph</term>. Each program is a node, and the connections between them represent data flowing over named channels. Visualizing the graph helps developers see, at a glance, which components depend on which data sources, and where a missing or slow connection could cause a downstream failure.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_middleware_robotics_examples">
+    <title>Robotics Examples</title>
+    <p>A mobile robot's graph might show a camera driver node feeding a perception node, which feeds a planning node, which feeds a motor controller node. Understanding this graph structure is essential before writing any individual node, since a node's usefulness depends entirely on what it publishes and what it subscribes to.</p>
+  </subsection>
+</section>

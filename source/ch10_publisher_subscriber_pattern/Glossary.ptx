@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="ch10_publisher_subscriber_pattern_glossary" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Glossary</title>
+  <dl>
+    <li>
+      <title>Publisher</title>
+      <p>A node component that sends messages onto a topic.</p>
+    </li>
+    <li>
+      <title>Subscriber</title>
+      <p>A node component that receives messages from a topic and processes them through a callback.</p>
+    </li>
+    <li>
+      <title>Callback Function</title>
+      <p>Code that runs automatically in response to an event, such as a timer firing or a message arriving, rather than being called directly by the main program.</p>
+    </li>
+    <li>
+      <title>Timer Callback</title>
+      <p>A callback function invoked repeatedly at a fixed interval, commonly used to trigger periodic publishing.</p>
+    </li>
+    <li>
+      <title><c>spin</c></title>
+      <p>The ROS2 call that keeps a node running and processing callbacks until it is shut down.</p>
+    </li>
+    <li>
+      <title><c>cmd_vel</c></title>
+      <p>A conventional topic name used to send velocity commands, typically as a <c>Twist</c> message, to a mobile robot.</p>
+    </li>
+    <li>
+      <title><c>Twist</c> Message</title>
+      <p>A standard ROS2 message type describing linear and angular velocity.</p>
+    </li>
+    <li>
+      <title><c>sensor_msgs/LaserScan</c></title>
+      <p>A standard ROS2 message type describing a set of distance readings from a range sensor such as a LiDAR.</p>
+    </li>
+    <li>
+      <title>Decoupling</title>
+      <p>A design property where publishers and subscribers can be added, removed, or replaced without requiring changes to one another.</p>
+    </li>
+    <li>
+      <title>TurtleSim</title>
+      <p>A lightweight ROS2 simulator used to practice publishing and subscribing without physical robot hardware.</p>
+    </li>
+  </dl>
+</section>

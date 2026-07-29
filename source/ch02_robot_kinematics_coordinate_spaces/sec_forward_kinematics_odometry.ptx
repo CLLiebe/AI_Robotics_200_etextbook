@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_forward_kinematics_odometry" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Forward Kinematics and Odometry</title>
+  <introduction>
+    <p>Forward kinematics asks: if wheel velocities are known, what robot motion results? For differential drive, wheel speeds determine linear velocity, angular velocity, and short-horizon pose updates. These calculations are central to localization and autonomous motion estimation.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_forward_kinematics_relations">
+    <title>Wheel Speeds to Robot Motion</title>
+    <p>Let $v_L$ and $v_R$ be left and right wheel velocities. Linear speed is the average wheel speed, and turning rate is proportional to wheel-speed difference divided by track width $L$.</p>
+    <p>When $v_L=v_R$, angular velocity is zero and the robot travels straight. When $v_L\neq v_R$, the robot follows a curved path.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_forward_examples">
+    <title>Examples</title>
+    <ul>
+      <li><p><em class="emphasis">VEX straight drive:</em> equal wheel speeds produce forward translation with no rotation.</p></li>
+      <li><p><em class="emphasis">VEX curved turn:</em> unequal wheel speeds yield simultaneous translation and turning.</p></li>
+      <li><p><em class="emphasis">Robotic vacuum:</em> predicted future position from wheel speeds helps avoid collisions.</p></li>
+      <li><p><em class="emphasis">Warehouse robot:</em> wheel velocities feed map-relative pose updates during navigation.</p></li>
+    </ul>
+  </subsection>
+
+  <subsection xml:id="subsec_odometry_pose_update">
+    <title>Pose Update and Odometry</title>
+    <p>Given linear and angular velocity over a short interval, the robot updates heading and position $(x,y,\theta)$. Repeating this process over time is odometry.</p>
+    <p>In VEX autonomous routines, odometry enables route tracking and correction between landmarks or scoring objectives.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_forward_check">
+    <title>Concept Check</title>
+    <p>If both wheel velocities are equal and positive, the expected motion is straight forward translation.</p>
+  </subsection>
+</section>

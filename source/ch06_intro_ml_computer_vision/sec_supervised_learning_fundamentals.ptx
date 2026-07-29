@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_supervised_learning_fundamentals" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Supervised Learning Fundamentals</title>
+  <introduction>
+    <p>Supervised learning trains a model to predict an output from labeled examples. In robotics, this often means learning to predict a category or a numeric value from sensor measurements that have already been labeled by a human or a reliable reference system.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_features_and_labels">
+    <title>Features and Labels</title>
+    <ul>
+      <li><p><em class="emphasis">Feature:</em> a measurable input value, such as a pixel color, a distance reading, or a coordinate.</p></li>
+      <li><p><em class="emphasis">Label:</em> the correct output associated with a given set of features, such as "obstacle" or "free space."</p></li>
+      <li><p><em class="emphasis">Training set:</em> a collection of feature-label pairs used to fit the model.</p></li>
+    </ul>
+    <p>A model learns a mapping from features to labels by finding patterns in the training set, then applies that mapping to new, unlabeled inputs.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_classification_vs_regression">
+    <title>Classification versus Regression</title>
+    <p><em class="emphasis">Classification</em> predicts a discrete category, such as sorting a detected region into "obstacle" or "free space." <em class="emphasis">Regression</em> predicts a continuous numeric value, such as estimating distance to an object from image size. The same underlying training process applies to both, but the choice of output type changes which model and evaluation method are appropriate.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_learning_robotics_examples">
+    <title>Robotics Examples</title>
+    <p>A VEX AIM robot's vision sensor can be trained to classify detected regions as "obstacle" or "free space" using coordinate features, while a warehouse robot might use regression to estimate the remaining distance to a shelf from camera image scale.</p>
+  </subsection>
+</section>

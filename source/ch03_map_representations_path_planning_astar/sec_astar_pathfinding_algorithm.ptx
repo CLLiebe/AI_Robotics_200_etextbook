@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_astar_pathfinding_algorithm" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>The A* Pathfinding Algorithm</title>
+  <introduction>
+    <p>A* is an informed search algorithm that finds efficient routes from a start node to a goal node. It prioritizes exploration using both the known travel cost so far and a heuristic estimate of remaining distance.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_astar_scoring">
+    <title>Cost Function</title>
+    <p>A* evaluates each candidate node with the score <m>f(n)=g(n)+h(n)</m>.</p>
+    <ul>
+      <li><p><m>g(n)</m>: exact cost from the start to node <m>n</m>.</p></li>
+      <li><p><m>h(n)</m>: estimated remaining cost from node <m>n</m> to the goal.</p></li>
+      <li><p><m>f(n)</m>: total priority score used to choose what to explore next.</p></li>
+    </ul>
+    <p>At each step, A* expands the frontier node with the smallest <m>f(n)</m>.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_manhattan_heuristic">
+    <title>Manhattan Distance Heuristic</title>
+    <p>On grids that allow only north, south, east, and west movement, a common heuristic is Manhattan distance:</p>
+    <p><m>h = |x_{goal}-x_{current}| + |y_{goal}-y_{current}|</m>.</p>
+    <p>This estimate helps guide search toward the goal while respecting grid-style motion constraints.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_astar_robotics_examples">
+    <title>Robotics Examples</title>
+    <p>In VEX AIM classroom navigation, A* finds a path around desks rather than driving directly into obstacles. Similar planning ideas are used in warehouse robots, map-based robotic vacuums, autonomous vehicles, and large-scale route planners.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_astar_tradeoffs">
+    <title>Advantages and Limitations</title>
+    <ul>
+      <li><p><em>Advantages:</em> shortest-path optimality with an admissible heuristic, strong practical efficiency, and compatibility with occupancy-grid graphs.</p></li>
+      <li><p><em>Limitations:</em> memory usage can grow on large maps, and replanning is needed when environments change.</p></li>
+    </ul>
+  </subsection>
+</section>

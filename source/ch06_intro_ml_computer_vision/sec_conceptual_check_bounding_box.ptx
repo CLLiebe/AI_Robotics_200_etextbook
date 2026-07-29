@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_conceptual_check_bounding_box" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Conceptual Check: Bounding Box Calculation</title>
+  <introduction>
+    <p>A color-thresholding step marks the following pixel grid coordinates as matching an orange ball: rows 3 through 6 and columns 4 through 9 (using zero-indexed rows and columns).</p>
+  </introduction>
+
+  <exercise xml:id="ex_bounding_box_calculation">
+    <statement>
+      <p>What is the bounding box for this detection, expressed as a top-left corner coordinate, width, and height?</p>
+    </statement>
+    <answer>
+      <p>The top-left corner is at row 3, column 4. The width spans columns 4 through 9 inclusive, which is 6 columns. The height spans rows 3 through 6 inclusive, which is 4 rows. So the bounding box is corner <m>(4, 3)</m> in (column, row) form, with width 6 and height 4. Students should double-check whether their own convention counts endpoints inclusively, since an off-by-one error here is a common source of mismatched bounding boxes.</p>
+    </answer>
+  </exercise>
+</section>

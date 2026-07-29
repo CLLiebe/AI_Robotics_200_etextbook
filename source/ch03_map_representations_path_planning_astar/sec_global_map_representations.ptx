@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_global_map_representations" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Global Map Representations</title>
+  <introduction>
+    <p>Before a robot can plan motion to a destination, it must represent the physical world in a digital form. A map representation converts walls, open floor space, and obstacles into structured data that planning algorithms can search.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_occupancy_grid_maps">
+    <title>Occupancy Grid Maps</title>
+    <p>An occupancy grid divides an environment into square cells. Each cell stores whether the corresponding region is free, occupied, or unknown.</p>
+    <ul>
+      <li><p><em>Free cell:</em> traversable space for robot motion.</p></li>
+      <li><p><em>Occupied cell:</em> obstacle such as a wall, desk, or barrier.</p></li>
+      <li><p><em>Unknown cell:</em> area not yet observed with sufficient confidence.</p></li>
+    </ul>
+    <p>Grids reduce a continuous world to a finite set of locations, making planning and collision checking computationally manageable.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_grid_to_graph">
+    <title>Converting a Grid to a Graph</title>
+    <p>For graph-based planning, each traversable grid cell becomes a node, and allowed moves between neighboring cells become edges. Once represented as a graph, robots can apply search methods such as Breadth-First Search, Dijkstra's algorithm, and A*.</p>
+    <p>This representation allows robots to answer practical questions: which cells are reachable, where obstacles block motion, and which path reaches the goal with lowest cost.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_map_examples_applications">
+    <title>Applications</title>
+    <p>In classroom and competition settings, a VEX AIM robot can use occupancy-style mapping to avoid desks, field barriers, and other robots while moving to game objects or scoring zones. The same concept appears in robotic vacuums, warehouse automation, autonomous vehicles, and planetary rovers.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_occupancy_grid_tradeoffs">
+    <title>Advantages and Limitations</title>
+    <ul>
+      <li><p><em>Advantages:</em> easy to visualize, compatible with many sensors, and directly usable by path-planning algorithms.</p></li>
+      <li><p><em>Limitations:</em> memory cost can be high for large maps, and dynamic scenes require frequent updates.</p></li>
+    </ul>
+  </subsection>
+</section>

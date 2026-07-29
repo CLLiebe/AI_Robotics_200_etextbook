@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="ch02_robot_kinematics_coordinate_spaces_glossary" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Glossary</title>
+  <dl>
+    <li>
+      <title>Kinematics</title>
+      <p>Study of motion without explicitly modeling the forces that cause it.</p>
+    </li>
+    <li>
+      <title>Differential Drive</title>
+      <p>A drivetrain with independently driven left and right wheels used to control translation and turning.</p>
+    </li>
+    <li>
+      <title>Track Width (<m>L</m>)</title>
+      <p>Distance between wheel centers in a differential drive robot.</p>
+    </li>
+    <li>
+      <title>Linear Velocity</title>
+      <p>Forward translational speed of the robot.</p>
+    </li>
+    <li>
+      <title>Angular Velocity</title>
+      <p>Rotational turning rate of the robot.</p>
+    </li>
+    <li>
+      <title>Forward Kinematics</title>
+      <p>Computing robot motion from known wheel or joint velocities.</p>
+    </li>
+    <li>
+      <title>Inverse Kinematics</title>
+      <p>Computing wheel or joint commands needed to achieve a desired robot motion.</p>
+    </li>
+    <li>
+      <title>Odometry</title>
+      <p>Estimating pose over time from motion measurements such as wheel encoder data.</p>
+    </li>
+    <li>
+      <title>Pose</title>
+      <p>Robot position and orientation, commonly represented as <m>(x,y,\theta)</m>.</p>
+    </li>
+    <li>
+      <title>Wheel Velocity (<m>v_L</m>, <m>v_R</m>)</title>
+      <p>Left and right wheel speeds used in differential-drive motion equations.</p>
+    </li>
+    <li>
+      <title>In-Place Rotation</title>
+      <p>Turning around the robot center by spinning wheels in opposite directions.</p>
+    </li>
+    <li>
+      <title>Turning Radius</title>
+      <p>Radius of the curved path produced by unequal wheel speeds.</p>
+    </li>
+    <li>
+      <title>Closed Navigation Cycle</title>
+      <p>Repeated loop of planning desired motion, commanding wheels, sensing outcome, and updating state.</p>
+    </li>
+  </dl>
+</section>

@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_parsons_cmd_vel_publisher_node" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Parsons Problem: Assembling a Minimal cmd_vel Publisher Node</title>
+  <introduction>
+    <p>This exercise gives students a scrambled set of Python lines that together form a complete, minimal ROS2 node publishing to the <c>cmd_vel</c> topic. Students drag the lines into the correct logical order, then check that indentation and grouping match a working node.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_parsons_code_blocks">
+    <title>Code Blocks to Order</title>
+    <p>Drag the blocks below into the order that produces a working <c>cmd_vel</c> publisher node.</p>
+    <exercise xml:id="ex_parsons_cmd_vel_publisher_node" indent="show" language="python">
+      <statement>
+        <p>Arrange the blocks to form a complete, minimal ROS2 node that publishes to <c>cmd_vel</c>.</p>
+      </statement>
+      <blocks>
+        <block order="1">
+          <cline>rclpy.init()</cline>
+        </block>
+        <block order="2">
+          <cline>node = rclpy.create_node('cmd_vel_publisher')</cline>
+        </block>
+        <block order="3">
+          <cline>def timer_callback():</cline>
+          <cline>    msg = Twist()</cline>
+          <cline>    msg.linear.x = 0.2</cline>
+          <cline>    publisher.publish(msg)</cline>
+        </block>
+        <block order="4">
+          <cline>publisher = node.create_publisher(Twist, 'cmd_vel', 10)</cline>
+        </block>
+        <block order="5">
+          <cline>timer = node.create_timer(0.5, timer_callback)</cline>
+        </block>
+        <block order="6">
+          <cline>rclpy.spin(node)</cline>
+        </block>
+      </blocks>
+    </exercise>
+  </subsection>
+
+  <subsection xml:id="subsec_parsons_correct_order">
+    <title>Correct Order</title>
+    <p>The correct sequence is: initialize the ROS2 client library, create the node, define the timer callback function, create the publisher on the <c>cmd_vel</c> topic, create the timer that will invoke the callback, and finally call <c>spin</c> to keep the node running. Initialization must come before node creation, the callback function must be defined before it is referenced by the timer, and <c>spin</c> must come last since nothing after it will run until the node shuts down.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_parsons_common_mistakes">
+    <title>Common Ordering Mistakes</title>
+    <ul>
+      <li><p>Creating the timer before the callback function is defined, which raises a name error.</p></li>
+      <li><p>Calling <c>spin</c> before the publisher and timer are set up, which means the node never actually publishes anything.</p></li>
+      <li><p>Forgetting to initialize the client library first, which prevents the node from being created at all.</p></li>
+    </ul>
+  </subsection>
+</section>

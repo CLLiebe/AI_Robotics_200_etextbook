@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<chapter xml:id="ch04_reactive_navigation_obstacle_avoidance" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Reactive Navigation &amp; Obstacle Avoidance</title>
+  <introduction>
+    <p>This chapter focuses on fast, local decision-making for safe robot motion. You will study reactive strategies that respond directly to sensor data without requiring a complete global map. The material emphasizes obstacle avoidance, collision risk, and behavior under uncertainty. These methods are especially useful in dynamic environments where conditions change quickly.</p>
+  </introduction>
+  <xi:include href="./sec_sensor_driven_reactive_behaviors.ptx" />
+  <xi:include href="./sec_bug_algorithms.ptx" />
+  <xi:include href="./sec_artificial_potential_fields.ptx" />
+  <xi:include href="./sec_activecode_reactive_wall_avoidance_state_machine.ptx" />
+  <xi:include href="./sec_conceptual_check_local_minima.ptx" />
+  <xi:include href="./Glossary.ptx" />
+</chapter>

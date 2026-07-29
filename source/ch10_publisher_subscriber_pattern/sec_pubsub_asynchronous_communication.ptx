@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_pubsub_asynchronous_communication" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Asynchronous Communication in the Publisher/Subscriber Pattern</title>
+  <introduction>
+    <p>The publisher/subscriber pattern lets nodes exchange data without either side waiting on the other. A publisher sends messages whenever it has new data, and a subscriber processes messages whenever they arrive, with no direct call-and-response required between the two.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_asynchronous_vs_synchronous">
+    <title>Why Asynchronous Communication</title>
+    <p>If a sensor node had to wait for every downstream node to finish processing before publishing its next reading, a single slow subscriber could stall the entire system. Asynchronous publish/subscribe communication avoids this: a publisher's rate of sending data is decoupled from how quickly any individual subscriber consumes it.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_decoupling_benefits">
+    <title>Decoupling Publishers and Subscribers</title>
+    <p>A publisher does not need to know which nodes, or how many nodes, are subscribed to its topic. This decoupling makes it easy to add a new subscriber, such as a logging node, without changing the publisher at all, and makes it easy to swap out a sensor's driver node as long as the new one publishes to the same topic with the same message type.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_pubsub_tradeoffs">
+    <title>Practical Concerns</title>
+    <ul>
+      <li><p><em class="emphasis">Rate control:</em> publishing too frequently can flood the network or overload subscribers; publishing too rarely can starve time-sensitive consumers.</p></li>
+      <li><p><em class="emphasis">Latency:</em> asynchronous delivery means a subscriber always processes slightly stale data, so time-critical control loops must account for this delay.</p></li>
+      <li><p><em class="emphasis">Data consistency:</em> if multiple topics must be used together, subscribers need a strategy for handling messages that arrive at different rates or times.</p></li>
+    </ul>
+  </subsection>
+</section>

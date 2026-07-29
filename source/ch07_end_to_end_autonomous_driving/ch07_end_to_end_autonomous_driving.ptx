@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<chapter xml:id="ch07_end_to_end_autonomous_driving" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>End-to-End Autonomous Driving</title>
+  <introduction>
+    <p>This chapter studies behavioral cloning, an approach that maps raw camera and vision sensor input directly to motor control outputs such as linear and angular velocity, rather than passing through separate perception, planning, and control stages. You will examine how demonstration data is collected and used to train such a model, and how gaps or imbalances in that data show up as failures in deployed behavior. By the end, you should be able to explain why an end-to-end model is only as capable as the demonstrations it learns from.</p>
+  </introduction>
+  <xi:include href="./sec_behavioral_cloning_fundamentals.ptx" />
+  <xi:include href="./sec_data_collection_training_loops.ptx" />
+  <xi:include href="./sec_activecode_regression_evaluation_loop.ptx" />
+  <xi:include href="./sec_conceptual_check_dataset_bias.ptx" />
+  <xi:include href="./Glossary.ptx" />
+</chapter>

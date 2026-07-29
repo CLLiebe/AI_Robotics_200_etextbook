@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_activecode_laserscan_safety_stop" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>ActiveCode Exercise: LaserScan Safety Stop Callback</title>
+  <introduction>
+    <p>This exercise writes a callback function that listens to a mock <c>sensor_msgs/LaserScan</c> topic stream, extracts the minimum range value from each scan, and flags a safety stop if an obstacle is within 0.5 meters.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_laserscan_callback_structure">
+    <title>Callback Structure</title>
+    <p>Each simulated <c>LaserScan</c> message is represented as a list of range readings. The callback function finds the minimum value in that list, compares it against a safety threshold of 0.5 meters, and returns or prints <c>"SAFETY STOP"</c> if the minimum is below the threshold, or <c>"CLEAR"</c> otherwise.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_laserscan_activecode">
+    <title>Try It</title>
+    <p>Run the code below, then edit the scan lists to test other combinations of readings.</p>
+    <program xml:id="ac_laserscan_safety_stop" interactive="activecode" language="python">
+      <input>
+SAFETY_THRESHOLD = 0.5
+
+def laserscan_callback(scan_ranges):
+    minimum = min(scan_ranges)
+    if minimum &lt; SAFETY_THRESHOLD:
+        return "SAFETY STOP"
+    return "CLEAR"
+
+
+scan_1 = [1.2, 0.9, 0.45, 1.5, 2.0]
+scan_2 = [1.2, 0.9, 0.8, 1.5, 2.0]
+
+for scan in (scan_1, scan_2):
+    result = laserscan_callback(scan)
+    print(f"scan={scan}, min={min(scan)} -&gt; {result}")
+</input>
+    </program>
+  </subsection>
+
+  <subsection xml:id="subsec_laserscan_threshold_logic">
+    <title>Threshold Logic</title>
+    <p>Using the minimum reading, rather than the average or a single fixed index, matters here: any single beam detecting an obstacle close to the robot is enough to warrant a stop, even if most of the surrounding readings show open space.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_laserscan_test_case">
+    <title>Test Case Interpretation</title>
+    <p>Given the mock scan <m>[1.2, 0.9, 0.45, 1.5, 2.0]</m>, the minimum reading is 0.45 meters, which is below the 0.5 meter threshold, so the callback should report <c>"SAFETY STOP"</c>. Given the scan <m>[1.2, 0.9, 0.8, 1.5, 2.0]</m>, the minimum is 0.8 meters, above the threshold, so the callback should report <c>"CLEAR"</c>.</p>
+  </subsection>
+</section>

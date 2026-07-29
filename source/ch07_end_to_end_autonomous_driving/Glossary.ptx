@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="ch07_end_to_end_autonomous_driving_glossary" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Glossary</title>
+  <dl>
+    <li>
+      <title>Behavioral Cloning</title>
+      <p>A learning approach that trains a model to imitate expert control decisions from paired sensor-input and action-output examples.</p>
+    </li>
+    <li>
+      <title>End-to-End Learning</title>
+      <p>Mapping raw sensor input directly to control output with a single learned model, rather than separate perception, planning, and control stages.</p>
+    </li>
+    <li>
+      <title>Demonstration Data</title>
+      <p>Recorded examples of expert behavior, such as human driving, used to train a behavioral cloning model.</p>
+    </li>
+    <li>
+      <title>Recovery Behavior</title>
+      <p>Demonstrated actions that correct a robot from an undesirable state, such as steering away from a near-collision.</p>
+    </li>
+    <li>
+      <title>Mean Squared Error (MSE)</title>
+      <p>An evaluation metric computed as the average of squared differences between predicted and target values.</p>
+    </li>
+    <li>
+      <title>Dataset Bias</title>
+      <p>A systematic imbalance in training data that causes a model to perform poorly on underrepresented situations.</p>
+    </li>
+    <li>
+      <title>Train-Evaluate-Collect Loop</title>
+      <p>An iterative workflow that trains a model, evaluates its failures, and collects targeted new data before retraining.</p>
+    </li>
+  </dl>
+</section>

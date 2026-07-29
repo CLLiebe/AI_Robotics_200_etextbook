@@ -1,17 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<!-- This is the publication file for a newly generated PreTeXt book.     -->
-<!-- By changing the values of attributes here, you can change how        -->
-<!-- the output looks and functions.  For the complete documentation      -->
-<!-- of publication-file options, see                                     -->
-<!-- https://pretextbook.org/doc/guide/html/publisher-file-reference.html -->
-
-<publication>
-    <html>
-        <platform host="runestone"/>
-    </html>
-</publication>
-
 <publication>
   <!-- Set where external assets and generated assets will be   -->
   <!-- stored or created.  Directories are relative to the main -->

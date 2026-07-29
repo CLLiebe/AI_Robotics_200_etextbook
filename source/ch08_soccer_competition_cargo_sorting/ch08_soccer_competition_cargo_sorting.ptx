@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<chapter xml:id="ch08_soccer_competition_cargo_sorting" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Lab: Soccer Competition &amp; Cargo Sorting</title>
+  <introduction>
+    <p>This chapter is a capstone lab chapter that brings together kinematics, path planning, reactive avoidance, and vision-based classification from earlier chapters into two applied challenges: a soccer competition and a cargo-sorting task. Rather than introduce new theory, the chapter focuses on integrating existing subsystems into robust, time-pressured robot behavior. By the end, you should be able to design a state machine that sequences perception, decision-making, and action for a competitive or task-driven robotics scenario.</p>
+  </introduction>
+  <xi:include href="./sec_capstone_integration_overview.ptx" />
+  <xi:include href="./sec_soccer_competition_strategy.ptx" />
+  <xi:include href="./sec_cargo_sorting_pipeline.ptx" />
+  <xi:include href="./sec_activecode_task_state_machine.ptx" />
+  <xi:include href="./sec_conceptual_check_misclassified_cargo.ptx" />
+  <xi:include href="./Glossary.ptx" />
+</chapter>

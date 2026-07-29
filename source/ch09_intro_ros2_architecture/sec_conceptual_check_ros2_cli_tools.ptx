@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_conceptual_check_ros2_cli_tools" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Conceptual Check: Matching ROS2 CLI Tools to Behavior</title>
+  <introduction>
+    <p>ROS2 provides command-line tools for inspecting a running system without modifying any code. For each command below, choose the behavior it performs.</p>
+  </introduction>
+
+  <exercise xml:id="ex_cli_node_list">
+    <statement>
+      <p>What does <c>ros2 node list</c> do?</p>
+    </statement>
+    <choices>
+      <choice>
+        <statement>
+          <p>Publishes a message onto a topic manually from the command line.</p>
+        </statement>
+        <feedback>
+          <p>That is what <c>ros2 topic pub</c> does. <c>node list</c> does not publish anything.</p>
+        </feedback>
+      </choice>
+      <choice correct="yes">
+        <statement>
+          <p>Prints every currently running node's name, useful for confirming which programs are active in the graph.</p>
+        </statement>
+        <feedback>
+          <p>Correct. <c>ros2 node list</c> is a read-only inspection command that reports which nodes are currently active.</p>
+        </feedback>
+      </choice>
+      <choice>
+        <statement>
+          <p>Prints messages as they arrive on a topic in real time.</p>
+        </statement>
+        <feedback>
+          <p>That is what <c>ros2 topic echo</c> does. <c>node list</c> reports nodes, not topic traffic.</p>
+        </feedback>
+      </choice>
+    </choices>
+  </exercise>
+
+  <exercise xml:id="ex_cli_topic_echo">
+    <statement>
+      <p>What does <c>ros2 topic echo</c> do?</p>
+    </statement>
+    <choices>
+      <choice>
+        <statement>
+          <p>Publishes a message onto a topic manually from the command line.</p>
+        </statement>
+        <feedback>
+          <p>That is what <c>ros2 topic pub</c> does. <c>topic echo</c> only reads, it never publishes.</p>
+        </feedback>
+      </choice>
+      <choice>
+        <statement>
+          <p>Prints every currently running node's name.</p>
+        </statement>
+        <feedback>
+          <p>That is what <c>ros2 node list</c> does. <c>topic echo</c> reports message traffic, not node names.</p>
+        </feedback>
+      </choice>
+      <choice correct="yes">
+        <statement>
+          <p>Prints messages as they arrive on a topic in real time, useful for verifying that a publisher is sending expected data.</p>
+        </statement>
+        <feedback>
+          <p>Correct. <c>ros2 topic echo</c> is a read-only inspection command that streams messages published to a topic.</p>
+        </feedback>
+      </choice>
+    </choices>
+  </exercise>
+
+  <exercise xml:id="ex_cli_topic_pub">
+    <statement>
+      <p>What does <c>ros2 topic pub</c> do?</p>
+    </statement>
+    <choices>
+      <choice correct="yes">
+        <statement>
+          <p>Publishes a message onto a topic manually from the command line, useful for testing a subscriber without writing a publisher node.</p>
+        </statement>
+        <feedback>
+          <p>Correct. Unlike <c>node list</c> and <c>topic echo</c>, <c>topic pub</c> actively injects data into the graph rather than just observing it.</p>
+        </feedback>
+      </choice>
+      <choice>
+        <statement>
+          <p>Prints every currently running node's name.</p>
+        </statement>
+        <feedback>
+          <p>That is what <c>ros2 node list</c> does. <c>topic pub</c> writes to a topic; it does not list nodes.</p>
+        </feedback>
+      </choice>
+      <choice>
+        <statement>
+          <p>Prints messages as they arrive on a topic in real time.</p>
+        </statement>
+        <feedback>
+          <p>That is what <c>ros2 topic echo</c> does. <c>topic pub</c> sends data rather than observing it.</p>
+        </feedback>
+      </choice>
+    </choices>
+  </exercise>
+
+  <p>A useful way to remember the distinction: <c>list</c> and <c>echo</c> are read-only inspection tools, while <c>pub</c> actively injects data into the graph.</p>
+</section>

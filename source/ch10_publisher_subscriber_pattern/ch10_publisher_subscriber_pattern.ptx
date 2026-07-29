@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<chapter xml:id="ch10_publisher_subscriber_pattern" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>The Publisher/Subscriber Pattern</title>
+  <introduction>
+    <p>This chapter focuses on the publisher/subscriber communication model used heavily in modern robotic software. You will analyze message flow, decoupling, and latency tradeoffs in asynchronous systems. The chapter includes practical concerns such as topic design, rate control, and data consistency. Mastering this pattern is key to building responsive, modular, and reusable robot applications.</p>
+  </introduction>
+  <xi:include href="./sec_pubsub_asynchronous_communication.ptx" />
+  <xi:include href="./sec_writing_publishers_subscribers.ptx" />
+  <xi:include href="./sec_parsons_cmd_vel_publisher_node.ptx" />
+  <xi:include href="./sec_activecode_laserscan_safety_stop.ptx" />
+  <xi:include href="./sec_homework_turtlesim_navigation.ptx" />
+  <xi:include href="./Glossary.ptx" />
+</chapter>

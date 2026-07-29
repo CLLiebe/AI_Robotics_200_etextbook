@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<chapter xml:id="ch06_intro_ml_computer_vision" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Intro to Machine Learning &amp; Computer Vision</title>
+  <introduction>
+    <p>This chapter introduces machine learning concepts that support robotic perception and decision-making. You will learn how vision pipelines transform raw images into meaningful features, detections, and scene understanding. The chapter emphasizes practical model behavior, data quality, and evaluation tradeoffs. These ideas prepare you to integrate learned components into larger robotic systems.</p>
+  </introduction>
+  <xi:include href="./sec_supervised_learning_fundamentals.ptx" />
+  <xi:include href="./sec_image_processing_basics.ptx" />
+  <xi:include href="./sec_activecode_decision_tree_classifier.ptx" />
+  <xi:include href="./sec_conceptual_check_bounding_box.ptx" />
+  <xi:include href="./Glossary.ptx" />
+</chapter>

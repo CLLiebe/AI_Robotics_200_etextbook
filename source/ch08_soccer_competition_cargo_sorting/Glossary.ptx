@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="ch08_soccer_competition_cargo_sorting_glossary" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Glossary</title>
+  <dl>
+    <li>
+      <title>Capstone Integration</title>
+      <p>Combining previously separate subsystems, such as kinematics, planning, and vision, into one coordinated robot behavior.</p>
+    </li>
+    <li>
+      <title>Task State Machine</title>
+      <p>A sequence of named states, such as Search, Approach, Align, and Act, with defined conditions for moving between them.</p>
+    </li>
+    <li>
+      <title>Role Assignment</title>
+      <p>A strategy where teammate robots are given different responsibilities, such as offense and defense, based on game conditions.</p>
+    </li>
+    <li>
+      <title>Classification Confidence</title>
+      <p>A measure of how certain a vision system is about an assigned category label for a detected object.</p>
+    </li>
+    <li>
+      <title>Routing Logic</title>
+      <p>Decision rules that map a classified item to a destination, such as a specific sorting bin.</p>
+    </li>
+    <li>
+      <title>Holding Zone</title>
+      <p>A fallback location for items that cannot be classified with sufficient confidence to sort directly.</p>
+    </li>
+    <li>
+      <title>Repeatability</title>
+      <p>The ability of a robot to perform the same action, such as an approach or placement, with consistent accuracy across repeated attempts.</p>
+    </li>
+  </dl>
+</section>

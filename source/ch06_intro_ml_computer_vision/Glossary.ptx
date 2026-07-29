@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="ch06_intro_ml_computer_vision_glossary" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Glossary</title>
+  <dl>
+    <li>
+      <title>Supervised Learning</title>
+      <p>A machine learning approach that trains a model on labeled feature-label pairs to predict outputs for new inputs.</p>
+    </li>
+    <li>
+      <title>Feature</title>
+      <p>A measurable input value, such as a pixel color or coordinate, used by a model to make predictions.</p>
+    </li>
+    <li>
+      <title>Label</title>
+      <p>The correct output associated with a training example, such as a category name.</p>
+    </li>
+    <li>
+      <title>Classification</title>
+      <p>A supervised learning task that predicts a discrete category for a given input.</p>
+    </li>
+    <li>
+      <title>Regression</title>
+      <p>A supervised learning task that predicts a continuous numeric value for a given input.</p>
+    </li>
+    <li>
+      <title>Decision Tree</title>
+      <p>A classification or regression model that makes predictions by following a sequence of feature-based decision rules.</p>
+    </li>
+    <li>
+      <title>Color Thresholding</title>
+      <p>An image processing technique that classifies each pixel as matching or not matching a target color range.</p>
+    </li>
+    <li>
+      <title>Bounding Box</title>
+      <p>The smallest rectangle that contains a detected region of interest in an image, typically defined by a corner coordinate, width, and height.</p>
+    </li>
+    <li>
+      <title>Training Set</title>
+      <p>The collection of labeled examples used to fit a machine learning model.</p>
+    </li>
+  </dl>
+</section>

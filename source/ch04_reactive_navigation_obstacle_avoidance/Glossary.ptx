@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="ch04_reactive_navigation_obstacle_avoidance_glossary" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Glossary</title>
+  <dl>
+    <li>
+      <title>Reactive Navigation</title>
+      <p>Navigation that maps current sensor input directly to action without computing a full global map first.</p>
+    </li>
+    <li>
+      <title>Reactive Behavior</title>
+      <p>Immediate rule-based response to sensed conditions.</p>
+    </li>
+    <li>
+      <title>Decision Rule</title>
+      <p>A conditional rule (for example, if-then) that selects actions from sensor measurements.</p>
+    </li>
+    <li>
+      <title>Obstacle Avoidance</title>
+      <p>Real-time steering behavior that reduces collision risk around detected obstacles.</p>
+    </li>
+    <li>
+      <title>Low Latency</title>
+      <p>Fast response time between sensing and action.</p>
+    </li>
+    <li>
+      <title>Artificial Potential Fields (APF)</title>
+      <p>Navigation method using virtual attractive and repulsive forces to guide motion.</p>
+    </li>
+    <li>
+      <title>Attractive Force</title>
+      <p>Virtual force that pulls the robot toward a goal state.</p>
+    </li>
+    <li>
+      <title>Repulsive Force</title>
+      <p>Virtual force that pushes the robot away from obstacles.</p>
+    </li>
+    <li>
+      <title>Net Force Vector</title>
+      <p>Combined motion influence after summing attractive and repulsive effects.</p>
+    </li>
+    <li>
+      <title>Local Minima Trap</title>
+      <p>APF failure mode where net force becomes approximately zero before reaching the goal.</p>
+    </li>
+    <li>
+      <title>Bug Algorithms</title>
+      <p>Boundary-following obstacle navigation methods often contrasted with potential-field navigation.</p>
+    </li>
+    <li>
+      <title>Dynamic Environment</title>
+      <p>An environment where obstacles or conditions can change while the robot is operating.</p>
+    </li>
+  </dl>
+</section>

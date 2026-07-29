@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_activecode_regression_evaluation_loop" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>ActiveCode Exercise: Regression Evaluation Loop</title>
+  <introduction>
+    <p>This exercise builds an evaluation loop for a neural network that outputs a continuous control value from a mock dataset. Students are given a small dataset representing target "stop" (control value 0.0) and "move forward" (control value 1.0) commands, along with a set of model predictions, and compute standard regression error metrics.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_evaluation_loop_structure">
+    <title>Building the Evaluation Loop</title>
+    <p>For each example, the loop computes the difference between the predicted control value and the target control value, then accumulates the squared difference across all examples. Dividing the accumulated total by the number of examples gives the mean squared error (MSE), a standard measure of regression accuracy.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_evaluation_loop_activecode">
+    <title>Try It</title>
+    <p>Run the code below, then try replacing <c>predictions</c> with your own guesses to see how the mean squared error changes.</p>
+    <program xml:id="ac_regression_evaluation_loop" interactive="activecode" language="python">
+      <input>
+targets = [0.0, 1.0, 1.0, 0.0]
+predictions = [0.1, 0.9, 0.6, 0.0]
+
+squared_errors = []
+for target, prediction in zip(targets, predictions):
+    error = prediction - target
+    squared_errors.append(error ** 2)
+
+for i, se in enumerate(squared_errors):
+    print(f"Example {i}: target={targets[i]}, prediction={predictions[i]}, squared_error={se:.3f}")
+
+mse = sum(squared_errors) / len(squared_errors)
+print(f"Mean squared error: {mse:.3f}")
+
+worst_index = squared_errors.index(max(squared_errors))
+print(f"Example {worst_index} contributes the most error.")
+</input>
+    </program>
+  </subsection>
+
+  <subsection xml:id="subsec_evaluation_loop_interpretation">
+    <title>Interpreting the Error</title>
+    <p>A low MSE means predicted control values are close to the targets across the dataset, while a high MSE, or a small number of very large individual errors, can indicate the model consistently confuses "stop" and "move forward" in specific situations. Students should identify which examples contribute the most error and consider what those examples have in common.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_evaluation_loop_test_case">
+    <title>Test Case Interpretation</title>
+    <p>Given targets <m>[0.0, 1.0, 1.0, 0.0]</m> and predictions <m>[0.1, 0.9, 0.6, 0.0]</m>, the squared errors are <m>0.01, 0.01, 0.16, 0.0</m>, giving a mean squared error of <m>0.045</m>. The third example, predicting 0.6 for a target of 1.0, contributes the most error and would be the first place to investigate for additional training data.</p>
+  </subsection>
+</section>

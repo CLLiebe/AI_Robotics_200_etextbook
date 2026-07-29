@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_writing_publishers_subscribers" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Writing ROS2 Publishers and Subscribers</title>
+  <introduction>
+    <p>Every ROS2 publisher and subscriber node follows a similar shape: set up the node and its communication objects, then let the middleware call your code whenever it is time to send or receive data.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_publisher_anatomy">
+    <title>Anatomy of a Publisher Node</title>
+    <p>A publisher node initializes itself, creates a publisher object tied to a specific topic and message type, and sets up a timer that periodically calls a callback function. Inside that timer callback, the node builds a message, fills in its fields, and calls the publisher's send method. The node then calls <c>spin</c>, which keeps the program running so the timer keeps firing.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_subscriber_anatomy">
+    <title>Anatomy of a Subscriber Node</title>
+    <p>A subscriber node initializes itself and creates a subscription tied to a topic and message type, along with a callback function. Whenever a new message arrives on that topic, the middleware automatically calls the callback with the message as an argument. The subscriber never has to ask whether new data is ready; the callback pattern means the middleware notifies it exactly when data arrives.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_callback_functions">
+    <title>Callback Functions</title>
+    <p>A <term>callback function</term> is code that runs in response to an event rather than being called directly by the main program flow. In ROS2, both timer-based publishing and message-based subscribing rely on callbacks, which is what allows many independent nodes to react to events without any of them blocking on the others.</p>
+  </subsection>
+</section>

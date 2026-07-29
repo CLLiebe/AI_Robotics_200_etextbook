@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<chapter xml:id="ch05_spatial_mapping_localization_basics" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Spatial Mapping &amp; Localization Basics</title>
+  <introduction>
+    <p>This chapter covers how robots estimate where they are and what the environment looks like. You will examine uncertainty in sensing and motion, then connect those ideas to practical localization methods. The chapter also introduces mapping workflows that accumulate spatial knowledge over time. Together, mapping and localization provide the state estimates needed for reliable autonomy.</p>
+  </introduction>
+  <xi:include href="./sec_slam_paradox.ptx" />
+  <xi:include href="./sec_activecode_odometry_drift_simulation.ptx" />
+  <xi:include href="./sec_conceptual_check_encoder_limitations.ptx" />
+  <xi:include href="./Glossary.ptx" />
+</chapter>

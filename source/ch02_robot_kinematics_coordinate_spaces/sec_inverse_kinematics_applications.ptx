@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_inverse_kinematics_applications" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Inverse Kinematics Applications</title>
+  <introduction>
+    <p>Inverse kinematics asks the opposite question of forward kinematics: if desired robot motion is known, what wheel commands are required? This is the operational view used by navigation software because planners output target motions, not direct wheel rates.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_forward_inverse_contrast">
+    <title>Forward vs. Inverse Perspective</title>
+    <ul>
+      <li><p><em class="emphasis">Forward kinematics:</em> wheel speeds in, robot motion out.</p></li>
+      <li><p><em class="emphasis">Inverse kinematics:</em> desired robot motion in, wheel speeds out.</p></li>
+    </ul>
+    <p>Robotic systems use both continuously during autonomy: planning and control generate desired motion, then sensing and odometry estimate achieved motion.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_inverse_examples">
+    <title>Examples</title>
+    <ul>
+      <li><p><em class="emphasis">VEX autonomous turning:</em> a desired forward speed and slight left turn are converted to asymmetric wheel speeds.</p></li>
+      <li><p><em class="emphasis">Self-driving vehicle:</em> route-level motion goals are converted to steering and propulsion commands.</p></li>
+      <li><p><em class="emphasis">Delivery robot:</em> path goals are transformed into low-level wheel velocity commands.</p></li>
+    </ul>
+  </subsection>
+
+  <subsection xml:id="subsec_kinematics_cycle">
+    <title>Closed Navigation Cycle</title>
+    <p>In practice, the cycle repeats: target motion -> inverse kinematics -> actuator command -> encoder feedback -> forward kinematics/odometry -> updated state -> new target motion.</p>
+    <p>This loop is what enables accurate navigation in dynamic environments.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_inverse_check">
+    <title>Concept Check</title>
+    <p>If you know a desired turn-and-drive motion and need left/right wheel speeds, you are solving an inverse kinematics problem.</p>
+  </subsection>
+</section>

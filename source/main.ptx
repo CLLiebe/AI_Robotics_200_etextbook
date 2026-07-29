@@ -9,12 +9,6 @@
 
   <!-- we first include a file which contains the docinfo element: -->
   <xi:include href="./meta_docinfo.ptx" />
-<docinfo>
-    <document-id>ai-robotics-200</document-id>
-    <blurb shelf="Computer Science">
-        An introductory textbook for AI and Robotics.
-    </blurb>
-    </docinfo>
   <!-- The <book> tags wrap all the content.  Change the @xml:id   -->
   <!-- to some short (non-spaced) description of your book         -->
   <book xml:id="ai-robotics-200">
@@ -28,10 +22,18 @@
     <!-- out for now and write this when the book is more complete -->
     <xi:include href="./meta_frontmatter.ptx" />
 
-    <!-- Chapter 1: Introduction to Robotics -->
-    <xi:include href="./ch_intro_robotics.ptx" />
-    <!-- Of course you will want to add more chapters as you proceed-->
-  
+    <!-- Course chapters -->
+    <xi:include href="./ch01_intro_robotic_subsystems_control_loop/ch01_intro_robotic_subsystems_control_loop.ptx" />
+    <xi:include href="./ch02_robot_kinematics_coordinate_spaces/ch02_robot_kinematics_coordinate_spaces.ptx" />
+    <xi:include href="./ch03_map_representations_path_planning_astar/ch03_map_representations_path_planning_astar.ptx" />
+    <xi:include href="./ch04_reactive_navigation_obstacle_avoidance/ch04_reactive_navigation_obstacle_avoidance.ptx" />
+    <xi:include href="./ch05_spatial_mapping_localization_basics/ch05_spatial_mapping_localization_basics.ptx" />
+    <xi:include href="./ch06_intro_ml_computer_vision/ch06_intro_ml_computer_vision.ptx" />
+    <xi:include href="./ch07_end_to_end_autonomous_driving/ch07_end_to_end_autonomous_driving.ptx" />
+    <xi:include href="./ch08_soccer_competition_cargo_sorting/ch08_soccer_competition_cargo_sorting.ptx" />
+    <xi:include href="./ch09_intro_ros2_architecture/ch09_intro_ros2_architecture.ptx" />
+    <xi:include href="./ch10_publisher_subscriber_pattern/ch10_publisher_subscriber_pattern.ptx" />
+
     <!-- This chapter includes several features that require pregeneration   -->
     <!-- of assets with `pretext generate` or similar. Some features require -->
     <!-- internet access; others require local installs not automatically    -->

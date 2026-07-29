@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="ch05_spatial_mapping_localization_basics_glossary" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Glossary</title>
+  <dl>
+    <li>
+      <title>Simultaneous Localization and Mapping (SLAM)</title>
+      <p>The problem of building a map of an unknown environment while simultaneously tracking a robot's position within it.</p>
+    </li>
+    <li>
+      <title>Loop Closure</title>
+      <p>Recognizing a previously visited location to correct accumulated position and map error.</p>
+    </li>
+    <li>
+      <title>Odometry</title>
+      <p>Position estimation computed by integrating wheel or motion sensor data over time.</p>
+    </li>
+    <li>
+      <title>Drift</title>
+      <p>The gradual accumulation of position error over time from small, uncorrected measurement errors.</p>
+    </li>
+    <li>
+      <title>Wheel Encoder</title>
+      <p>A sensor that measures wheel rotation, used to estimate distance traveled.</p>
+    </li>
+    <li>
+      <title>Wheel Slip</title>
+      <p>Loss of traction between a wheel and the ground that causes encoder readings to overstate actual travel distance.</p>
+    </li>
+    <li>
+      <title>Landmark</title>
+      <p>A recognizable environmental feature used to correct a robot's estimated position.</p>
+    </li>
+    <li>
+      <title>Sensor Fusion</title>
+      <p>Combining data from multiple sensors to produce a position or map estimate more accurate than any single sensor alone.</p>
+    </li>
+  </dl>
+</section>

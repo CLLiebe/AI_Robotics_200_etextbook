@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_activecode_odometry_drift_simulation" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>ActiveCode Exercise: Simulating Odometer Drift Over Time</title>
+  <introduction>
+    <p>This exercise simulates a robot that estimates its position purely from wheel encoder readings, with no external correction. At each timestep, a small random error is added to the estimated heading and distance traveled, and students observe how these small errors accumulate into large position error over time.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_drift_simulation_setup">
+    <title>Simulation Setup</title>
+    <p>The true robot path is a straight line at constant velocity. At each timestep, the estimated pose is updated using the commanded velocity plus a small random noise term added to heading. Students plot the true path and the estimated path on the same axes after 50, 100, and 200 timesteps.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_drift_simulation_activecode">
+    <title>Try It</title>
+    <p>Run the simulation below, then try changing <c>HEADING_NOISE_DEGREES</c> to see how the drift grows or shrinks.</p>
+    <program xml:id="ac_odometry_drift_simulation" interactive="activecode" language="python">
+      <input>
+import random
+import math
+
+HEADING_NOISE_DEGREES = 0.5
+VELOCITY = 0.05  # meters per timestep
+
+def simulate_drift(num_steps, seed=3):
+    random.seed(seed)
+    true_x = 0.0
+    est_x, est_y = 0.0, 0.0
+    est_heading = 0.0
+    for step in range(num_steps):
+        true_x += VELOCITY
+        noise = math.radians(random.uniform(-HEADING_NOISE_DEGREES, HEADING_NOISE_DEGREES))
+        est_heading += noise
+        est_x += VELOCITY * math.cos(est_heading)
+        est_y += VELOCITY * math.sin(est_heading)
+    error = math.hypot(true_x - est_x, est_y)
+    return error
+
+for n in (50, 100, 200):
+    error = simulate_drift(n)
+    print(f"After {n} timesteps: true path length = {n * VELOCITY:.2f} m, position error = {error:.3f} m")
+</input>
+    </program>
+  </subsection>
+
+  <subsection xml:id="subsec_drift_accumulation">
+    <title>Interpreting the Drift</title>
+    <p>Because each timestep's small heading error carries forward into every future position estimate, the gap between true and estimated position grows roughly with the square root of elapsed time for random noise, and grows linearly if there is a small constant bias. Students should identify which growth pattern their simulation shows and explain why a single bad turn early in a run causes more long-term error than the same-sized error late in a run.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_drift_test_case">
+    <title>Test Case Interpretation</title>
+    <p>With a heading noise of 0.5 degrees per timestep and a run of 200 timesteps, the simulated position estimate typically ends up tens of centimeters away from the true position, even though no single timestep's error looks significant on its own. This motivates the need for external correction, which later sections and Chapter 5's aligned lab connect to landmark-based and sensor-fused localization.</p>
+  </subsection>
+</section>

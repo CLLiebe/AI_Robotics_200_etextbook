@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="ch03_map_representations_path_planning_astar_glossary" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Glossary</title>
+  <dl>
+    <li>
+      <title>Occupancy Grid</title>
+      <p>A map representation that divides space into cells marked as free, occupied, or unknown.</p>
+    </li>
+    <li>
+      <title>Cell Resolution</title>
+      <p>The physical size represented by one grid cell; smaller cells increase detail but require more memory.</p>
+    </li>
+    <li>
+      <title>Node</title>
+      <p>A graph element representing a state or location, such as a traversable grid cell.</p>
+    </li>
+    <li>
+      <title>Edge</title>
+      <p>A connection between nodes indicating an allowed transition or movement.</p>
+    </li>
+    <li>
+      <title>Path Planning</title>
+      <p>The process of computing a feasible and efficient route from a start location to a goal.</p>
+    </li>
+    <li>
+      <title>A* (A-Star)</title>
+      <p>An informed graph-search algorithm that ranks candidates by <m>f(n)=g(n)+h(n)</m>.</p>
+    </li>
+    <li>
+      <title><m>g(n)</m> Cost</title>
+      <p>The exact accumulated path cost from the start node to node <m>n</m>.</p>
+    </li>
+    <li>
+      <title><m>h(n)</m> Heuristic</title>
+      <p>An estimate of the remaining cost from node <m>n</m> to the goal.</p>
+    </li>
+    <li>
+      <title>Manhattan Distance</title>
+      <p>A grid-based heuristic computed as <m>|x_{goal}-x_{current}| + |y_{goal}-y_{current}|</m>.</p>
+    </li>
+    <li>
+      <title>Admissible Heuristic</title>
+      <p>A heuristic that never overestimates true remaining cost, preserving A* optimality.</p>
+    </li>
+    <li>
+      <title>Replanning</title>
+      <p>Recomputing a path when new obstacle information or dynamic changes alter the environment.</p>
+    </li>
+  </dl>
+</section>

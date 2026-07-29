@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_activecode_task_state_machine" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>ActiveCode Exercise: Competition Task State Machine</title>
+  <introduction>
+    <p>This exercise implements a single Python function that advances a robot through one competition state machine step given its current state and the latest sensor readings. The same function shape works for either lab: the soccer robot passes in ball distance and alignment error, while the cargo robot passes in classification confidence and pickup status.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_task_state_transitions">
+    <title>State Transition Rules</title>
+    <ul>
+      <li><p>Start in <c>SEARCH</c>. If the target is detected, move to <c>APPROACH</c>.</p></li>
+      <li><p>In <c>APPROACH</c>, if distance to the target is below 0.3 meters, move to <c>ALIGN</c>; otherwise keep driving toward the last known target position.</p></li>
+      <li><p>In <c>ALIGN</c>, if heading error is below 5 degrees, move to <c>ACT</c> (kick or place); otherwise keep rotating in place.</p></li>
+      <li><p>In <c>ACT</c>, perform the actuator command once, then return to <c>SEARCH</c>.</p></li>
+    </ul>
+  </subsection>
+
+  <subsection xml:id="subsec_task_state_activecode">
+    <title>Try It</title>
+    <p>Run the code below to see one transition from <c>APPROACH</c>, followed by a full <c>SEARCH</c>-to-<c>SEARCH</c> cycle.</p>
+    <program xml:id="ac_task_state_machine" interactive="activecode" language="python">
+      <input>
+def step_state_machine(state, target_detected=False, distance=None, heading_error=None):
+    if state == "SEARCH":
+        if target_detected:
+            return "APPROACH", "turning to face target"
+        return "SEARCH", "scanning for target"
+    elif state == "APPROACH":
+        if distance is not None and distance &lt; 0.3:
+            return "ALIGN", "close enough, aligning"
+        return "APPROACH", "driving toward target"
+    elif state == "ALIGN":
+        if heading_error is not None and heading_error &lt; 5:
+            return "ACT", "aligned, ready to act"
+        return "ALIGN", "rotating to align"
+    elif state == "ACT":
+        return "SEARCH", "action complete, resetting"
+    else:
+        raise ValueError(f"Unknown state: {state}")
+
+
+next_state, command = step_state_machine("APPROACH", distance=0.9)
+print(f"From APPROACH with distance=0.9 -&gt; next state: {next_state}, command: {command}")
+
+state = "SEARCH"
+trace = [state]
+state, _ = step_state_machine(state, target_detected=True)
+trace.append(state)
+state, _ = step_state_machine(state, distance=0.2)
+trace.append(state)
+state, _ = step_state_machine(state, heading_error=2)
+trace.append(state)
+state, _ = step_state_machine(state)
+trace.append(state)
+print("Full cycle:", " -&gt; ".join(trace))
+</input>
+    </program>
+  </subsection>
+
+  <subsection xml:id="subsec_task_state_test_case">
+    <title>Test Case Interpretation</title>
+    <p>Given state <c>APPROACH</c> with target distance 0.9 meters, the function should remain in <c>APPROACH</c> and output a forward-drive command, since 0.9 meters is still above the 0.3 meter threshold for entering <c>ALIGN</c>. Students should trace at least one full cycle from <c>SEARCH</c> through <c>ACT</c> and back to confirm the state machine does not skip a step.</p>
+  </subsection>
+</section>

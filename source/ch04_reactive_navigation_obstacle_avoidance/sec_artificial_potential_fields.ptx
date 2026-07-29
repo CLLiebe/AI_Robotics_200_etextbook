@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_artificial_potential_fields" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Artificial Potential Fields</title>
+  <introduction>
+    <p>Artificial Potential Field (APF) navigation models robot motion as movement through a virtual force landscape. The goal attracts the robot while obstacles repel it, and the resulting vector determines steering direction.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_apf_components">
+    <title>Attractive and Repulsive Components</title>
+    <p>The attractive component pulls the robot toward target coordinates, often with strength proportional to distance from the goal. Each nearby obstacle contributes a repulsive component that grows stronger as clearance decreases.</p>
+    <p>The controller sums attractive and repulsive vectors to produce one net motion command, then maps that command to wheel velocities.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_local_minima_trap">
+    <title>The Local Minima Trap</title>
+    <p>A key weakness of APF methods is local minima. In some geometries, such as symmetric U-shaped barriers, repulsive forces from obstacles can exactly counter the goal attraction before the target is reached.</p>
+    <p>When the net force becomes zero away from the goal, the robot stalls at an equilibrium point. Practical systems often add escape heuristics, random perturbations, or hybrid planning layers to recover from these states.</p>
+  </subsection>
+</section>

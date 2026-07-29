@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_conceptual_check_encoder_limitations" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Conceptual Check: Fill in the Blank</title>
+  <introduction>
+    <p>A robot relies only on wheel encoder data to track its position during a long autonomous run. After several minutes, its estimated position no longer matches its true position on the field.</p>
+  </introduction>
+
+  <exercise xml:id="ex_encoder_fill_in_blank">
+    <statement>
+      <p>Complete each statement with the best term or phrase.</p>
+      <ol>
+        <li><p>Wheel encoders measure ____________ (wheel rotation) rather than directly measuring the robot's true position in the environment.</p></li>
+        <li><p>Small errors from wheel slip or rounding accumulate over time in a process called ____________.</p></li>
+        <li><p>Because encoder-only position estimates drift without bound, long-duration autonomy requires an external correction source such as ____________ (for example, landmarks, vision, or a map).</p></li>
+      </ol>
+    </statement>
+    <answer>
+      <p>The expected answers are: (1) rotation or displacement, (2) drift, and (3) an external reference such as landmark detection, SLAM, or GPS. Wheel encoders only report relative motion since the last measurement; they have no way to detect or correct systematic errors such as wheel slip, so any accumulated error remains in the estimate permanently unless something outside the encoder loop corrects it.</p>
+    </answer>
+  </exercise>
+</section>

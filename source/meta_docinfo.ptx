@@ -5,16 +5,15 @@
 <!--  settings.                                              -->
 <docinfo xmlns:xi="http://www.w3.org/2001/XInclude">
 
-<!-- Course information -->
-<blurb shelf="AI and Robotics">
-  An introductory course on AI and Robotics for 200-level students.
-</blurb>
+<!-- Course information required by Runestone -->
+<document-id>airobotics200</document-id>
+<blurb shelf="Computer Science">An introductory textbook for AI and Robotics.</blurb>
 
 <!-- The next three lines are likely for mature projects only: -->
 
 <!-- <brandlogo url="" source="images/cover.png"/> -->
 <!-- <covers front="images/front.pdf" back="images/back.pdf"/> -->
-<!-- <document-id>unique-book-id</document-id> -->
+<!-- <document-id>uniquebookid</document-id> -->
 
 <!-- macros for defining latex math shortcuts. It is good practice  -->
 <!-- to define these semantically, so that the macro relates to what-->
@@ -44,4 +43,3 @@
   
 
 </docinfo>
-

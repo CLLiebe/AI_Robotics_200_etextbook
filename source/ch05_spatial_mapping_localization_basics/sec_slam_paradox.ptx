@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_slam_paradox" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>The Paradox of SLAM</title>
+  <introduction>
+    <p>Simultaneous Localization and Mapping (SLAM) asks a robot to answer two questions at once: where am I, and what does the world around me look like? Each question depends on the answer to the other, which creates a chicken-and-egg problem at the heart of autonomous exploration.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_slam_circular_dependency">
+    <title>Why Mapping and Localization Depend on Each Other</title>
+    <p>To build an accurate map, a robot needs to know its own position precisely so it can place sensor readings in the correct location. To know its own position precisely, a robot typically needs an accurate map to compare its sensor readings against. Neither problem has a clean solution in isolation, so SLAM algorithms solve both together, refining position estimates and map structure at the same time as new sensor data arrives.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_slam_approach_overview">
+    <title>A General Strategy</title>
+    <p>Most SLAM approaches maintain a current best guess for both the robot's pose and the map, then update both guesses whenever new sensor data is available. Repeated observation of the same landmarks from different positions lets the system correct earlier errors, a process often called loop closure.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_slam_robotics_examples">
+    <title>Robotics Examples</title>
+    <p>A VEX AIM robot exploring an unfamiliar field, a warehouse robot mapping a new facility, and a planetary rover building terrain maps as it drives all face the same underlying paradox: usable position estimates and usable maps must be built together, not one after the other.</p>
+  </subsection>
+</section>

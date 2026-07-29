@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="ch01_intro_robotic_subsystems_control_loop_glossary" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Glossary</title>
+  <dl>
+    <li>
+      <title>Sense-Plan-Act (Perception-Planning-Control) Loop</title>
+      <p>A repeating robot workflow where the system senses the environment, plans a response, and acts through actuators.</p>
+    </li>
+    <li>
+      <title>Perception (Sense)</title>
+      <p>The stage where a robot gathers and interprets sensor data to estimate state and environment conditions.</p>
+    </li>
+    <li>
+      <title>Planning (Plan)</title>
+      <p>The stage where a robot selects actions to achieve goals while respecting constraints.</p>
+    </li>
+    <li>
+      <title>Control (Act)</title>
+      <p>The stage where a robot sends low-level commands to actuators to execute planned behavior.</p>
+    </li>
+    <li>
+      <title>Feedback</title>
+      <p>Information returned from sensors after action, used to detect error and correct behavior.</p>
+    </li>
+    <li>
+      <title>Open-Loop Control</title>
+      <p>Control without live output feedback; commands are executed without automatic correction during motion.</p>
+    </li>
+    <li>
+      <title>Closed-Loop Control</title>
+      <p>Control that continuously compares measured output to a target and updates commands to reduce error.</p>
+    </li>
+    <li>
+      <title>Setpoint</title>
+      <p>The desired target value for a controlled variable, such as speed, position, or altitude.</p>
+    </li>
+    <li>
+      <title>Error</title>
+      <p>The difference between setpoint and measured output.</p>
+    </li>
+    <li>
+      <title>Proportional Control (P-Control)</title>
+      <p>A control method where output is proportional to current error, often written as <m>u=K_p e</m>.</p>
+    </li>
+    <li>
+      <title>Proportional Gain (<m>K_p</m>)</title>
+      <p>The tuning coefficient that scales how strongly proportional control responds to error.</p>
+    </li>
+    <li>
+      <title>PID Control</title>
+      <p>A closed-loop controller combining proportional, integral, and derivative terms for improved accuracy and stability.</p>
+    </li>
+    <li>
+      <title>Steady-State Error</title>
+      <p>Persistent residual error remaining after transient behavior has mostly settled.</p>
+    </li>
+    <li>
+      <title>Sensor</title>
+      <p>A device that provides input data about robot state or environment (for example, camera, encoder, IMU, LiDAR, GPS).</p>
+    </li>
+    <li>
+      <title>Actuator</title>
+      <p>A device that produces physical output from commands (for example, motor, servo, pneumatic cylinder, gripper).</p>
+    </li>
+    <li>
+      <title>Encoder</title>
+      <p>A sensor that measures rotational motion, commonly used to estimate wheel or joint displacement.</p>
+    </li>
+    <li>
+      <title>Inertial Measurement Unit (IMU)</title>
+      <p>A sensor package that estimates orientation and acceleration.</p>
+    </li>
+    <li>
+      <title>LiDAR</title>
+      <p>A ranging sensor that measures distance by laser reflections to build geometric environment structure.</p>
+    </li>
+    <li>
+      <title>Verification Stage</title>
+      <p>The closed-loop step where measured outcome is checked against expected outcome after acting.</p>
+    </li>
+    <li>
+      <title>Closed-Loop Robotics Pipeline</title>
+      <p>A full cycle of perception, planning, action, and verification used repeatedly during operation.</p>
+    </li>
+  </dl>
+</section>
