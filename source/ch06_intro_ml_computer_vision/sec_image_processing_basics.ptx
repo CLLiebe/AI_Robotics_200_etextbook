@@ -3,21 +3,203 @@
 <section xml:id="sec_image_processing_basics" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Introduction to Image Processing</title>
   <introduction>
-    <p>Before a robot can reason about what it sees, raw camera pixels must be converted into simpler, structured information. Two of the most common first steps are color thresholding and bounding-box extraction.</p>
+    <p>Before feeding camera feeds into complex AI models or path planners, a robot must clean, isolate, and interpret raw visual data. Raw camera frames contain millions of numbers&#8212;most of which represent background noise like shadows, sunlight glares, or arena floor tiles. Image processing provides the fundamental tools to isolate the exact visual features a robot needs to act.</p>
   </introduction>
 
+  <subsection xml:id="subsec_pixel_grids_color_spaces">
+    <title>Images as Pixel Grids &amp; Color Spaces</title>
+    <p>To a human, a camera photo shows an arena, a game piece, or a warehouse aisle. To a robot's onboard processor, an image is simply a giant 2D grid (matrix) of numerical values called <term>pixels</term>.</p>
+    <p>Picture that grid running from the top-left corner <m>(0, 0)</m> down to the bottom-right corner <m>(\text{Width}, \text{Height})</m>. Each cell in the grid holds a triplet of numbers&#8212;for example, a pixel with values <m>[200, 45, 30]</m> has a notably high red channel value (200), marking it as a strongly red pixel compared to its neighbors.</p>
+
+    <subsubsection xml:id="subsubsec_rgb_vs_hsv">
+      <title>Understanding Color Spaces: RGB vs. HSV</title>
+      <p>Robots interpret color using different mathematical representations, known as <term>color spaces</term>:</p>
+      <p>
+        <ol>
+          <li>
+            <p><em class="emphasis">RGB (Red, Green, Blue):</em></p>
+            <p>Digital camera sensors capture light using three overlapping color channels: Red, Green, and Blue. Each pixel contains three numbers representing channel intensities (typically ranging from 0 to 255).</p>
+            <p><em class="emphasis">The Problem in Robotics:</em> RGB is very sensitive to environmental lighting changes. If a spotlight turns on or a shadow falls across a red game ring, its raw RGB values change dramatically, causing the robot to "lose sight" of the object.</p>
+          </li>
+          <li>
+            <p><em class="emphasis">HSV (Hue, Saturation, Value):</em></p>
+            <p>To solve the lighting issue, robotics vision systems often convert RGB images into HSV:</p>
+            <p>
+              <ul>
+                <li><em class="emphasis">Hue (<m>H</m>):</em> Represents the pure color type (e.g., Red, Green, Yellow) regardless of brightness.</li>
+                <li><em class="emphasis">Saturation (<m>S</m>):</em> Represents how vivid or washed-out the color is.</li>
+                <li><em class="emphasis">Value (<m>V</m>):</em> Represents how bright or dark the pixel is.</li>
+              </ul>
+            </p>
+            <p><em class="emphasis">Why Robots Prefer HSV:</em> Because Hue isolates the actual color from the brightness (<m>V</m>), a robot using HSV can track a red game piece under harsh venue spotlights, dim stadium shadows, or natural window light without needing code changes!</p>
+          </li>
+        </ol>
+      </p>
+      <p>The two models split from a common root, Color Representation. The RGB Model (Red, Green, Blue) is sensitive to shadows and lighting&#8212;a pixel like <m>[200, 30, 20]</m> can shift dramatically as light changes. The HSV Model (Hue, Saturation, Value) instead isolates color (Hue) from brightness (Value), which is why it is the ideal choice for robotics.</p>
+    </subsubsection>
+  </subsection>
+
   <subsection xml:id="subsec_color_thresholding">
-    <title>Color Thresholding</title>
-    <p>Color thresholding converts each pixel to either "match" or "no match" based on whether its color values fall within a target range. For example, a bright orange ball can be isolated from a classroom background by keeping only pixels whose red, green, and blue values fall within an orange-colored range, and discarding the rest.</p>
+    <title>Color Thresholding &amp; Binary Segmentation</title>
+    <p><term>Color Thresholding</term> (or Segmentation) is the process of converting a full-color camera frame into a simplified <term>binary image</term> (a grid composed only of 0s and 1s):</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">1 (Binary White):</em> Target pixels that fall within specified color boundaries (the object of interest).</li>
+        <li><em class="emphasis">0 (Binary Black):</em> Background pixels that fall outside the bounds (ignored environment).</li>
+      </ul>
+    </p>
+    <p>Picture a raw color image containing a light red ring sitting on a dark shadowed floor. Passing each pixel through the question "Is pixel Hue within Red Range?" keeps the ring's pixels as 1s and turns every floor pixel into a 0, producing a binary mask that marks exactly where the ring is and nothing else.</p>
+    <p>By filtering out non-essential background data, the robot reduces the amount of information it needs to process from millions of color values down to a simple target shape mask.</p>
   </subsection>
 
-  <subsection xml:id="subsec_bounding_boxes">
-    <title>Bounding Boxes</title>
-    <p>Once matching pixels are identified, a bounding box is the smallest rectangle that contains all of them, described by a minimum and maximum row and column, or equivalently by a corner coordinate, width, and height. Bounding boxes give a robot a compact estimate of an object's location and size without needing to reason about every individual pixel.</p>
+  <subsection xml:id="subsec_real_world_image_processing_examples">
+    <title>Real-World Robotics Examples</title>
+
+    <subsubsection xml:id="subsubsec_agricultural_pickers">
+      <title>Industrial Inspection &amp; Autonomous Agricultural Pickers</title>
+      <p>In automated recycling facilities or agricultural harvesting (like robotic apple or tomato pickers):</p>
+      <p>
+        <ul>
+          <li><em class="emphasis">Color Segmentation:</em> Cameras capture crop rows in real time. Thresholding filters out green leaves, brown stems, and dirt soil by isolating specific red/orange color hues.</li>
+          <li><em class="emphasis">Lighting Resilience:</em> Using HSV color space ensures the agricultural arm can differentiate between a ripe red apple and surrounding foliage whether operating at sunrise or under direct noon sunlight.</li>
+        </ul>
+      </p>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_warehouse_line_following">
+      <title>Warehouse Line-Following AMRs</title>
+      <p>Automated Guided Vehicles (AGVs) transporting pallets across factory floors often follow color-coded floor tape (e.g., bright yellow or reflective tape).</p>
+      <p><em class="emphasis">Thresholding Pipeline:</em> The AGV's downward-facing camera converts incoming video to a binary mask. By tracking the horizontal center of the white pixels (1s) representing the yellow tape, the robot continuously adjusts motor speeds to stay centered over the path.</p>
+    </subsubsection>
   </subsection>
 
-  <subsection xml:id="subsec_vision_pipeline_flow">
-    <title>From Pixels to Decisions</title>
-    <p>A typical pipeline applies color thresholding to isolate a region of interest, computes a bounding box around that region, and then passes the box's center coordinate and size to downstream planning or control code, such as the ball-tracking logic used in the soccer competition lab.</p>
+  <subsection xml:id="subsec_vex_competition_examples">
+    <title>Competition Robotics Examples: VEX V5 &amp; VEX AI</title>
+    <p>In high-stakes robotics competitions like the VEX Robotics Competition (VRC) and VEX AI Competition (VAIC), vision processing speed and reliability directly dictate match success.</p>
+    <p>
+      <ol>
+        <li>
+          <p><em class="emphasis">Color Signatures (VEX V5 Vision Sensor):</em></p>
+          <p>The standard V5 Vision Sensor allows students to configure custom "Color Signatures" (stored HSV color thresholds). During autonomous mode, the sensor scans the field for predefined signatures&#8212;such as Triballs, Red Rings, or Blue Rings.</p>
+        </li>
+        <li>
+          <p><em class="emphasis">Alliance Sorting (VEX AI / V5 Optical Sensor):</em></p>
+          <p>Many competition robots build sorting mechanisms into their intake systems. As game pieces enter the robot's conveyor, an optical/vision sensor checks the pixel color:</p>
+          <p>
+            <ul>
+              <li>If the robot is on the Red Alliance and the sensor detects a Blue Ring (using Hue matching), the intake automatically activates a mechanical ejector flap to reject the opponent's scoring element.</li>
+              <li>If it detects a Red Ring, the conveyor continues feeding the ring directly into the scoring mobile goal.</li>
+            </ul>
+          </p>
+          <p>In this pipeline, an incoming ring passes under the Vision/Optical Sensor, which reads its color hue: if Blue (the opponent's color), the eject flap trips; if Red (the robot's own alliance), the ring feeds straight into the scorer.</p>
+        </li>
+        <li>
+          <p><em class="emphasis">Rejecting Outdoor Arena Glare:</em></p>
+          <p>Teams competing in venues with large windows often struggle when using standard RGB color matching because sunlight washes out game element colors. Switching to HSV thresholding allows VEX AI vision models to detect game pieces consistently regardless of shifting sunlight conditions across the field.</p>
+        </li>
+      </ol>
+    </p>
   </subsection>
+
+  <subsection xml:id="subsec_image_processing_exercises">
+    <title>Section 6.2 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_color_threshold_simulator_activecode">
+      <title>Exercise 6.2.2: ActiveCode Exercise &#8212; Pure Python Color Threshold Simulator</title>
+      <p>In this exercise, write a function that performs color thresholding on a row of pixel Hue values (<m>0^\circ \ldots 360^\circ</m>). The goal is to isolate a Red Ring in a VEX arena, where red hues fall within the range of <m>340^\circ</m> to <m>360^\circ</m> OR <m>0^\circ</m> to <m>20^\circ</m>.</p>
+      <program xml:id="ac_color_threshold_simulator" interactive="activecode" language="python">
+        <input>
+def threshold_red_pixels(hue_pixel_row, min_hue=340, max_hue=20):
+    """
+    Converts a 1D array of Hue pixel values into a binary mask (0 or 1).
+    Red wraps around 0 degrees on the HSV hue wheel (340 to 360 OR 0 to 20).
+    """
+    binary_mask = []
+
+    for hue in hue_pixel_row:
+        # Check if the hue falls inside the 'Red' threshold boundaries
+        if hue &gt;= min_hue or hue &lt;= max_hue:
+            binary_mask.append(1)  # Target detected (White)
+        else:
+            binary_mask.append(0)  # Background/Other object (Black)
+
+    return binary_mask
+
+# Simulated row of pixel Hue values across a VEX field intake:
+# [Blue Ring (220), Yellow Tape (60), Red Ring (10), Red Ring (350), Gray Floor (180)]
+sample_hue_row = [220, 60, 10, 350, 180]
+
+# Generate binary mask
+resulting_mask = threshold_red_pixels(sample_hue_row)
+
+print("Original Hue Values: ", sample_hue_row)
+print("Binary Target Mask: ", resulting_mask)
+print("\nInterpretation:")
+for i, pixel in enumerate(resulting_mask):
+    status = "RED TARGET (1)" if pixel == 1 else "BACKGROUND (0)"
+    print(f" Pixel index {i} (Hue {sample_hue_row[i]}°) -&gt; {status}")
+</input>
+      </program>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_thresholding_pipeline_parsons">
+      <title>Exercise 6.2.3: Parsons Problem &#8212; Image Thresholding Pipeline Order</title>
+      <p>Reorder the steps below to represent the correct sequence of operations a VEX AI vision system takes to segment an image and isolate target game elements.</p>
+      <exercise xml:id="ex_pp_thresholding_pipeline" indent="show" language="python">
+        <statement>
+          <p>Arrange the steps in the order a VEX AI vision system performs them, from capturing the raw frame to computing a target's center location.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>Capture raw RGB frame from camera sensor.</cline>
+          </block>
+          <block order="2">
+            <cline>Convert raw RGB image space to HSV color space.</cline>
+          </block>
+          <block order="3">
+            <cline>Apply min/max threshold values to filter out non-target hues.</cline>
+          </block>
+          <block order="4">
+            <cline>Generate a simplified binary mask (0s for background, 1s for targets).</cline>
+          </block>
+          <block order="5">
+            <cline>Compute target center location for downstream motor steering.</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_hsv_vs_rgb_check">
+      <title>Exercise 6.2.1: HSV vs. RGB Conceptual Check</title>
+      <statement>
+        <p>Why do competition robotics teams (like VEX AI teams) prefer configuring vision sensors using the HSV color space instead of the RGB color space?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>HSV requires double the memory capacity, which makes the robot drive faster.</p></statement>
+          <feedback><p>Incorrect. Memory capacity is unrelated to driving speed, and HSV is not chosen for memory reasons.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>HSV separates color type (Hue) from lighting brightness (Value), allowing reliable object tracking under changing venue lights.</p></statement>
+          <feedback><p>Correct! Because Hue isolates the actual color from brightness, a robot using HSV can keep tracking a target color even as lighting conditions change.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>RGB cannot represent basic primary colors like red, blue, or green.</p></statement>
+          <feedback><p>Incorrect. RGB represents primary colors directly through its Red, Green, and Blue channels.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>RGB only works on black-and-white images, whereas HSV works on color images.</p></statement>
+          <feedback><p>Incorrect. RGB is itself a color representation; both RGB and HSV describe color images.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
 </section>

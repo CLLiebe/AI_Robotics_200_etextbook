@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_interactive_astar_pathfinding_activecode" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Interactive A* Pathfinding ActiveCode</title>
+  <introduction>
+    <p>Now let's bring all these concepts together: grid representation, Manhattan distance heuristics, and tracking path costs <m>g(n)</m> and <m>f(n)</m>.</p>
+    <p>The <term>A* Search Processing Flow</term> repeats a two-step cycle: first, pull the node with the lowest <m>f(n)</m> score from the open list. If that node is the goal, the path is reconstructed and the search stops. Otherwise, the search evaluates all of that node's 4-connected neighbors, computing <m>g(\text{neighbor}) = g(\text{current}) + 1</m> and <m>f(\text{neighbor}) = g + h</m> for each one, and the cycle repeats by pulling the next lowest-<m>f(n)</m> node.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_interactive_astar_exercises">
+    <title>Section 3.4 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_astar_completion_challenge">
+      <title>Exercise 3.4.1: A* Pathfinding Completion Challenge</title>
+      <p>Below is a lightweight Python implementation of A* pathfinding on a 2D matrix grid.</p>
+      <p><term>Task:</term></p>
+      <p>
+        <ol>
+          <li><p>Complete the <c>heuristic</c> function to return the Manhattan distance between <c>cell</c> and <c>goal</c>.</p></li>
+          <li><p>Complete the <m>f(n)</m> cost score update line: <c>f_score = tentative_g + h_score</c>.</p></li>
+          <li><p>Run the code to trace the shortest path found around the obstacle wall!</p></li>
+        </ol>
+      </p>
+      <program xml:id="ac_astar" interactive="activecode" language="python">
+        <input>
+def heuristic(node, goal):
+    # TODO: Return Manhattan Distance between node (r1, c1) and goal (r2, c2)
+    r1, c1 = node
+    r2, c2 = goal
+    return 0  # Replace this line with correct Manhattan distance formula!
+
+def run_astar(grid, start, goal):
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+
+    # Open list stores tuples of (f_score, cell)
+    open_list = [(0, start)]
+    g_score = {start: 0}
+    came_from = {}
+
+    while len(open_list) > 0:
+        # Sort to find cell with lowest f_score
+        open_list.sort()
+        current_f, current = open_list.pop(0)
+
+        if current == goal:
+            # Reconstruct path
+            path = []
+            while current in came_from:
+                path.append(current)
+                current = came_from[current]
+            path.append(start)
+            path.reverse()
+            return path
+
+        row, col = current
+        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:  # 4-connected
+            r_new, c_new = row + dr, col + dc
+            neighbor = (r_new, c_new)
+
+            if 0 &lt;= r_new &lt; num_rows and 0 &lt;= c_new &lt; num_cols:
+                if grid[r_new][c_new] == 0:  # If cell is free
+                    tentative_g = g_score[current] + 1
+
+                    if neighbor not in g_score or tentative_g &lt; g_score[neighbor]:
+                        came_from[neighbor] = current
+                        g_score[neighbor] = tentative_g
+
+                        h_score = heuristic(neighbor, goal)
+
+                        # TODO: Compute total f_score
+                        f_score = tentative_g + h_score
+
+                        open_list.append((f_score, neighbor))
+
+    return None  # Path not found
+
+# Grid layout: 0 = Free, 1 = Obstacle Wall
+# Start at top-left (0, 0), Goal at bottom-right (4, 4)
+grid_map = [
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 1, 0, 0, 0],
+    [0, 1, 0, 1, 0],
+    [0, 0, 0, 1, 0]
+]
+
+start_pos = (0, 0)
+goal_pos = (4, 4)
+
+path = run_astar(grid_map, start_pos, goal_pos)
+print("Path found by A*:", path)
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+</section>

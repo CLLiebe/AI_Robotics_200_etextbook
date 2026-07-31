@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_turning_geometry_radius_curvature" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Turning Geometry and Radius of Curvature</title>
+  <introduction>
+    <p>When a differential drive robot drives with constant unequal wheel speeds <m>(v_L \neq v_R)</m>, it traces out a circular path around an <term>Instantaneous Center of Rotation (ICR)</term>. The ICR is the single point in the plane that stays fixed while every other point on the robot, including both wheels, sweeps around it along its own circular arc at that instant.</p>
+    <p>An easy way to build intuition for the ICR is to picture the two wheels as if they were connected by a rigid rod (the axle) that is free to swing around some pivot point off to one side. If the two wheels move at the same speed, that pivot point is infinitely far away, and the "arc" they trace is really just a straight line. As the wheel speeds diverge, the pivot point moves closer to the robot, and the resulting circle gets tighter. Every differential drive turn, no matter how sharp or gentle, can be described by locating this single pivot point and computing the robot's distance from it.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_icr_turn_radius">
+    <title>Instantaneous Center of Rotation (ICR)</title>
+    <p>The distance from the center of the robot to the ICR is called the <term>turn radius</term> or <term>radius of curvature</term> <m>R</m>:</p>
+    <me>R = \frac{v}{\omega} = \frac{L}{2} \cdot \frac{v_R + v_L}{v_R - v_L}</me>
+    <p>This formula is just <m>v/\omega</m> written two ways: the first form says "radius is how much forward distance you cover per unit of turning," which matches the everyday sense that a car going fast on a gentle curve has a large turn radius, while a robot spinning quickly with little forward motion has a tiny one. The second form expresses the same idea directly in terms of the two wheel speeds, which is often more convenient since those are the values a robot's code actually has access to.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_key_turning_scenarios">
+    <title>Key Turning Scenarios</title>
+    <p>
+      <ol>
+        <li><p><em class="emphasis">Straight Line Motion</em> <m>(v_L = v_R)</m>: <m>\omega = 0</m> and <m>R = \infty</m>.</p></li>
+        <li><p><em class="emphasis">Spin-in-Place / Point Turn</em> <m>(v_L = -v_R)</m>: <m>v = 0</m> and <m>R = 0</m> (the robot rotates around its center point).</p></li>
+        <li><p><em class="emphasis">Pivot Turn</em> <m>(v_L = 0</m> or <m>v_R = 0)</m>: <m>R = \frac{L}{2}</m> (the robot rotates around the stationary wheel).</p></li>
+      </ol>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_turning_geometry_real_world_vex_examples">
+    <title>Real-World &amp; VEX AIM Examples</title>
+    <p><em class="emphasis">Real-World Example (Warehouse AMRs &amp; Office Chairs):</em> A warehouse Autonomous Mobile Robot barreling down a long, wide aisle prefers a large turn radius, sweeping into cross-aisles smoothly and quickly, much like a car merging onto a highway. But that same robot, when it needs to reorient in a tight, cluttered space between shelves, switches strategy entirely and spins in place (<m>R = 0</m>) to turn and face a new direction without needing any clearance to swing through. Choosing the right radius of curvature for the situation, wide and fast versus tight and stationary, is a real engineering decision every mobile robot's motion planner has to make.</p>
+    <p><em class="emphasis">VEX AIM Robotics Example:</em> All three turning scenarios above show up directly in VEX AIM competition strategy. A robot uses a <term>point turn</term> (<m>R = 0</m>) to quickly reorient toward a scoring goal without wasting time translating across the field. It uses a <term>pivot turn</term> (<m>R = L/2</m>) when one side of the robot is pinned against a field wall or another robot and only the free wheel can safely move. And it uses a smooth, finite-radius arc during autonomous routines when driving a curved path around field obstacles is faster than stopping, spinning, and re-accelerating in a straight line. Recognizing which scenario a given match situation calls for, and computing the wheel speeds to match, is exactly the skill this section builds.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_turning_geometry_exercises">
+    <title>Section 2.4 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_turning_geometry_parsons">
+      <title>Exercise 2.4.1: Parsons Problem &#8212; Turning in a Perfect Circle of Radius <m>R</m></title>
+      <p>Construct a Python script that calculates the required left and right wheel speeds <m>(v_L, v_R)</m> to make a robot drive in a circle of radius <m>R</m> at a target linear speed <m>v</m>.</p>
+      <exercise xml:id="ex_pp_circle_radius" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks to form a complete function <c>calculate_circular_wheel_speeds</c> that computes the left and right wheel speeds needed to drive in a circle of radius <m>R</m> at linear speed <m>v</m>.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>def calculate_circular_wheel_speeds(v, R, track_width):</cline>
+          </block>
+          <block order="2">
+            <cline># Calculate required angular velocity omega for radius R</cline>
+            <cline>omega = v / R</cline>
+          </block>
+          <block order="3">
+            <cline># Compute right wheel velocity</cline>
+            <cline>v_right = v + (omega * track_width / 2.0)</cline>
+          </block>
+          <block order="4">
+            <cline># Compute left wheel velocity</cline>
+            <cline>v_left = v - (omega * track_width / 2.0)</cline>
+          </block>
+          <block order="5">
+            <cline>return v_left, v_right</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_turning_geometry_activecode">
+      <title>Exercise 2.4.2: Circle Driving Velocity Simulation</title>
+      <p>Run the code below to simulate a robot driving in a circle. Experiment with changing the radius <m>R</m> to see how wheel speeds adjust!</p>
+      <program xml:id="ac_circle_sim" interactive="activecode" language="python">
+        <input>
+def drive_circle(radius_m, linear_speed_m_s, track_width_m, duration_s):
+    # Compute required angular velocity
+    omega = linear_speed_m_s / radius_m
+
+    # Compute wheel velocities via inverse kinematics
+    v_R = linear_speed_m_s + (omega * track_width_m / 2.0)
+    v_L = linear_speed_m_s - (omega * track_width_m / 2.0)
+
+    print(f"Target Radius: {radius_m} m | Linear Speed: {linear_speed_m_s} m/s")
+    print(f"Calculated v_L: {v_L:.3f} m/s | v_R: {v_R:.3f} m/s | Omega: {omega:.3f} rad/s")
+    print("---------------------------------------------------------------")
+
+    dt = 0.5
+    t = 0.0
+    theta = 0.0
+
+    while t &lt;= duration_s:
+        print(f"Time: {t:4.1f}s | Heading Angle (theta): {theta:6.3f} rad ({math.degrees(theta):6.1f} deg)")
+        theta += omega * dt
+        t += dt
+
+import math
+# Simulate driving in a circle of radius 1.5 meters for 5 seconds
+drive_circle(radius_m=1.5, linear_speed_m_s=0.5, track_width_m=0.3, duration_s=5.0)
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+</section>

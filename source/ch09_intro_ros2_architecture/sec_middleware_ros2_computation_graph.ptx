@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_middleware_ros2_computation_graph" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Middleware &amp; The ROS 2 Computation Graph</title>
+  <introduction>
+    <p>In previous chapters, we looked at how individual components like sensors, actuators, and controllers work. Now, we face a bigger challenge: How do we get dozens of independent software modules&#8212;like camera drivers, path planners, and motor controllers&#8212;to talk to each other seamlessly and in real time?</p>
+    <p>Enter <term>ROS 2 (Robot Operating System 2)</term>. Despite its name, ROS 2 is not a traditional operating system like Windows or Linux. Instead, it is a <term>robotics middleware</term>&#8212;a set of software tools, communication protocols, and conventions that glue complex robotic applications together.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_understanding_middleware">
+    <title>Understanding Robotics Middleware</title>
+    <p>Imagine building an autonomous delivery robot, such as an Amazon Scout or a Starship delivery bot. The robot needs to:</p>
+    <p>
+      <ol>
+        <li><p>Read distance data from a LiDAR sensor 50 times per second.</p></li>
+        <li><p>Read camera streams for obstacle detection.</p></li>
+        <li><p>Compute an optimal path to avoid a moving pedestrian.</p></li>
+        <li><p>Send motor commands to wheel drivers to execute that path.</p></li>
+      </ol>
+    </p>
+    <p>If all of these features were written inside a single, giant Python script (a "monolithic application"), a crash in the camera code would freeze the motor controls, potentially causing the robot to run into a wall! A single monolithic script means one bug in the camera code crashes the whole robot.</p>
+    <p>To prevent this, modern robotics uses a <term>distributed architecture</term>. Each task runs as a separate, isolated process. <term>Middleware</term> provides the underlying communication plumbing so these separate programs can exchange data across memory&#8212;or even across a local Wi-Fi network&#8212;without needing to know the low-level details of networking protocols like TCP/IP or UDP.</p>
+    <p>The ROS 2 software stack is layered: at the top sit the ROS 2 Client Libraries (<c>rclpy</c> / <c>rclcpp</c>) that your own Python or C++ code talks to; beneath that is the DDS Middleware Layer (e.g., Fast DDS) that actually moves data between processes; and at the bottom is the Operating System (Linux / Ubuntu) that everything runs on.</p>
+    <p>ROS 2 uses <term>DDS (Data Distribution Service)</term> as its underlying middleware backbone. DDS handles auto-discovery: when you turn on a new sensor on your robot, other components on the network discover it automatically!</p>
+  </subsection>
+
+  <subsection xml:id="subsec_ros2_graph">
+    <title>The ROS 2 Graph</title>
+    <p>When ROS 2 programs run, they form a web of connected components called the <term>ROS 2 Computation Graph</term>.</p>
+    <p>The primary elements of this graph are:</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">Nodes:</em> Process entities that perform computation (e.g., a node reading camera frames).</li>
+        <li><em class="emphasis">Topics:</em> Named data buses over which nodes pass messages (e.g., <c>/camera/image_raw</c>).</li>
+        <li><em class="emphasis">Messages:</em> Standardized data structures passed through topics.</li>
+      </ul>
+    </p>
+    <p>For example, a Camera Driver node (Node A) publishes onto the <c>/camera/image</c> topic, and a Pedestrian Detector node (Node B) subscribes to that same topic to receive each frame as it arrives.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_middleware_exercises">
+    <title>Section 9.1 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_ros2_layers_parsons">
+      <title>Exercise 9.1.2: Parsons Problem &#8212; Assembling ROS 2 Architecture Layers</title>
+      <p>Reorder the blocks below to correctly represent the software stack from the lowest layer (hardware/OS) up to the user's high-level Python code.</p>
+      <exercise xml:id="ex_pp_ros2_layers" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks from the lowest layer of the ROS 2 software stack to the highest.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>Operating System (e.g., Ubuntu Linux)</cline>
+          </block>
+          <block order="2">
+            <cline>DDS Middleware Abstraction (RMW)</cline>
+          </block>
+          <block order="3">
+            <cline>ROS 2 Client Library Interface</cline>
+          </block>
+          <block order="4">
+            <cline>Python Robot Code (using rclpy)</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_middleware_architecture_check">
+      <title>Exercise 9.1.1: Middleware Architecture Conceptual Check</title>
+      <statement>
+        <p>Which of the following best describes the main benefit of using a middleware architecture like ROS 2 over a single monolithic program?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Middleware automatically speeds up mathematical calculations.</p></statement>
+          <feedback><p>Incorrect. Middleware does not accelerate computation; it only handles communication between separate processes.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Middleware isolates software modules so a failure in one process (e.g., vision) does not crash critical operations (e.g., motor control).</p></statement>
+          <feedback><p>Correct! Running each task as a separate, isolated process means a crash in one module, like the camera driver, does not freeze unrelated modules like the motor controller.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Middleware eliminates the need for hardware drivers.</p></statement>
+          <feedback><p>Incorrect. Middleware handles communication between processes; it does not remove the need for drivers that talk to sensors and actuators.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Middleware allows a robot to operate without an operating system like Linux.</p></statement>
+          <feedback><p>Incorrect. ROS 2 still runs on top of an operating system; the OS forms the base layer beneath the DDS middleware and client libraries.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

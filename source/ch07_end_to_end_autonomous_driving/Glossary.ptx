@@ -4,32 +4,44 @@
   <title>Glossary</title>
   <dl>
     <li>
-      <title>Behavioral Cloning</title>
-      <p>A learning approach that trains a model to imitate expert control decisions from paired sensor-input and action-output examples.</p>
-    </li>
-    <li>
       <title>End-to-End Learning</title>
-      <p>Mapping raw sensor input directly to control output with a single learned model, rather than separate perception, planning, and control stages.</p>
+      <p>An approach that replaces a traditional pipeline of hand-crafted stages (object detection, path planning, motor control) with a single machine learning model that maps raw sensor input directly to motor output.</p>
     </li>
     <li>
-      <title>Demonstration Data</title>
-      <p>Recorded examples of expert behavior, such as human driving, used to train a behavioral cloning model.</p>
+      <title>Behavioral Cloning</title>
+      <p>A form of supervised learning where a robot learns to mimic a human expert's recorded demonstrations, training on paired (sensor input, control output) examples.</p>
     </li>
     <li>
-      <title>Recovery Behavior</title>
-      <p>Demonstrated actions that correct a robot from an undesirable state, such as steering away from a near-collision.</p>
+      <title>Data Collection Loop</title>
+      <p>The four-step behavioral cloning workflow: record human driving demonstrations, preprocess the data, train a regression model on it, and evaluate the trained model before deployment.</p>
+    </li>
+    <li>
+      <title>Regression (Control Estimation)</title>
+      <p>The supervised learning task of predicting a continuous numerical output, such as linear velocity <m>v</m> or angular velocity <m>\omega</m>, rather than a discrete category.</p>
     </li>
     <li>
       <title>Mean Squared Error (MSE)</title>
       <p>An evaluation metric computed as the average of squared differences between predicted and target values.</p>
     </li>
     <li>
-      <title>Dataset Bias</title>
-      <p>A systematic imbalance in training data that causes a model to perform poorly on underrepresented situations.</p>
+      <title>Mean Absolute Error (MAE)</title>
+      <p>An evaluation metric computed as the average of the absolute differences between predicted and target values, used to check whether a trained model's error is small enough for safe deployment.</p>
     </li>
     <li>
-      <title>Train-Evaluate-Collect Loop</title>
-      <p>An iterative workflow that trains a model, evaluates its failures, and collects targeted new data before retraining.</p>
+      <title>Dataset Bias</title>
+      <p>A systematic imbalance in training data that causes a behavioral cloning model to perform poorly on underrepresented conditions or actions.</p>
+    </li>
+    <li>
+      <title>Right-Turn Trap</title>
+      <p>A classic dataset bias failure mode where a training set dominated by right-turn demonstrations (e.g., from driving one direction around a loop) teaches a model to always favor turning right, even when a left turn is required.</p>
+    </li>
+    <li>
+      <title>Data Augmentation</title>
+      <p>Generating additional synthetic training examples from existing data, such as horizontally flipping a camera image and negating its steering command (<m>\omega_{\text{new}} = -\omega</m>) to create a balanced left-turn example from a right-turn one.</p>
+    </li>
+    <li>
+      <title>Recovery Trajectories</title>
+      <p>Training data intentionally recorded from off-center or near-obstacle positions, demonstrating how to steer back toward the center, so the model learns to recover from drift rather than only imitating perfect driving.</p>
     </li>
   </dl>
 </section>

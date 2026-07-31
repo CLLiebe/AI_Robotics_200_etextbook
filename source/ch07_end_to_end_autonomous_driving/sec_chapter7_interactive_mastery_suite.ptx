@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_chapter7_interactive_mastery_suite" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Chapter 7 Interactive Mastery Suite (Lab 7 Preparation)</title>
+  <introduction>
+    <p>Before embarking on the physical or simulated implementation in <term>LAB 7: End-to-End Autonomous Driving</term>, use these interactive exercises to test your mastery of the data pipelines, regression evaluations, and bias mitigation strategies introduced in Chapter 7.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_mastery_suite_exercises">
+    <title>Section 7.4 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_data_augmentation_pipeline_activecode">
+      <title>Exercise 7.4.1: ActiveCode Challenge &#8212; Complete the End-to-End Data Augmentation Pipeline</title>
+      <p>In Section 7.3, we learned that horizontal image flipping paired with steering angle inversion (<m>\omega_{\text{new}} = -\omega</m>) is critical for eliminating left/right dataset bias (e.g., escaping the "Right-Turn Trap").</p>
+      <p><term>Task:</term> Complete the <c>augment_driving_dataset()</c> function below.</p>
+      <p>
+        <ol>
+          <li><p>Iterate through the recorded dataset of <c>(image_matrix, linear_velocity_v, angular_velocity_w)</c>.</p></li>
+          <li>
+            <p>For every sample where the robot is turning right (<m>\omega &gt; 0.1</m>), generate a synthetic left-turn sample by:</p>
+            <p>
+              <ul>
+                <li>Horizontally flipping the 2D image matrix (reversing each row).</li>
+                <li>Keeping linear velocity <m>v</m> unchanged.</li>
+                <li>Inverting the angular velocity (<m>\omega_{\text{new}} = -\omega</m>).</li>
+              </ul>
+            </p>
+          </li>
+          <li><p>Append both the original and augmented samples to the returned dataset.</p></li>
+        </ol>
+      </p>
+      <program xml:id="ac_data_augmentation_pipeline" interactive="activecode" language="python">
+        <input>
+def flip_image_horizontally(image_grid):
+    """Flips a 2D matrix horizontally by reversing each row."""
+    return [row[::-1] for row in image_grid]
+
+def augment_driving_dataset(dataset):
+    augmented_dataset = []
+
+    for image, v, w in dataset:
+        # 1. Keep the original sample
+        augmented_dataset.append((image, v, w))
+
+        # 2. Check if we need to augment (e.g., if there is a non-zero turn rate)
+        if abs(w) &gt; 0.05:
+            # TODO: Generate flipped image and inverted angular velocity
+            flipped_image = flip_image_horizontally(image)
+            inverted_w = -w  # Reverse turn direction!
+
+            # Append synthetic sample
+            augmented_dataset.append((flipped_image, v, inverted_w))
+
+    return augmented_dataset
+
+# Simulated Training Set (3x3 mock image grids, linear velocity v, angular velocity w)
+# Sample 1: Sharp Right Turn (w = 0.8)
+sample_1_image = [
+    [0, 0, 1],
+    [0, 0, 1],
+    [0, 0, 1]
+]
+
+# Sample 2: Driving Straight (w = 0.0)
+sample_2_image = [
+    [0, 1, 0],
+    [0, 1, 0],
+    [0, 1, 0]
+]
+
+raw_dataset = [
+    (sample_1_image, 0.5, 0.8),  # (Image, v, w) -&gt; Right turn
+    (sample_2_image, 0.5, 0.0)   # (Image, v, w) -&gt; Straight
+]
+
+# Run Augmentation
+balanced_dataset = augment_driving_dataset(raw_dataset)
+
+print(f"Original Dataset Size: {len(raw_dataset)} samples")
+print(f"Augmented Dataset Size: {len(balanced_dataset)} samples\n")
+
+print("--- Augmented Dataset Breakdown ---")
+for i, (img, v, w) in enumerate(balanced_dataset, 1):
+    turn_type = "RIGHT TURN" if w &gt; 0 else ("LEFT TURN" if w &lt; 0 else "STRAIGHT")
+    print(f"Sample {i}: v = {v:.1f} m/s | w = {w:.1f} rad/s -&gt; [{turn_type}]")
+    print(f"Image Row 0: {img[0]}")
+</input>
+      </program>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_behavioral_cloning_pipeline_parsons">
+      <title>Exercise 7.4.2: Parsons Problem &#8212; End-to-End Behavioral Cloning Execution Pipeline</title>
+      <p>Reorder the steps below to form the correct sequence for collecting data, mitigating dataset bias, training an end-to-end regression model, and deploying it on physical or simulated hardware for Lab 7.</p>
+      <exercise xml:id="ex_pp_behavioral_cloning_pipeline" indent="show" language="python">
+        <statement>
+          <p>Arrange the steps in the order they must occur, from initial teleoperated data collection through final autonomous deployment.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>Teleoperate the robot along field tracks while recording synchronized camera frames and (v, w) joystick commands.</cline>
+          </block>
+          <block order="2">
+            <cline>Perform data inspection to identify imbalances (e.g., over-representation of right turns).</cline>
+          </block>
+          <block order="3">
+            <cline>Apply horizontal image flipping and steering inversion to balance left/right turn distributions.</cline>
+          </block>
+          <block order="4">
+            <cline>Preprocess image pixels and train a regression model to minimize Mean Absolute Error (MAE) against human control labels.</cline>
+          </block>
+          <block order="5">
+            <cline>Evaluate trained model on test data to ensure MAE &lt; 0.1 before hardware deployment.</cline>
+          </block>
+          <block order="6">
+            <cline>Deploy trained model weights to the robot to drive autonomously in real time from live camera inputs.</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_troubleshooting_failures_matching">
+      <title>Exercise 7.4.3: Conceptual Check &#8212; Troubleshooting Behavioral Cloning Failures</title>
+      <p><term>Scenario Matching Check</term></p>
+      <p>Match each robot failure scenario observed during testing to its underlying architectural or dataset root cause.</p>
+      <exercise xml:id="ex_troubleshooting_bc_failures">
+        <statement>
+          <p>
+            <tabular>
+              <row header="yes">
+                <cell>Observed Failure Behavior</cell>
+                <cell>Root Cause</cell>
+              </row>
+              <row>
+                <cell>1. "Wall Trapping": The robot drives straight down a hallway fine, but as soon as it drifts slightly off-center toward a wall, it fails to recover and crashes straight into it.</cell>
+                <cell>A. Environmental/Lighting Bias: The training dataset was recorded under different illumination conditions than the test arena.</cell>
+              </row>
+              <row>
+                <cell>2. "One-Way Bias": When encountering a symmetrical fork in the path, the robot always steers right, even when an obstacle blocks the right path.</cell>
+                <cell>B. Lack of Recovery Demonstrations: The human driver only recorded smooth, centered driving data and never demonstrated how to steer away from walls.</cell>
+              </row>
+              <row>
+                <cell>3. "Sunlight Hesitation": The robot navigates correctly indoors under fluorescent lighting, but stops randomly or turns wildly when driven near outdoor windows.</cell>
+                <cell>C. Imbalanced Turn Distribution: The training set suffered from the "Right-Turn Trap" (e.g., recorded on a clockwise track).</cell>
+              </row>
+            </tabular>
+          </p>
+        </statement>
+        <answer>
+          <p>
+            <ul>
+              <li>1 &#8594; B (If a human only recorded perfect centered driving, the robot never learned how to recover from near-wall positions.)</li>
+              <li>2 &#8594; C (Always favoring one steering direction indicates an imbalanced training set.)</li>
+              <li>3 &#8594; A (Failing under new glare or sunlight conditions stems from environmental/lighting bias.)</li>
+            </ul>
+          </p>
+        </answer>
+      </exercise>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_regression_metrics_check">
+      <title>Exercise 7.4.4: Regression Metrics for End-to-End Systems Conceptual Check</title>
+      <statement>
+        <p>When evaluating an end-to-end behavioral cloning model in Python before deploying it to physical hardware in Lab 7, why do we evaluate performance using regression metrics like Mean Absolute Error (MAE) rather than classification accuracy (e.g., 95% correct)?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement><p>End-to-End models output continuous velocity numbers <m>(v, \omega)</m>, making classification accuracy mathematically undefined without arbitrary threshold bins.</p></statement>
+          <feedback><p>Correct! Motor commands like linear velocity <m>v</m> in m/s and turn rate <m>\omega</m> in rad/s are continuous variables. Because there are infinite possible numerical velocity values, we measure performance using regression distance metrics like MAE or MSE rather than discrete class accuracy.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Regression metrics run faster on microcontrollers than classification metrics.</p></statement>
+          <feedback><p>Incorrect. The choice between regression and classification metrics is about the nature of the output (continuous vs. discrete), not computational speed.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>MAE automatically corrects for physical wheel friction during runtime.</p></statement>
+          <feedback><p>Incorrect. MAE is an offline evaluation metric; it measures prediction error and does not adjust anything during runtime.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Classification accuracy can only be used on black-and-white images, whereas regression works on RGB images.</p></statement>
+          <feedback><p>Incorrect. Both classification and regression models can take RGB images as input; the distinction is in the type of output they predict.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

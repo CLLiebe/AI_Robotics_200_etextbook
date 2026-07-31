@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_astar_cost_balancing" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>The A* Algorithm: Balancing Past Cost and Future Estimation</title>
+  <introduction>
+    <p>The <term>A* (A-Star)</term> algorithm is one of the most popular pathfinding algorithms in mobile robotics. It balances <em class="emphasis">how far you've already traveled</em> with an <em class="emphasis">estimate of how far is left to go</em>.</p>
+    <p>For any candidate cell <m>n</m>, A* combines two numbers into a single total score <m>f(n) = g(n) + h(n)</m>: <m>g(n)</m>, the distance already traveled from the start to <m>n</m>, and <m>h(n)</m>, the estimated distance remaining from <m>n</m> to the goal.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_astar_cost_formula">
+    <title>The A* Cost Formula</title>
+    <p>For every candidate cell <m>n</m> on the map, A* calculates a total cost score <m>f(n)</m>:</p>
+    <me>f(n) = g(n) + h(n)</me>
+    <p>
+      <ul>
+        <li><em class="emphasis"><m>g(n)</m> (Exact Path Cost):</em> The actual cost (distance or steps) taken to move from the start position to current cell <m>n</m>.</li>
+        <li><em class="emphasis"><m>h(n)</m> (Heuristic Cost):</em> The estimated cost to travel from cell <m>n</m> to the goal position.</li>
+        <li><em class="emphasis"><m>f(n)</m> (Total Priority Cost):</em> A* always expands the cell with the lowest <m>f(n)</m> score next!</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_astar_intuition">
+    <title>Intuition: Why A* Beats Breadth-First or Greedy Search</title>
+    <p>
+      <ul>
+        <li>If we only used <m>g(n)</m>, the search would expand in all directions equally like ripples in water (Dijkstra's Algorithm), wasting time searching away from the goal.</li>
+        <li>If we only used <m>h(n)</m>, the search would head blindly toward the goal (Greedy Best-First), often getting trapped in dead-end obstacles.</li>
+        <li>Combining <m>g(n) + h(n)</m> ensures A* finds the shortest overall path efficiently!</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_astar_exercises">
+    <title>Section 3.3 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_astar_main_loop_parsons">
+      <title>Exercise 3.3.2: Parsons Problem &#8212; A* Main Loop Steps</title>
+      <p>Reorder the core steps of the main A* search loop in logical sequence.</p>
+      <exercise xml:id="ex_pp_astar_steps" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks to form the main A* search loop, which repeatedly pops the lowest-<m>f</m>-score cell from the open list, checks whether it is the goal, and otherwise expands its unvisited neighbors.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>while open_list is not empty:</cline>
+          </block>
+          <block order="2">
+            <cline>    # Step 1: Select cell with lowest f-score</cline>
+            <cline>    current = pop_lowest_f_score(open_list)</cline>
+          </block>
+          <block order="3">
+            <cline>    # Step 2: Check if target reached</cline>
+            <cline>    if current == goal:</cline>
+            <cline>        return reconstruct_path(current)</cline>
+          </block>
+          <block order="4">
+            <cline>    # Step 3: Move current cell to processed list</cline>
+            <cline>    closed_list.add(current)</cline>
+          </block>
+          <block order="5">
+            <cline>    # Step 4: Explore adjacent unvisited neighbors</cline>
+            <cline>    for neighbor in get_valid_neighbors(grid, current):</cline>
+            <cline>        if neighbor in closed_list:</cline>
+            <cline>            continue</cline>
+          </block>
+          <block order="6">
+            <cline>        # Step 5: Update costs and add neighbor to open list</cline>
+            <cline>        tentative_g = g_score[current] + 1</cline>
+            <cline>        if tentative_g &lt; g_score[neighbor]:</cline>
+            <cline>            g_score[neighbor] = tentative_g</cline>
+            <cline>            f_score[neighbor] = tentative_g + h(neighbor, goal)</cline>
+            <cline>            open_list.add(neighbor)</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_astar_fscore_calc">
+      <title>Exercise 3.3.1: A* Cost Score Calculation</title>
+      <statement>
+        <p>An A* search algorithm is deciding which of two frontier cells to expand next:</p>
+        <p>
+          <ul>
+            <li>Cell A: <m>g(\text{Cell A}) = 3</m>, <m>h(\text{Cell A}) = 2</m></li>
+            <li>Cell B: <m>g(\text{Cell B}) = 5</m>, <m>h(\text{Cell B}) = 1</m></li>
+          </ul>
+        </p>
+        <p>Which cell will A* explore first, and why?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Cell A will be evaluated first because its <m>g(n)</m> is lower.</p></statement>
+          <feedback><p>Incorrect. A* does not look at <m>g(n)</m> in isolation.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Cell B will be evaluated first because its <m>h(n)</m> is lower.</p></statement>
+          <feedback><p>Incorrect. A* does not look at <m>h(n)</m> in isolation.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Cell A will be evaluated first because its total <m>f(n)</m> cost is lower (5 vs 6).</p></statement>
+          <feedback><p>Correct! <m>f(\text{Cell A}) = 3 + 2 = 5</m>, while <m>f(\text{Cell B}) = 5 + 1 = 6</m>. A* always picks the cell with the lowest total <m>f(n)</m> score.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Both cells have equal priority.</p></statement>
+          <feedback><p>Incorrect. Their total <m>f(n)</m> scores are 5 and 6, which are not equal.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

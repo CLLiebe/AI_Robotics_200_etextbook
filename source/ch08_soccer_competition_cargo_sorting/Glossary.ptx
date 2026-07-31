@@ -4,16 +4,44 @@
   <title>Glossary</title>
   <dl>
     <li>
-      <title>Capstone Integration</title>
-      <p>Combining previously separate subsystems, such as kinematics, planning, and vision, into one coordinated robot behavior.</p>
+      <title>Multi-Agent System (MAS)</title>
+      <p>Multiple autonomous robots (agents) that interact, coordinate, and share tasks to achieve individual or collective goals.</p>
     </li>
     <li>
-      <title>Task State Machine</title>
-      <p>A sequence of named states, such as Search, Approach, Align, and Act, with defined conditions for moving between them.</p>
+      <title>Centralized Architecture</title>
+      <p>A control scheme where a single master computer collects data from every robot, computes all decisions, and sends back movement commands.</p>
     </li>
     <li>
-      <title>Role Assignment</title>
-      <p>A strategy where teammate robots are given different responsibilities, such as offense and defense, based on game conditions.</p>
+      <title>Decentralized (Distributed) Architecture</title>
+      <p>A control scheme where each robot runs its own decision-making logic locally, based on local sensor data and short-range messages from neighboring peers.</p>
+    </li>
+    <li>
+      <title>Swarm Robotics</title>
+      <p>A subfield of decentralized multi-robot systems inspired by biological collective behaviors such as ant colonies, bird flocks, and fish schools.</p>
+    </li>
+    <li>
+      <title>Emergent Behavior</title>
+      <p>Complex, highly organized group patterns that arise from many individual agents following simple, local interaction rules without top-down coordination.</p>
+    </li>
+    <li>
+      <title>Reynolds' Rules (Boids Model)</title>
+      <p>Three simple local rules&#8212;Separation (avoid crowding neighbors), Alignment (match neighbor heading), and Cohesion (steer toward neighbor center of mass)&#8212;that together generate realistic flocking behavior.</p>
+    </li>
+    <li>
+      <title>Stigmergy</title>
+      <p>Indirect communication where agents modify the environment, such as a pheromone trail or a shared map marker, to influence the future behavior of other agents.</p>
+    </li>
+    <li>
+      <title>Multi-Robot Task Allocation (MRTA)</title>
+      <p>The problem of deciding which robot in a fleet should perform which task.</p>
+    </li>
+    <li>
+      <title>Market-Based (Auction) Protocol</title>
+      <p>A decentralized task allocation method where a task is announced to the fleet, each available robot submits a cost bid, and the lowest-cost bidder is awarded the task.</p>
+    </li>
+    <li>
+      <title>Priority Rules</title>
+      <p>Coordination rules, such as fixed priority for time-sensitive tasks or first-come-first-served intersection reservations, that prevent robots sharing the same space from colliding.</p>
     </li>
     <li>
       <title>Classification Confidence</title>
@@ -26,10 +54,6 @@
     <li>
       <title>Holding Zone</title>
       <p>A fallback location for items that cannot be classified with sufficient confidence to sort directly.</p>
-    </li>
-    <li>
-      <title>Repeatability</title>
-      <p>The ability of a robot to perform the same action, such as an approach or placement, with consistent accuracy across repeated attempts.</p>
     </li>
   </dl>
 </section>

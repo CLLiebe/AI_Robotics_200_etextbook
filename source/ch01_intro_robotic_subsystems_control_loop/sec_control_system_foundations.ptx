@@ -12,6 +12,11 @@
     <p>Because the controller does not verify the actual outcome, disturbances can accumulate into large positioning errors.</p>
   </subsection>
 
+  <figure align="center" xml:id="fig_open_loop">
+    <caption>An open-loop control system.</caption>
+    <image source="ch01_intro_robotic_subsystems_control_loop/open_loop_fig.png" width="80%" alt="Diagram of an open-loop control system"/>
+  </figure>
+
   <subsection xml:id="subsec_open_loop_examples">
     <title>Real-World Open-Loop Examples</title>
     <ul>
@@ -32,8 +37,35 @@
     <p>Modern autonomous systems typically require closed-loop feedback to improve robustness and accuracy.</p>
   </subsection>
 
-  <subsection xml:id="subsec_open_loop_question">
-    <title>Concept Check</title>
-    <p>A robot drives at fixed motor power for a fixed time and stops short after wheel slip. This is an open-loop failure: the system executed a command but had no feedback mechanism to detect and correct the disturbance.</p>
-  </subsection>
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_open_loop_wheel_slip">
+      <statement>
+        <p>A mobile robot is programmed to drive forward at a fixed 80% motor power for exactly 5 seconds. During the run, the drive wheels slip on a slick patch of floor, causing the robot to fall short of its intended target. Which statement best explains why this system failed to reach its target destination?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>It is a closed-loop system that failed because the optical encoders calculated an incorrect distance feedback value.</p></statement>
+          <feedback><p>Incorrect. This system is open-loop, not closed-loop &#8212; it never reads back an actual distance or position value at all, so there are no encoders to calculate anything, correct or not.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>It is an open-loop system that executed a predetermined command without any feedback mechanism to detect or correct for the wheel slip.</p></statement>
+          <feedback><p>Correct. Open-loop systems execute commands based solely on time or fixed inputs without measuring the actual state of the system or environment. Because there was no sensor feedback (such as wheel encoders or GPS) to detect that the robot was moving slower than intended due to wheel slip, the system could not adjust motor output to correct the error.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>It is a closed-loop system where the proportional controller gain (<m>K_p</m>) was set too low to compensate for floor friction.</p></statement>
+          <feedback><p>Incorrect. This system is open-loop, so there is no proportional controller or gain value being applied at all &#8212; the motor command never adjusts based on measured error.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>It is an open-loop system that automatically adjusted motor voltage to counter the loss of traction, but ran out of execution time.</p></statement>
+          <feedback><p>Incorrect. Open-loop systems do not monitor or adjust motor voltage in response to real-world conditions; they simply execute the pre-set command for the fixed duration regardless of traction loss.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
 </section>

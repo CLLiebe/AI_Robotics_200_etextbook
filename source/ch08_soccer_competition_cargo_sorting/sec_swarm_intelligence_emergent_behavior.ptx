@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_swarm_intelligence_emergent_behavior" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Swarm Intelligence: Emergent Behavior and Simple Rules</title>
+  <introduction>
+    <p><term>Swarm Robotics</term> is a subfield of decentralized multi-robot systems inspired by biological collective behaviors seen in nature&#8212;such as ant colonies, bird flocks, and fish schools.</p>
+    <p>A defining feature of swarm robotics is <term>Emergent Behavior</term>: complex, highly organized group patterns that arise from many individual agents following a small set of simple, local interaction rules without any top-down coordination.</p>
+    <p>Picture a short list of simple local rules&#8212;avoid colliding with neighbors, match neighbor speed, stay close to the group center&#8212;handed to every individual robot. No single rule mentions the group's overall shape or path, yet when every robot follows those same three rules simultaneously, the whole fleet self-organizes into coordinated swarm motion, flowing together like R1, R2, and R3 moving as one connected chain.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_boids_model">
+    <title>The Classic Boids Model (Reynolds' Rules)</title>
+    <p>In 1986, Craig Reynolds demonstrated that complex flocking behaviors can be generated using three simple rules executed by each agent:</p>
+    <p>
+      <ol>
+        <li><p><em class="emphasis">Separation:</em> Steer to avoid crowding or colliding with local flockmates.</p></li>
+        <li><p><em class="emphasis">Alignment:</em> Steer toward the average heading/direction of local flockmates.</p></li>
+        <li><p><em class="emphasis">Cohesion:</em> Steer toward the average center of mass of local flockmates.</p></li>
+      </ol>
+    </p>
+    <p>Picture three neighboring robots and how each rule nudges them: under Separation, two robots that drift too close push directly apart from each other; under Alignment, three robots pointed in different directions all rotate to match a shared heading; under Cohesion, robots scattered around empty space steer inward toward their shared center point.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_stigmergy">
+    <title>Stigmergy: Indirect Communication</title>
+    <p>Swarm members often do not talk to each other directly through wireless radios. Instead, they communicate through <term>Stigmergy</term>&#8212;modifying the environment to influence the future behavior of other agents.</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">Biological Example:</em> Ants lay chemical pheromone trails on the ground while foraging. Other ants smell these trails and follow them toward food sources.</li>
+        <li><em class="emphasis">Robotic Example:</em> A fleet of vacuum robots drops virtual "cleaned zone" markers on a shared map, signaling to other units that an area requires no further attention.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_swarm_examples">
+    <title>Real-World &amp; VEX Robotics Examples</title>
+    <p>
+      <ul>
+        <li><em class="emphasis">Real-World Example (Intel &amp; Disney Drone Light Shows):</em> Hundreds of light-emitting quadcopters execute synchronized light shows. While high-level paths are planned beforehand, each drone executes local separation and position-holding behaviors to absorb wind gusts safely without hitting adjacent drones.</li>
+        <li><em class="emphasis">VEX Robotics Example (Swarm Foraging Lab):</em> In a multi-robot VEX field lab, multiple VEX robots use distance sensors to roam an arena searching for scattered game objects. When Robot A detects a large cluster of objects, it turns on an onboard LED indicator. Neighboring VEX robots equipped with color/vision sensors detect this light signal and pivot toward Robot A, achieving collective harvesting through visual stigmergy.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_swarm_exercises">
+    <title>Section 8.2 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_separation_force_parsons">
+      <title>Exercise 8.2.2: Parsons Problem &#8212; Flocking Separation Force Calculation</title>
+      <p>Reorder the Python code blocks below to implement the Separation Rule for a swarm robot, calculating a repulsive vector away from a nearby neighbor if it gets too close.</p>
+      <exercise xml:id="ex_pp_separation" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks to form a complete function <c>calculate_separation_vector</c> that returns a repulsive push vector away from a neighbor within the safe distance, or a zero vector otherwise.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>def calculate_separation_vector(robot_pos, neighbor_pos, safe_distance=0.5):</cline>
+          </block>
+          <block order="2">
+            <cline>    rx, ry = robot_pos</cline>
+            <cline>    nx, ny = neighbor_pos</cline>
+          </block>
+          <block order="3">
+            <cline>    # Calculate relative offset</cline>
+            <cline>    dx = rx - nx</cline>
+            <cline>    dy = ry - ny</cline>
+            <cline>    dist = (dx**2 + dy**2)**0.5</cline>
+          </block>
+          <block order="4">
+            <cline>    # Apply repulsive push if within danger threshold</cline>
+            <cline>    if dist &lt; safe_distance and dist &gt; 0:</cline>
+          </block>
+          <block order="5">
+            <cline>        push_x = dx / dist</cline>
+            <cline>        push_y = dy / dist</cline>
+            <cline>        return (push_x, push_y)</cline>
+          </block>
+          <block order="6">
+            <cline>    else:</cline>
+            <cline>        return (0.0, 0.0)</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_swarm_principles_check">
+      <title>Exercise 8.2.1: Swarm Principles Conceptual Check</title>
+      <statement>
+        <p>What is the core principle behind Swarm Intelligence and Emergent Behavior?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Separation pushes agents together; Cohesion pushes them apart.</p></statement>
+          <feedback><p>Incorrect. Separation pushes agents apart; cohesion pulls them together.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Alignment forces all agents to calculate global A* paths.</p></statement>
+          <feedback><p>Incorrect. Alignment matches local neighbor headings, not global paths.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Complex, coordinated group behaviors emerge from simple local rules without a central leader.</p></statement>
+          <feedback><p>Correct! Swarms generate sophisticated group coordination through individual agents following simple, localized rules.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Swarm robotics requires every agent to maintain a high-resolution 3D map of the entire environment.</p></statement>
+          <feedback><p>Incorrect. Swarms are memory-light and do not require global 3D maps.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

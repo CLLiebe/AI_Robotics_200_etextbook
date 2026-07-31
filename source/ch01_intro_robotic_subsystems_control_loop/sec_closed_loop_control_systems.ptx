@@ -6,6 +6,11 @@
     <p>A closed-loop control system continuously measures the current output with sensors and compares it to a desired setpoint. The difference between desired and actual state is the error, and control commands are updated in real time to reduce that error. This feedback process allows robots to adapt to disturbances while operating.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_closed_loop">
+    <caption>A closed-loop control system.</caption>
+    <image source="ch01_intro_robotic_subsystems_control_loop/closed_loop_fig.png" width="80%" alt="Diagram of a closed-loop control system"/>
+  </figure>
+
   <subsection xml:id="subsec_closed_loop_examples">
     <title>Real-World Closed-Loop Examples</title>
     <subsubsection xml:id="subsubsec_cruise_control">
@@ -23,19 +28,78 @@
     </subsubsection>
   </subsection>
 
-  <subsection xml:id="subsec_pid_foundations">
-    <title>PID Control Foundations</title>
-    <p>Many robotic controllers are based on PID control. At a minimum, proportional control maps error to actuation with $u=K_p e$, where $K_p$ is proportional gain and $e$ is current error.</p>
-    <p>As the robot approaches the target, error decreases and the command naturally reduces, which often improves smoothness. If $K_p$ is too low, the controller may fail to overcome friction near the goal, producing steady-state error (the system settles near, but not at, the target).</p>
-    <p>Integral and derivative terms are added in full PID designs to reduce steady-state error and improve damping and stability.</p>
-  </subsection>
 
-  <subsection xml:id="subsec_closed_loop_checks">
-    <title>Concept Checks</title>
-    <ol>
-      <li><p>If a robot continuously uses encoder feedback to correct distance while driving to a target, the system is closed-loop.</p></li>
-      <li><p>In proportional control, compute error first, then multiply by gain to obtain output.</p></li>
-      <li><p>Engineers use PID over P-only control to improve stability and reduce persistent tracking error.</p></li>
-    </ol>
-  </subsection>
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_cruise_control_disturbance">
+      <statement>
+        <p>An automobile traveling down a flat highway has its cruise control set to 65 mph. When the car begins climbing a steep hill, gravity causes the speed to drop to $58\text{ mph}$.</p>
+        <p>In this closed-loop system, how does the cruise control restore the vehicle to its setpoint speed?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement><p>Wheel speed sensors detect the 7 mph error, prompting the engine control unit to open the throttle to increase engine torque until speed returns to 65 mph.</p></statement>
+          <feedback><p>Correct. Closed-loop cruise control continuously compares the actual speed measured by wheel sensors against the target setpoint (65 mph). When an unexpected disturbance (a steep incline) creates a speed error ($e = 65 - 58 = 7\text{ mph}$), the controller automatically increases throttle output to reduce that error without driver intervention.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>The driver must manually press the accelerator pedal to inform the system that the vehicle is driving uphill.</p></statement>
+          <feedback><p>Incorrect. Closed-loop cruise control does not require driver input to correct for disturbances &#8212; it automatically adjusts throttle based on sensor feedback.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>The system automatically switches to open-loop mode until the vehicle reaches the top of the hill.</p></statement>
+          <feedback><p>Incorrect. A closed-loop system does not abandon feedback when a disturbance occurs; it relies on that same feedback loop to detect and correct the error.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>The inertial sensor calculates a shift in tilt angle and disables the brakes to maintain momentum.</p></statement>
+          <feedback><p>Incorrect. Cruise control corrects speed error using wheel-speed feedback and throttle adjustment, not by disabling brakes based on a tilt sensor.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <exercise label="ex_drone_altitude_pipeline">
+      <statement>
+        <p>An autonomous drone is maintaining a steady hover at a setpoint altitude of 10 meters. Suddenly, a strong downdraft pushes the drone downward to an altitude of $8.5\text{ meters}$.</p>
+        <p>Which sequence describes how the drone&#8217;s closed-loop control pipeline responds to correct this altitude loss?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement>
+            <p><em class="emphasis">Sense:</em> Onboard barometric/LiDAR sensors detect an altitude of 8.5 meters.</p>
+            <p><em class="emphasis">Plan:</em> The flight controller calculates an altitude error (e = +1.5 meters).</p>
+            <p><em class="emphasis">Act:</em> Motor speeds increase dynamically, increasing propeller thrust to lift the drone back to 10 meters.</p>
+          </statement>
+          <feedback><p>Correct. The altitude sensor suite reads current height (Sense), the controller compares actual height to the 10 m target setpoint to compute the missing error (Plan), and the ESCs increase motor RPM (Act) to generate thrust until error drops back to zero.</p></feedback>
+        </choice>
+        <choice>
+          <statement>
+            <p><em class="emphasis">Sense:</em> The flight controller calculates that target speed has decreased.</p>
+            <p><em class="emphasis">Plan:</em> The optical flow camera commands the rotors to tilt forward.</p>
+            <p><em class="emphasis">Act:</em> GPS sensors record the updated hover location.</p>
+          </statement>
+          <feedback><p>Incorrect. This option mislabels each stage: computing an error is a Plan-phase action (not Sense), commanding rotors is an Act-phase action (not Plan), and recording position is a Sense-phase action (not Act).</p></feedback>
+        </choice>
+        <choice>
+          <statement>
+            <p><em class="emphasis">Sense:</em> Propeller motors measure an increase in current.</p>
+            <p><em class="emphasis">Plan:</em> The drone cuts power to all motors for 1 second to reset the IMU.</p>
+            <p><em class="emphasis">Act:</em> Sensors verify the drone has returned to the ground safely.</p>
+          </statement>
+          <feedback><p>Incorrect. Cutting power to all motors would cause the drone to fall further rather than correct the altitude loss, and confirming a safe landing is not the goal of altitude hold.</p></feedback>
+        </choice>
+        <choice>
+          <statement>
+            <p><em class="emphasis">Sense:</em> The flight controller decreases rotor RPM.</p>
+            <p><em class="emphasis">Plan:</em> Barometric sensors log the pressure drop.</p>
+            <p><em class="emphasis">Act:</em> The system sends an open-loop timing pulse to lock the motor outputs.</p>
+          </statement>
+          <feedback><p>Incorrect. This option scrambles the phases and describes open-loop behavior, but altitude hold is a closed-loop system that continuously uses sensor feedback to adjust motor RPM.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
 </section>

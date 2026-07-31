@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_reactive_control_state_machines" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Introduction to Reactive Control and State Machines</title>
+  <introduction>
+    <p>In Chapter 3, we studied global path planning algorithms like A*, which calculate an entire path from start to goal before the robot ever turns its wheels. This global approach works well in static, fully known environments. However, real-world environments are dynamic and unpredictable: a human worker walks across a factory floor, a soccer ball rolls into a VEX competition lane, or a door closes unexpectedly.</p>
+    <p><term>Reactive Navigation</term> focuses on rapid, local decision-making. Instead of storing a full map or computing complex paths, a reactive robot reads its real-time sensor data and immediately maps those inputs directly to actuator commands: sensors such as distance and IR readings feed into behavior logic built from if/elif/else rules, which in turn drives the actuators (drive motors) directly, with no map or planner in between.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_reactive_applications">
+    <title>Real-World &amp; VEX Robotics Applications</title>
+    <p>
+      <ul>
+        <li><em class="emphasis">Real-World Example (Warehouse AGVs &amp; Vacuum Robots):</em> Automated Guided Vehicles (AGVs) in Amazon fulfillment centers use global planners to navigate between aisles. However, if a box falls off a shelf into the robot's path, a high-frequency reactive loop triggers an instant emergency stop or quick dodge without waiting for the central server to re-calculate a whole new map.</li>
+        <li><em class="emphasis">VEX Robotics Example (Over Under / High Stakes Competitions):</em> During the autonomous period, a VEX robot driving toward a scoring zone might detect another robot blocking its path via its VEX Distance Sensor. A reactive behavior allows the VEX robot to pivot or back off instantly to avoid an illegal collision or entanglement penalty, regardless of its original pre-programmed trajectory.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_fsm_structure">
+    <title>Structuring Reactive Logic: Finite State Machines (FSM)</title>
+    <p>When writing reactive code, raw if/else statements can quickly turn into disorganized "spaghetti code." To prevent this, roboticists organize reactive control using a <term>Finite State Machine (FSM)</term>.</p>
+    <p>An FSM breaks the robot's behavior into a set of discrete, mutually exclusive <term>states</term> (e.g., <c>DRIVE_FORWARD</c>, <c>TURN_LEFT</c>, <c>REVERSE</c>). The robot remains in its current state until a specific sensor reading triggers a <term>transition</term> to a new state.</p>
+    <p>Consider a two-state FSM built from just <c>DRIVE_FORWARD</c> and <c>TURN_LEFT</c>. While in <c>DRIVE_FORWARD</c>, the robot keeps driving forward as long as the front distance reading stays at or above 0.5 meters; the moment that distance drops below 0.5 meters, it transitions to <c>TURN_LEFT</c>. While in <c>TURN_LEFT</c>, the robot keeps turning in place as long as the front distance stays below 0.5 meters; once the distance rises back to 0.5 meters or more, it transitions back to <c>DRIVE_FORWARD</c>.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_fsm_cognitive_load">
+    <title>Why FSMs Minimize Cognitive Load</title>
+    <p>
+      <ol>
+        <li><p><em class="emphasis">Isolation:</em> You only need to think about what the robot should do right now in its active state (e.g., while in <c>TURN_LEFT</c>, the motors are set to spin in place).</p></li>
+        <li><p><em class="emphasis">Predictable Transitions:</em> State changes happen strictly based on explicit conditions (e.g., <c>distance &lt; 0.5m</c>), making troubleshooting simple during VEX lab testing.</p></li>
+      </ol>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_reactive_fsm_exercises">
+    <title>Section 4.1 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_fsm_state_switch_codelens">
+      <title>Exercise 4.1.2: CodeLens Trace &#8212; Basic FSM State Switch</title>
+      <p>Step through the execution of this FSM to watch how state switches occur dynamically as simulated sensor readings change.</p>
+      <program xml:id="cl_fsm_trace" interactive="codelens" language="python">
+        <input>
+def run_fsm_step(state, front_sensor_dist):
+    # State transition logic
+    if state == "DRIVE_FORWARD":
+        if front_sensor_dist &lt; 0.5:
+            next_state = "TURN_LEFT"
+            motor_command = (0.0, 0.5)  # Turn in place
+        else:
+            next_state = "DRIVE_FORWARD"
+            motor_command = (0.5, 0.0)  # Forward motion
+
+    elif state == "TURN_LEFT":
+        if front_sensor_dist &gt;= 0.5:
+            next_state = "DRIVE_FORWARD"
+            motor_command = (0.5, 0.0)
+        else:
+            next_state = "TURN_LEFT"
+            motor_command = (0.0, 0.5)
+
+    return next_state, motor_command
+
+# Trace loop over simulated sensor readings
+sensor_readings = [1.2, 0.8, 0.3, 0.2, 0.6]
+current_state = "DRIVE_FORWARD"
+
+for dist in sensor_readings:
+    current_state, cmd = run_fsm_step(current_state, dist)
+    print("Dist:", dist, "| State:", current_state, "| Cmd:", cmd)
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_fsm_transition_check">
+      <title>Exercise 4.1.1: FSM Transition Conceptual Check</title>
+      <statement>
+        <p>Why are reactive Finite State Machines (FSMs) commonly used alongside global path planners in dynamic, changing environments?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Global path planning algorithms calculate paths faster than FSMs.</p></statement>
+          <feedback><p>Incorrect. Global planners are computationally heavier and take longer to re-compute than simple state transitions.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Reactive FSMs respond immediately to immediate sensor changes without needing a full pre-computed map.</p></statement>
+          <feedback><p>Correct! Reactive state machines allow robots to immediately react to unpredictable local changes (like moving obstacles) without needing a pre-built map.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>FSMs remember the exact 3D shape of every obstacle they encounter.</p></statement>
+          <feedback><p>Incorrect. FSMs are memoryless reactive loops; they do not construct 3D maps.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>FSMs do not require any sensors to make decisions.</p></statement>
+          <feedback><p>Incorrect. Reactive control relies heavily on real-time sensor feedback.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

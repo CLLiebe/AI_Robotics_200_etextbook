@@ -1,23 +1,88 @@
 <?xml version='1.0' encoding='utf-8'?>
 
 <section xml:id="sec_writing_publishers_subscribers" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Writing ROS2 Publishers and Subscribers</title>
+  <title>Writing ROS 2 Publishers</title>
   <introduction>
-    <p>Every ROS2 publisher and subscriber node follows a similar shape: set up the node and its communication objects, then let the middleware call your code whenever it is time to send or receive data.</p>
+    <p>To create a publisher in Python, we inherit from <c>rclpy.node.Node</c>, initialize our publisher on a specific topic, and set up a timer to trigger message publishing at a regular frequency.</p>
   </introduction>
 
-  <subsection xml:id="subsec_publisher_anatomy">
-    <title>Anatomy of a Publisher Node</title>
-    <p>A publisher node initializes itself, creates a publisher object tied to a specific topic and message type, and sets up a timer that periodically calls a callback function. Inside that timer callback, the node builds a message, fills in its fields, and calls the publisher's send method. The node then calls <c>spin</c>, which keeps the program running so the timer keeps firing.</p>
+  <subsection xml:id="subsec_publisher_key_components">
+    <title>Key Components of a Publisher Node</title>
+    <p>
+      <ol>
+        <li><p><em class="emphasis">Node Initialization:</em> Calling <c>super().__init__('node_name')</c> registers the node name with the ROS graph.</p></li>
+        <li><p><em class="emphasis"><c>create_publisher()</c>:</em> Specifies the message class type, topic name, and Quality of Service (QoS) queue size.</p></li>
+        <li><p><em class="emphasis"><c>create_timer()</c>:</em> Sets a period (in seconds) and links it to a timer callback method that executes periodically.</p></li>
+      </ol>
+    </p>
+    <program language="python">
+      <input>
+import rclpy
+from rclpy.node import Node
+from geometry_msgs.msg import Twist
+
+class VelocityPublisher(Node):
+    def __init__(self):
+        super().__init__('velocity_publisher')
+        # Create publisher on topic 'cmd_vel' with queue size 10
+        self.publisher_ = self.create_publisher(Twist, 'cmd_vel', 10)
+        # Create a timer firing every 0.5 seconds (2 Hz)
+        self.timer = self.create_timer(0.5, self.timer_callback)
+
+    def timer_callback(self):
+        msg = Twist()
+        msg.linear.x = 0.2   # Drive forward at 0.2 m/s
+        msg.angular.z = 0.0  # No rotation
+        self.publisher_.publish(msg)
+        self.get_logger().info('Publishing velocity command!')
+</input>
+    </program>
   </subsection>
 
-  <subsection xml:id="subsec_subscriber_anatomy">
-    <title>Anatomy of a Subscriber Node</title>
-    <p>A subscriber node initializes itself and creates a subscription tied to a topic and message type, along with a callback function. Whenever a new message arrives on that topic, the middleware automatically calls the callback with the message as an argument. The subscriber never has to ask whether new data is ready; the callback pattern means the middleware notifies it exactly when data arrives.</p>
-  </subsection>
+  <subsection xml:id="subsec_publisher_exercises">
+    <title>Section 10.2 Interactive Exercises</title>
 
-  <subsection xml:id="subsec_callback_functions">
-    <title>Callback Functions</title>
-    <p>A <term>callback function</term> is code that runs in response to an event rather than being called directly by the main program flow. In ROS2, both timer-based publishing and message-based subscribing rely on callbacks, which is what allows many independent nodes to react to events without any of them blocking on the others.</p>
+    <subsubsection xml:id="subsubsec_minimal_publisher_parsons">
+      <title>Exercise 10.2.1: Parsons Problem &#8212; Assemble a Minimal ROS 2 Publisher</title>
+      <p>Reorder the lines below to construct a complete, functional Python ROS 2 publisher node that publishes velocity commands to the <c>cmd_vel</c> topic and spins the node.</p>
+      <exercise xml:id="ex_pp_minimal_publisher" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks to form a complete <c>CmdVelPublisher</c> node and a <c>main()</c> function that initializes it, spins it, and shuts it down.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>import rclpy</cline>
+          </block>
+          <block order="2">
+            <cline>from rclpy.node import Node</cline>
+          </block>
+          <block order="3">
+            <cline>from geometry_msgs.msg import Twist</cline>
+          </block>
+          <block order="4">
+            <cline>class CmdVelPublisher(Node):</cline>
+            <cline>    def __init__(self):</cline>
+            <cline>        super().__init__('cmd_vel_pub')</cline>
+          </block>
+          <block order="5">
+            <cline>        self.pub = self.create_publisher(Twist, 'cmd_vel', 10)</cline>
+            <cline>        self.timer = self.create_timer(0.1, self.publish_cmd)</cline>
+          </block>
+          <block order="6">
+            <cline>    def publish_cmd(self):</cline>
+            <cline>        msg = Twist()</cline>
+            <cline>        msg.linear.x = 0.5</cline>
+            <cline>        self.pub.publish(msg)</cline>
+          </block>
+          <block order="7">
+            <cline>def main():</cline>
+            <cline>    rclpy.init()</cline>
+            <cline>    node = CmdVelPublisher()</cline>
+            <cline>    rclpy.spin(node)</cline>
+            <cline>    rclpy.shutdown()</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
   </subsection>
 </section>

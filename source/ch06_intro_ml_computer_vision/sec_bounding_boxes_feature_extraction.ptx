@@ -1,0 +1,232 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_bounding_boxes_feature_extraction" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Object Detection &amp; Bounding Boxes</title>
+  <introduction>
+    <p>Once color thresholding or a neural network isolates target pixels (e.g., all pixels corresponding to a game piece or hazard), the robot must convert those scattered pixel clusters into a structured geometry it can use for spatial navigation and manipulation.</p>
+    <p>A <term>Bounding Box</term> is the smallest axis-aligned rectangle that completely encloses all target pixels belonging to a detected object.</p>
+    <p>Picture a small grid where a cluster of target pixels marked <c>X</c> occupies columns 2&#8211;4 and rows 1&#8211;2, with every other cell empty. The bounding box for that cluster is the rectangle spanning exactly those occupied cells: <m>x_{\min} = 2</m>, <m>x_{\max} = 4</m>, <m>y_{\min} = 1</m>, <m>y_{\max} = 2</m>.</p>
+    <p>A standard 2D bounding box is defined by four core coordinates:</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">Top-Left Corner:</em> <m>(x_{\min}, y_{\min})</m></li>
+        <li><em class="emphasis">Bottom-Right Corner:</em> <m>(x_{\max}, y_{\max})</m></li>
+      </ul>
+    </p>
+    <p>From these four values, the robot's onboard processor instantly calculates key geometric properties without needing to process thousands of raw individual pixels:</p>
+    <me>\text{Width } (W) = x_{\max} - x_{\min}</me>
+    <me>\text{Height } (H) = y_{\max} - y_{\min}</me>
+    <me>C_x = x_{\min} + \frac{W}{2}, \quad C_y = y_{\min} + \frac{H}{2}</me>
+    <p>Picture the bounding box as a rectangle anchored at <m>(x_{\min}, y_{\min})</m> in its top-left corner and stretching to <m>(x_{\max}, y_{\max})</m> in its bottom-right corner, with its width <m>W</m> running along the top edge, its height <m>H</m> running along the left edge, and its center point <m>(C_x, C_y)</m> sitting exactly in the middle.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_bounding_box_real_world_applications">
+    <title>Real-World Robotics Applications</title>
+
+    <subsubsection xml:id="subsubsec_avs_warehouse_amrs">
+      <title>Autonomous Vehicles &amp; Warehouse AMRs</title>
+      <p>In self-driving systems (such as Waymo or Zoox) and Autonomous Mobile Robots (AMRs) in Amazon fulfillment centers:</p>
+      <p>
+        <ul>
+          <li><em class="emphasis">Object Detection:</em> Vision models output bounding boxes around detected pedestrians, vehicles, forklift paths, and shelving units.</li>
+          <li><em class="emphasis">Proximity &amp; Visual Servoing:</em> The width and height of the bounding box provide an immediate estimate of relative distance (as an object gets closer to the camera, its bounding box grows larger in pixel space). The center point <m>(C_x, C_y)</m> determines if the obstacle is directly ahead or off to one side, triggering steering adjustments.</li>
+        </ul>
+      </p>
+      <p>A distant object produces a small bounding box; as that same object approaches the camera, its bounding box grows larger and larger in pixel space, giving the robot a simple visual proxy for closing distance.</p>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_vex_ai_vision_sensor">
+      <title>Competition Robotics: VEX AI Vision Sensor</title>
+      <p>In the VEX AI Competition (VAIC) and modern VEX V5 robotics platforms, robots use onboard vision hardware like the VEX AI Vision Sensor or V5 Vision Sensor to autonomously score game elements (such as rings, triballs, or blocks).</p>
+      <p><term>VEX AI Real-World Example:</term></p>
+      <p>When a VEX robot navigates toward a scoring game piece (e.g., a Red Ring or Blue Ring):</p>
+      <p>
+        <ol>
+          <li><p>The VEX AI Vision Sensor processes the camera stream and detects target color signatures or AI model features.</p></li>
+          <li><p>The sensor returns a bounding box array containing <c>originX</c>, <c>originY</c>, <c>width</c>, and <c>height</c>.</p></li>
+          <li>
+            <p><em class="emphasis">Centering the Intake:</em> The robot compares the bounding box center <m>C_x</m> to the camera frame's optical center (e.g., <m>X = 160</m> on a <m>320 \times 240</m> sensor).</p>
+            <p>
+              <ul>
+                <li>If <m>C_x &lt; 160</m>, the object is to the left &#8594; turn left.</li>
+                <li>If <m>C_x &gt; 160</m>, the object is to the right &#8594; turn right.</li>
+                <li>If <m>C_x \approx 160</m>, the object is centered &#8594; drive straight ahead with the intake spinning!</li>
+              </ul>
+            </p>
+          </li>
+          <li><p><em class="emphasis">Distance Estimation:</em> When width reaches a target pixel value (e.g., 200 pixels wide), the robot knows the ring is directly inside its intake rollers and closes its mechanical clamp.</p></li>
+        </ol>
+      </p>
+      <p>For example, within a <m>320 \times 240</m> camera frame with its center line at <m>X = 160</m>, a target ring detected with a bounding box center of <m>C_x = 70</m> sits well to the left of center, so the robot turns left to bring the ring toward the middle of the frame.</p>
+    </subsubsection>
+  </subsection>
+
+  <subsection xml:id="subsec_bounding_box_exercises">
+    <title>Section 6.3 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_bbox_grid_conceptual_check">
+      <title>Exercise 6.3.2: Conceptual Check &#8212; Interactive Bounding Box &amp; Center Calculation</title>
+      <p>Consider the <m>5 \times 5</m> binary pixel grid below from a camera sensor tracking a VEX game piece. 1 represents target pixels and 0 represents background pixels. Pixel coordinates are formatted as <m>(x, y)</m> where <m>x</m> is the column index (0&#8230;4) and <m>y</m> is the row index (0&#8230;4).</p>
+      <p>
+        <tabular>
+          <row header="yes">
+            <cell></cell>
+            <cell>x=0</cell>
+            <cell>x=1</cell>
+            <cell>x=2</cell>
+            <cell>x=3</cell>
+            <cell>x=4</cell>
+          </row>
+          <row>
+            <cell>y=0</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+          </row>
+          <row>
+            <cell>y=1</cell>
+            <cell>0</cell>
+            <cell>1</cell>
+            <cell>1</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+          </row>
+          <row>
+            <cell>y=2</cell>
+            <cell>0</cell>
+            <cell>1</cell>
+            <cell>1</cell>
+            <cell>1</cell>
+            <cell>0</cell>
+          </row>
+          <row>
+            <cell>y=3</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+          </row>
+          <row>
+            <cell>y=4</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+            <cell>0</cell>
+          </row>
+        </tabular>
+      </p>
+      <p><term>Task:</term> Determine the bounding box coordinates <m>[(x_{\min}, y_{\min}), (x_{\max}, y_{\max})]</m> and the center point <m>(C_x, C_y)</m>.</p>
+      <p>
+        <ul>
+          <li>A) Top-Left: (1,1), Bottom-Right: (3,2) | Center: (2.0, 1.5)</li>
+          <li>B) Top-Left: (0,0), Bottom-Right: (4,4) | Center: (2.0, 2.0)</li>
+          <li>C) Top-Left: (1,2), Bottom-Right: (2,3) | Center: (1.5, 2.5)</li>
+          <li>D) Top-Left: (2,1), Bottom-Right: (3,2) | Center: (2.5, 1.5)</li>
+        </ul>
+      </p>
+      <p><term>Answer:</term> A. Target 1 pixels exist at columns <m>x = 1, 2, 3</m> and rows <m>y = 1, 2</m>. Thus, <m>x_{\min} = 1</m>, <m>y_{\min} = 1</m>, <m>x_{\max} = 3</m>, <m>y_{\max} = 2</m>. The width is <m>3 - 1 = 2</m> and height is <m>2 - 1 = 1</m>. Center <m>C_x = 1 + 1 = 2.0</m>, <m>C_y = 1 + 0.5 = 1.5</m>.</p>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_vex_target_centering_activecode">
+      <title>Exercise 6.3.3: ActiveCode Exercise &#8212; VEX Vision Target Centering Logic</title>
+      <p>Implement the target-tracking logic used on a VEX AI robot. Given a camera frame width of 320 pixels and a detected object's bounding box parameters (<c>x_min</c>, <c>x_max</c>), calculate <m>C_x</m> and output the correct drive command ("TURN_LEFT", "TURN_RIGHT", or "DRIVE_FORWARD").</p>
+      <program xml:id="ac_vex_target_centering" interactive="activecode" language="python">
+        <input>
+def process_vex_vision_target(x_min, x_max, frame_width=320, tolerance=15):
+    # Calculate bounding box center Cx
+    c_x = x_min + (x_max - x_min) / 2.0
+    screen_center = frame_width / 2.0
+
+    # Determine steering action with a deadband tolerance
+    if c_x &lt; (screen_center - tolerance):
+        action = "TURN_LEFT"
+    elif c_x &gt; (screen_center + tolerance):
+        action = "TURN_RIGHT"
+    else:
+        action = "DRIVE_FORWARD (TARGET CENTERED)"
+
+    return c_x, action
+
+# Test Cases simulating VEX AI Vision Detections
+detections = [
+    {"x_min": 40, "x_max": 100},   # Target on left side
+    {"x_min": 200, "x_max": 260},  # Target on right side
+    {"x_min": 135, "x_max": 185}   # Target centered (Cx = 160)
+]
+
+print("--- VEX AI Vision Steering Controller ---")
+for i, det in enumerate(detections, 1):
+    cx, steering_command = process_vex_vision_target(det["x_min"], det["x_max"])
+    print(f"Detection {i}: Bounding Box Center Cx = {cx:.1f} -&gt; Action: {steering_command}")
+</input>
+      </program>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_bbox_calculation_algorithm_parsons">
+      <title>Exercise 6.3.4: Parsons Problem &#8212; Bounding Box Calculation Algorithm</title>
+      <p>Reorder the steps below to create a logical Python function structure for computing a bounding box and center point from a list of detected <m>(x, y)</m> pixel coordinates.</p>
+      <exercise xml:id="ex_pp_bbox_calculation" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks to form a complete function <c>compute_bounding_box_and_center</c> that returns the top-left corner, bottom-right corner, and center point of a set of pixel coordinates.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>def compute_bounding_box_and_center(pixel_coords):</cline>
+          </block>
+          <block order="2">
+            <cline>    x_values = [p[0] for p in pixel_coords]</cline>
+            <cline>    y_values = [p[1] for p in pixel_coords]</cline>
+          </block>
+          <block order="3">
+            <cline>    x_min, x_max = min(x_values), max(x_values)</cline>
+            <cline>    y_min, y_max = min(y_values), max(y_values)</cline>
+          </block>
+          <block order="4">
+            <cline>    c_x = x_min + (x_max - x_min) / 2.0</cline>
+            <cline>    c_y = y_min + (y_max - y_min) / 2.0</cline>
+          </block>
+          <block order="5">
+            <cline>    return (x_min, y_min), (x_max, y_max), (c_x, c_y)</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_bbox_centering_check">
+      <title>Exercise 6.3.1: Bounding Box Centering Conceptual Check</title>
+      <statement>
+        <p>A VEX AI robot camera has a horizontal resolution of 320 pixels (screen center is at <m>X = 160</m>). The vision sensor detects a game element with a bounding box extending from <m>x_{\min} = 200</m> to <m>x_{\max} = 260</m>. What action should the robot's alignment controller take to center the object?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Turn left, because the bounding box center <m>C_x = 130</m> is to the left of the screen center.</p></statement>
+          <feedback><p>Incorrect. <m>C_x = 200 + (260 - 200)/2 = 230</m>, not 130.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Turn right, because the bounding box center <m>C_x = 230</m> is to the right of the screen center.</p></statement>
+          <feedback><p>Correct! <m>C_x = 200 + (260-200)/2 = 230</m>. Since <m>230 &gt; 160</m>, the object is on the right side of the frame, so the robot must steer right to center it.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Drive straight forward, because the object is already perfectly centered.</p></statement>
+          <feedback><p>Incorrect. <m>C_x = 230</m> is well to the right of the screen center at 160, not centered.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Stop completely, because <m>x_{\max}</m> exceeds the screen limit.</p></statement>
+          <feedback><p>Incorrect. <m>x_{\max} = 260</m> is within the 320-pixel-wide frame, so nothing exceeds the screen limit.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_inverse_kinematics_wheel_velocity_commands" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Inverse Kinematics and Wheel Velocity Commands</title>
+  <introduction>
+    <p>While <term>forward kinematics</term> calculates how the robot moves based on wheel speeds, <term>inverse kinematics</term> does the opposite: it takes a desired body motion velocity command <m>(v, \omega)</m> and determines the required individual wheel surface velocities <m>(v_L, v_R)</m>.</p>
+    <p>Given a target linear velocity <m>v</m> and angular velocity <m>\omega</m>, inverse kinematics produces the left wheel speed command <m>v_L</m> and the right wheel speed command <m>v_R</m> needed to achieve that motion.</p>
+    <p>This is the direction that actually matters for programming a robot's autonomous behavior. A human, or an autonomous planning algorithm, thinks in terms of the robot's overall motion&#8212;"drive forward at 0.5 m/s while turning slightly left"&#8212;not in terms of individual motor speeds. But the motors themselves have no concept of "the robot"; each one only understands "spin at this many radians per second." Inverse kinematics is the translation layer that sits between the high-level intent and the low-level motor commands, and it is running, quietly, every single time a robot changes speed or direction.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_inverse_kinematics_formula">
+    <title>Inverse Kinematics Formula</title>
+    <p>Rearranging the forward kinematics equations yields:</p>
+    <me>v_R = v + \frac{\omega \cdot L}{2}</me>
+    <me>v_L = v - \frac{\omega \cdot L}{2}</me>
+    <p>If wheels have radius <m>r</m>, the required rotational motor speeds in radians per second <m>(\omega_L, \omega_R)</m> are:</p>
+    <me>\omega_R = \frac{v_R}{r} = \frac{2v + \omega L}{2r}</me>
+    <me>\omega_L = \frac{v_L}{r} = \frac{2v - \omega L}{2r}</me>
+    <p>Notice this is exactly the forward kinematics equations solved backward: instead of starting from wheel speeds and finding <m>(v, \omega)</m>, we start from the desired <m>(v, \omega)</m> and add or subtract the same turning term <m>\frac{\omega L}{2}</m> to split it back into two wheel speeds. The final step&#8212;dividing by wheel radius <m>r</m>&#8212;exists because motors don't control surface speed directly; they control how fast they spin, and a larger wheel covers more ground per rotation than a smaller one at the same spin rate.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_inverse_kinematics_real_world_vex_examples">
+    <title>Real-World &amp; VEX AIM Examples</title>
+    <p><em class="emphasis">Real-World Example (Autonomous Vehicle Steering):</em> A self-driving car's path planner decides on a high-level target: "follow this curve at 12 m/s with a turn rate of 0.3 rad/s." That plan means nothing to the vehicle's actuators on its own. A lower-level controller performs an inverse-kinematics-style calculation to convert that single desired motion into the specific commands each wheel or steering actuator needs, the same fundamental problem solved here for a two-wheeled differential drive robot.</p>
+    <p><em class="emphasis">VEX AIM Robotics Example:</em> During driver-controlled matches, a VEX AIM robot's single-stick arcade drive code performs inverse kinematics roughly 50 times per second. The joystick's forward/back axis is read as the desired linear velocity <m>v</m>, and its left/right axis is read as the desired angular velocity <m>\omega</m>. The controller code then applies these exact <m>v_L</m> and <m>v_R</m> formulas to compute how much power to send to the left and right drive motors&#8212;so every time a driver nudges the stick diagonally to "curve" the robot, they are triggering an inverse kinematics calculation without ever seeing the math.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_inverse_kinematics_exercises">
+    <title>Section 2.3 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_inverse_kinematics_parsons">
+      <title>Exercise 2.3.2: Parsons Problem &#8212; Inverse Kinematics Motor Command Pipeline</title>
+      <p>Reorder the code blocks below to assemble a function that converts target body velocities <m>(v, \omega)</m> into wheel motor RPM values.</p>
+      <exercise xml:id="ex_pp_inv_kinematics" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks to form a complete function <c>compute_wheel_rpm</c> that converts target body velocities <m>(v, \omega)</m> into left and right wheel motor RPM values.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>def compute_wheel_rpm(v, omega, track_width, wheel_radius):</cline>
+          </block>
+          <block order="2">
+            <cline># Step 1: Calculate differential wheel linear velocities</cline>
+            <cline>v_right = v + (omega * track_width / 2.0)</cline>
+            <cline>v_left = v - (omega * track_width / 2.0)</cline>
+          </block>
+          <block order="3">
+            <cline># Step 2: Convert linear velocities to angular wheel velocities (rad/s)</cline>
+            <cline>w_right = v_right / wheel_radius</cline>
+            <cline>w_left = v_left / wheel_radius</cline>
+          </block>
+          <block order="4">
+            <cline># Step 3: Convert rad/s to Revolutions Per Minute (RPM)</cline>
+            <cline>rpm_right = w_right * (60.0 / (2.0 * 3.14159))</cline>
+            <cline>rpm_left = w_left * (60.0 / (2.0 * 3.14159))</cline>
+          </block>
+          <block order="5">
+            <cline>return rpm_left, rpm_right</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_inv_kinematics_calc_check">
+      <title>Exercise 2.3.1: Inverse Kinematics Calculation Check</title>
+      <statement>
+        <p>A robot with a track width <m>L = 0.4</m> m needs to execute a velocity command of linear speed <m>v = 0.5</m> m/s and angular speed <m>\omega = 1.0</m> rad/s. What are the required left and right wheel velocities <m>(v_L, v_R)</m>?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement><p><m>v_L = 0.3</m> m/s, <m>v_R = 0.7</m> m/s</p></statement>
+          <feedback><p>Correct! <m>v_L = 0.5 - \frac{1.0 \times 0.4}{2} = 0.3</m> m/s and <m>v_R = 0.5 + \frac{1.0 \times 0.4}{2} = 0.7</m> m/s.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p><m>v_L = 0.5</m> m/s, <m>v_R = 0.5</m> m/s</p></statement>
+          <feedback><p>Incorrect. Equal wheel velocities produce zero turning rate (<m>\omega = 0</m>).</p></feedback>
+        </choice>
+        <choice>
+          <statement><p><m>v_L = 0.7</m> m/s, <m>v_R = 0.3</m> m/s</p></statement>
+          <feedback><p>Incorrect. The left and right wheel speeds are inverted, causing the robot to turn in the wrong direction.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p><m>v_L = -0.2</m> m/s, <m>v_R = 0.8</m> m/s</p></statement>
+          <feedback><p>Incorrect. Check the equation <m>v_L = v - \frac{\omega L}{2}</m>.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_differential_drive_forward_kinematics" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Differential Drive Forward Kinematics</title>
+  <introduction>
+    <p>A <term>Differential Drive</term> robot consists of two independently driven wheels on a common axis and one or two passive caster wheels for support. The left wheel drives at surface speed <m>v_L</m> and the right wheel at surface speed <m>v_R</m>, with the robot's center sitting on the axis between them, separated from each wheel by half of the track width <m>L</m>.</p>
+    <p>The core idea behind forward kinematics is simple even before you look at the equations: you already know how fast each wheel is turning (motor encoders report this directly), but what you actually want to know is how the whole robot moves through the world. Forward kinematics is the bridge between those two things&#8212;it answers "given these wheel speeds, what does the robot as a whole do?" If both wheels spin at exactly the same speed, common sense says the robot should drive straight; if the wheels spin at different speeds, the faster wheel sweeps out a larger arc than the slower one, and the robot must curve toward the slower side. The equations below simply make that intuition precise.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_forward_kinematics_equations">
+    <title>Forward Kinematics Equations</title>
+    <p><term>Forward Kinematics</term> computes the robot's overall linear velocity <m>v</m> and angular velocity <m>\omega</m> from the individual wheel surface speeds (<m>v_L</m> and <m>v_R</m>) and the track width <m>L</m> (distance between left and right wheel centers):</p>
+    <me>v = \frac{v_R + v_L}{2}</me>
+    <me>\omega = \frac{v_R - v_L}{L}</me>
+    <p>Each formula has a plain-language reading. Linear velocity <m>v</m> is just the <em>average</em> of the two wheel speeds&#8212;think of it as how fast the robot's center point is moving forward, splitting the difference between a slightly-faster and slightly-slower wheel. Angular velocity <m>\omega</m> is the <em>difference</em> between the wheel speeds, scaled by how far apart the wheels are (<m>L</m>): the bigger the mismatch between <m>v_R</m> and <m>v_L</m>, the sharper the robot turns, and a wider wheelbase "dilutes" that same speed difference into a gentler turn.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_state_integration">
+    <title>State Integration Over Time Step <m>\Delta t</m></title>
+    <p>Given a small time step <m>\Delta t</m>, the change in robot pose in its local frame is:</p>
+    <me>\Delta \theta = \omega \cdot \Delta t = \frac{(v_R - v_L) \cdot \Delta t}{L}</me>
+    <me>\Delta x = v \cdot \cos\left(\theta + \frac{\Delta \theta}{2}\right) \cdot \Delta t</me>
+    <me>\Delta y = v \cdot \sin\left(\theta + \frac{\Delta \theta}{2}\right) \cdot \Delta t</me>
+    <p>Using the midpoint heading <m>\theta + \frac{\Delta \theta}{2}</m> rather than the starting heading <m>\theta</m> improves accuracy by accounting for the robot's rotation partway through the time step.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_fwd_kinematics_real_world_vex_examples">
+    <title>Real-World &amp; VEX AIM Examples</title>
+    <p><em class="emphasis">Real-World Example (Robot Vacuums &amp; Warehouse AMRs):</em> A robot vacuum has no GPS to rely on indoors. Instead, it uses forward kinematics on its own wheel encoder readings&#8212;a technique called <term>dead reckoning</term>&#8212;to continuously estimate how far it has traveled and how much it has turned since it started, building up an internal map of the room purely from integrating its own wheel speeds over time. Warehouse Autonomous Mobile Robots (AMRs) rely on the exact same principle as a baseline position estimate, often fusing it with LiDAR or camera data to correct for the small errors that accumulate from wheel slip.</p>
+    <p><em class="emphasis">VEX AIM Robotics Example:</em> During an autonomous VEX AIM routine, the robot has no external system telling it where it is on the field&#8212;it must figure that out itself. Onboard code reads the left and right encoder velocities every control loop (often every 10-20 milliseconds), plugs them directly into these forward kinematics equations, and integrates the resulting <m>\Delta x</m>, <m>\Delta y</m>, and <m>\Delta \theta</m> into a running pose estimate. This is exactly how a VEX AIM robot "knows" it has driven forward 24 inches and turned 90 degrees, even though it never directly measures its position&#8212;it only measures wheel speed and does the math.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_fwd_kinematics_exercises">
+    <title>Section 2.2 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_fwd_kinematics_challenge">
+      <title>Exercise 2.2.1: Forward Kinematics Implementation Challenge</title>
+      <p>Implement the differential drive forward kinematics equations to compute the robot's new position <m>(\Delta x, \Delta y, \Delta \theta)</m> after a short time step.</p>
+      <p><term>Task:</term> Complete the <c>forward_kinematics</c> function below using <m>v_L</m>, <m>v_R</m>, track width <m>L</m>, and time step <c>dt</c>.</p>
+      <program xml:id="ac_fwd_kinematics" interactive="activecode" language="python">
+        <input>
+import math
+
+def forward_kinematics(v_L, v_R, L, dt, x_init=0.0, y_init=0.0, theta_init=0.0):
+    # TODO: Calculate linear velocity (v) and angular velocity (omega)
+    v = 0.0
+    omega = 0.0
+
+    # TODO: Compute delta theta
+    delta_theta = 0.0
+
+    # Midpoint angle integration for improved accuracy
+    theta_mid = theta_init + (delta_theta / 2.0)
+
+    # TODO: Compute delta x and delta y in global frame
+    delta_x = 0.0
+    delta_y = 0.0
+
+    # Compute final pose
+    x_new = x_init + delta_x
+    y_new = y_init + delta_y
+    theta_new = theta_init + delta_theta
+
+    return round(x_new, 4), round(y_new, 4), round(theta_new, 4)
+
+# Test Case: Left wheel = 0.2 m/s, Right wheel = 0.4 m/s, Track width L = 0.2m, dt = 1.0s
+x_f, y_f, th_f = forward_kinematics(v_L=0.2, v_R=0.4, L=0.2, dt=1.0)
+print(f"Final Pose -&gt; x: {x_f} m, y: {y_f} m, theta: {th_f} rad")
+# Expected Output: v = 0.3 m/s, omega = 1.0 rad/s
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+</section>

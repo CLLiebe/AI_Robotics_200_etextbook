@@ -3,9 +3,11 @@
 <chapter xml:id="ch03_map_representations_path_planning_astar" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Map Representations &amp; Path Planning (A*)</title>
   <introduction>
-    <p>This chapter introduces common map structures and how they support navigation planning. You will compare representations such as grids and graphs, then use them to compute feasible routes. A central focus is the A* algorithm, including how heuristics shape search efficiency and path quality. The goal is to build intuition for choosing planning methods that match task constraints.</p>
+    <p>This chapter introduces common map structures and how they support navigation planning. You will start by representing a continuous environment as an occupancy grid and defining how a robot is allowed to step between cells. From there you will learn how to estimate the remaining distance to a goal with heuristic functions such as Manhattan and Euclidean distance, then see how the A* algorithm combines that estimate with the exact cost already traveled to search efficiently toward a goal. The chapter closes by tying every piece together in a complete, runnable A* implementation. The goal is to build intuition for choosing planning methods that match task constraints.</p>
   </introduction>
-  <xi:include href="./sec_global_map_representations.ptx" />
-  <xi:include href="./sec_astar_pathfinding_algorithm.ptx" />
+  <xi:include href="./sec_representing_space_grid_maps_graphs.ptx" />
+  <xi:include href="./sec_pathfinding_heuristics_estimating_distance.ptx" />
+  <xi:include href="./sec_astar_cost_balancing.ptx" />
+  <xi:include href="./sec_interactive_astar_pathfinding_activecode.ptx" />
   <xi:include href="./Glossary.ptx" />
 </chapter>

@@ -1,28 +1,176 @@
 <?xml version='1.0' encoding='utf-8'?>
 
 <section xml:id="sec_supervised_learning_fundamentals" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Supervised Learning Fundamentals</title>
+  <title>Fundamentals of Supervised Learning</title>
   <introduction>
-    <p>Supervised learning trains a model to predict an output from labeled examples. In robotics, this often means learning to predict a category or a numeric value from sensor measurements that have already been labeled by a human or a reliable reference system.</p>
+    <p>In machine learning, algorithms learn patterns from data, but they differ fundamentally in <em class="emphasis">how</em> they are taught. The two primary paradigms are <term>Supervised Learning</term> and <term>Unsupervised Learning</term>.</p>
+    <p>Both paradigms start from the same root, Machine Learning, and both begin with a set of Features <m>(X)</m>. Supervised Learning pairs those features with Target Labels <m>(y)</m>&#8212;for example, an image paired with the label "Stop Sign"&#8212;and learns from that labeled data. Unsupervised Learning instead works from Features <m>(X)</m> alone, with no labels at all&#8212;for example, a point cloud with no ground truth&#8212;and must find its own natural clusters within the raw data.</p>
   </introduction>
 
-  <subsection xml:id="subsec_features_and_labels">
-    <title>Features and Labels</title>
-    <ul>
-      <li><p><em class="emphasis">Feature:</em> a measurable input value, such as a pixel color, a distance reading, or a coordinate.</p></li>
-      <li><p><em class="emphasis">Label:</em> the correct output associated with a given set of features, such as "obstacle" or "free space."</p></li>
-      <li><p><em class="emphasis">Training set:</em> a collection of feature-label pairs used to fit the model.</p></li>
-    </ul>
-    <p>A model learns a mapping from features to labels by finding patterns in the training set, then applies that mapping to new, unlabeled inputs.</p>
+  <subsection xml:id="subsec_supervised_learning_with_teacher">
+    <title>Supervised Learning: Learning with a Teacher</title>
+    <p>Imagine teaching a child to recognize fruits. You show them an apple and explicitly say, <em class="emphasis">"This is an apple."</em> You show them a banana and say, <em class="emphasis">"This is a banana."</em></p>
+    <p>In Supervised Learning, we train an algorithm by providing it with a dataset consisting of paired components:</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">Features (<m>X</m>):</em> Measurable properties or characteristics of the data (e.g., pixel intensity, color values, object height, spatial coordinates).</li>
+        <li><em class="emphasis">Labels (<m>y</m>):</em> The ground-truth target category or correct output provided by a human expert or simulation (e.g., "obstacle", "free space", "stop sign").</li>
+      </ul>
+    </p>
+    <p>The algorithm learns a function mapping features to labels:</p>
+    <me>y = f(X)</me>
+    <p>Once trained, the model can predict the correct label <m>y</m> for brand-new features <m>X</m> it has never seen before.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_unsupervised_hidden_structure">
+    <title>Unsupervised Learning: Finding Hidden Structure</title>
+    <p>Now imagine handing a child a box containing mixed LEGO bricks, wooden blocks, and metal screws without telling them what any of the items are. The child might naturally group the items by color, shape, or texture.</p>
+    <p>In Unsupervised Learning, the dataset contains only Features (<m>X</m>) with no ground-truth labels (<m>y</m>). The algorithm analyzes the raw data to discover hidden patterns, groupings, or clusters on its own based on statistical similarity (e.g., <m>k</m>-Means Clustering).</p>
+  </subsection>
+
+  <subsection xml:id="subsec_why_supervised_learning_robotics">
+    <title>Why We Rely Heavily on Supervised Learning in Autonomous Robotics</title>
+    <p>While unsupervised learning is valuable for exploratory data analysis or segmenting unknown environments, supervised learning is the backbone of most practical AI robotics perception systems. Here is why:</p>
+    <p>
+      <ol>
+        <li>
+          <p><em class="emphasis">Safety &amp; Predictability:</em> Robots interact directly with the real physical world. A self-driving car cannot simply cluster visual blobs together and "guess" what they mean&#8212;it needs to know with high confidence whether a shape in front of it is a pedestrian, a plastic bag, or a solid wall. Supervised learning enforces explicit semantic ground truth.</p>
+        </li>
+        <li>
+          <p><em class="emphasis">Actionable Decision-Making:</em> Robotic decision pipelines require specific, deterministic categories to trigger state machine actions. A warehouse mobile robot needs a discrete classification output (e.g., "Charging Dock Identified") to initiate a docking maneuver, which unsupervised clustering alone cannot provide without human labeling.</p>
+        </li>
+        <li>
+          <p><em class="emphasis">Benchmarking &amp; Validation:</em> In safety-critical robotics engineering, we must quantitatively measure performance before deploying code to physical hardware. Supervised datasets allow developers to calculate exact accuracy metrics (e.g., precision, recall, mean average precision) against verified ground truth.</p>
+        </li>
+      </ol>
+    </p>
   </subsection>
 
   <subsection xml:id="subsec_classification_vs_regression">
-    <title>Classification versus Regression</title>
-    <p><em class="emphasis">Classification</em> predicts a discrete category, such as sorting a detected region into "obstacle" or "free space." <em class="emphasis">Regression</em> predicts a continuous numeric value, such as estimating distance to an object from image size. The same underlying training process applies to both, but the choice of output type changes which model and evaluation method are appropriate.</p>
+    <title>Classification vs. Regression</title>
+    <p>Within supervised learning, tasks are categorized based on the nature of the target label <m>y</m>:</p>
+    <p>
+      <ol>
+        <li>
+          <p><em class="emphasis">Classification:</em> Predicting a discrete category or class label.</p>
+          <p><em class="emphasis">Examples:</em> Identifying whether a pixel is "obstacle" or "free space", or classifying a road sign as "stop", "yield", or "speed limit".</p>
+        </li>
+        <li>
+          <p><em class="emphasis">Regression:</em> Predicting a continuous numerical value.</p>
+          <p><em class="emphasis">Examples:</em> Estimating the exact distance to an object in meters, or predicting the smooth steering angle required for lane keeping.</p>
+        </li>
+      </ol>
+    </p>
+    <p><term>Real-World Example:</term> Consider an autonomous agricultural harvesting robot (like an automated strawberry picker).</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">Supervised Classification</em> is used to inspect a camera image and classify objects into "ripe fruit", "unripe fruit", or "leaf background".</li>
+        <li><em class="emphasis">Supervised Regression</em> is used to predict the continuous 3D coordinate <m>(x, y, z)</m> relative to the robotic end-effector so the mechanical gripper can move to the precise location to pick the fruit.</li>
+      </ul>
+    </p>
   </subsection>
 
-  <subsection xml:id="subsec_learning_robotics_examples">
-    <title>Robotics Examples</title>
-    <p>A VEX AIM robot's vision sensor can be trained to classify detected regions as "obstacle" or "free space" using coordinate features, while a warehouse robot might use regression to estimate the remaining distance to a shelf from camera image scale.</p>
+  <subsection xml:id="subsec_supervised_learning_exercises">
+    <title>Section 6.1 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_decision_tree_classifier_activecode">
+      <title>Exercise 6.1.3: ActiveCode Exercise &#8212; Building a Lightweight Decision Tree Classifier</title>
+      <p>Note: Because Runestone CodeLens runs pure Python without external libraries like <c>scikit-learn</c>, we implement a lightweight pure-Python Decision Tree structure below to demonstrate supervised decision boundary execution.</p>
+      <p>Run the code below to see how a trained decision tree uses feature thresholds <m>(x, y)</m> to classify coordinates as either 0 ("Free Space") or 1 ("Obstacle").</p>
+      <program xml:id="ac_supervised_decision_tree" interactive="activecode" language="python">
+        <input>
+class SupervisedDecisionTree:
+    """A lightweight supervised decision tree classifier."""
+    def __init__(self, x_threshold=5.0, y_threshold=5.0):
+        # Learned decision boundaries derived from labeled training data
+        self.x_threshold = x_threshold
+        self.y_threshold = y_threshold
+
+    def predict(self, feature_vector):
+        x, y = feature_vector
+        # Supervised Rule: If x > threshold AND y > threshold -> Obstacle (1)
+        if x > self.x_threshold and y > self.y_threshold:
+            return 1  # Discrete Class 1: "Obstacle"
+        else:
+            return 0  # Discrete Class 0: "Free Space"
+
+# Initialize our supervised model with trained rules
+model = SupervisedDecisionTree(x_threshold=5.0, y_threshold=5.0)
+
+# Unseen Feature Vectors (x, y coordinates)
+test_points = [
+    (2.0, 3.0),  # Low x, Low y
+    (7.0, 8.0),  # High x, High y
+    (4.5, 6.0),  # Low x, High y
+    (8.0, 2.0)   # High x, Low y
+]
+
+labels_map = {0: "Free Space", 1: "Obstacle"}
+
+print("--- Supervised Classification Inference ---")
+for point in test_points:
+    predicted_class = model.predict(point)
+    print(f"Features {point} -&gt; Predicted Label: {labels_map[predicted_class]}")
+</input>
+      </program>
+    </subsubsection>
   </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_supervised_vs_unsupervised_safety_check">
+      <title>Exercise 6.1.1: Supervised vs. Unsupervised Learning Conceptual Check</title>
+      <statement>
+        <p>Why do safety-critical robotic systems (such as autonomous vehicles) rely primarily on supervised learning rather than unsupervised learning for object recognition?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Supervised learning algorithms do not require any computing power to run on embedded hardware.</p></statement>
+          <feedback><p>Incorrect. Supervised learning models still require computation to run inference on embedded hardware.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Supervised learning maps sensory inputs to explicit, human-verified labels (like "pedestrian"), ensuring predictable and safe action triggers.</p></statement>
+          <feedback><p>Correct! Supervised learning enforces explicit semantic ground truth, so the robot knows with high confidence what it is looking at before triggering a safety-critical action.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Unsupervised learning requires camera sensors to be calibrated manually every time the robot boots up.</p></statement>
+          <feedback><p>Incorrect. Sensor calibration is unrelated to whether a learning algorithm is supervised or unsupervised.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Supervised learning automatically generates physical motor torque commands without needing control scripts.</p></statement>
+          <feedback><p>Incorrect. Supervised learning produces predictions (like labels or values); a separate control script still turns those predictions into motor commands.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <exercise label="ex_regression_task_identification_check">
+      <title>Exercise 6.1.2: Regression Task Identification Check</title>
+      <statement>
+        <p>A mobile robot uses a camera to predict the recommended driving speed (a continuous value between 0.0 m/s and 2.0 m/s) based on lighting and terrain roughness. Which type of supervised machine learning task is this?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Classification</p></statement>
+          <feedback><p>Incorrect. Classification predicts a discrete category, not a continuous numerical value.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Regression</p></statement>
+          <feedback><p>Correct! Predicting a continuous numerical value, like a driving speed between 0.0 and 2.0 m/s, is a regression task.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Unsupervised Clustering</p></statement>
+          <feedback><p>Incorrect. This task uses labeled training examples of speed, so it is supervised, not unsupervised.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Color Thresholding</p></statement>
+          <feedback><p>Incorrect. Color thresholding isolates pixels by color range; it does not predict a continuous driving speed.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
 </section>

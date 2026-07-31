@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_activecode_encoder_drift_challenge" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>ActiveCode Challenge: Wheel Slip Drift and Landmark Correction</title>
+  <introduction>
+    <p>In this hands-on exercise, you will run and experiment with a Python simulation of a robot attempting to navigate along a straight line.</p>
+    <p>You will observe how uncorrected wheel encoder drift accumulates over time, causing the robot's <term>perceived position</term> (odometry) to diverge significantly from its <term>true position</term> in the physical world.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_encoder_drift_challenge_exercises">
+    <title>Section 5.5 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_encoder_drift_simulation_activecode">
+      <title>Exercise 5.5.1: Encoder Drift Simulation ActiveCode</title>
+      <p>Below is a 1D/2D kinematic simulation tracking both the Estimated Pose (calculated from wheel encoders) and the True Pose (including wheel slip and friction).</p>
+      <p><term>Task:</term></p>
+      <p>
+        <ol>
+          <li><p>Run the simulation with <c>slip_rate = 0.08</c> (8% wheel slip). Note how far the actual robot ends up from its estimated target after 10 steps.</p></li>
+          <li><p>Modify <c>slip_rate</c> to <c>0.02</c> and <c>0.15</c> to observe how slip severity impacts overall error growth.</p></li>
+          <li><p><term>Challenge:</term> Enable landmark correction by setting <c>ENABLE_LANDMARK_CORRECTION = True</c>. Notice how periodic external landmark scans reset the accumulated drift error back near zero!</p></li>
+        </ol>
+      </p>
+      <program xml:id="ac_drift_sim" interactive="activecode" language="python">
+        <input>
+import random
+
+def simulate_navigation(num_steps, step_size_m, slip_rate, use_landmark_correction=False):
+    # True physical position vs. Encoders' estimated position
+    true_x = 0.0
+    estimated_x = 0.0
+
+    print(f"--- Simulating Motion (Slip Rate: {slip_rate*100}%) ---")
+    print("Step | Estimated X (m) | Actual X (m) | Positional Error (m)")
+    print("-----------------------------------------------------------")
+
+    for step in range(1, num_steps + 1):
+        # Encoders assume perfect movement
+        estimated_x += step_size_m
+
+        # Actual movement suffers from random slip noise centered around slip_rate
+        actual_step = step_size_m * (1.0 - slip_rate + random.uniform(-0.02, 0.02))
+        true_x += actual_step
+
+        # LANDMARK CORRECTION: Every 4 steps, a range sensor detects a known landmark!
+        if use_landmark_correction and step % 4 == 0:
+            print(f"  [&gt;&gt;&gt; LANDMARK DETECTED at Step {step}! Recalibrating position... &lt;&lt;&lt;]")
+            # Sensor observation resets estimated pose back to true pose (with minor sensor noise)
+            estimated_x = true_x + random.uniform(-0.01, 0.01)
+
+        error = abs(estimated_x - true_x)
+        print(f"{step:4d} | {estimated_x:15.3f} | {true_x:12.3f} | {error:18.3f}")
+
+# --- Student Experimentation Area ---
+SLIP_RATE = 0.08  # Try 0.02, 0.08, 0.15
+ENABLE_LANDMARK_CORRECTION = False  # Try setting to True!
+
+simulate_navigation(
+    num_steps=10,
+    step_size_m=1.0,
+    slip_rate=SLIP_RATE,
+    use_landmark_correction=ENABLE_LANDMARK_CORRECTION
+)
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+</section>

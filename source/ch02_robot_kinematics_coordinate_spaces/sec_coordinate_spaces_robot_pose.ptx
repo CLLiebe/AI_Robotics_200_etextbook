@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_coordinate_spaces_robot_pose" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Coordinate Spaces and Robot Pose</title>
+  <introduction>
+    <p>To control a mobile robot, we must first describe where it is in the world and which way it is facing. In 2D planar kinematics, we represent the robot's state using a <term>Pose vector</term> <m>\mathbf{q}</m>:</p>
+    <me>\mathbf{q} = \begin{bmatrix} x \\ y \\ \theta \end{bmatrix}</me>
+    <p>
+      <ul>
+        <li><em class="emphasis">Position <m>(x, y)</m>:</em> The 2D Cartesian coordinates of the robot's reference point (usually the center of the wheel axle) relative to a fixed Global Frame (<m>W</m>).</li>
+        <li><em class="emphasis">Heading <m>(\theta)</m>:</em> The orientation angle of the robot's heading relative to the positive <m>x</m>-axis, measured in radians.</li>
+      </ul>
+    </p>
+    <p>Picture the robot as a small rectangle sitting at position <m>(x, y)</m> in a fixed global grid. An arrow drawn out of its front edge, the robot's own forward direction, is rotated by the heading angle <m>\theta</m> away from the global <m>x</m>-axis, and a second arrow pointing out of its left edge marks the robot's own left direction.</p>
+    <p>Why bother with a formal pose vector at all? Because every question a robot needs to answer&#8212;"How far am I from the goal?", "Is that obstacle to my left or right?", "Did I actually turn 90 degrees like I commanded?"&#8212;is meaningless without a shared, numerical frame of reference. A human can point and say "over there," but a robot's motor controller only understands numbers. The pose vector <m>\mathbf{q}</m> is the single, unambiguous answer to "where am I, and which way am I facing?" that every algorithm in this book, from odometry to path planning, is built on top of.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_local_vs_global_frame">
+    <title>Local Body Frame vs. Global Frame</title>
+    <p>
+      <ul>
+        <li><em class="emphasis">Global Frame <m>(W)</m>:</em> A fixed reference frame attached to the room or arena floor.</li>
+        <li><em class="emphasis">Robot Body Frame <m>(R)</m>:</em> A moving reference frame fixed to the robot's chassis. The positive <m>x_R</m>-axis points in the robot's forward direction, and the <m>y_R</m>-axis points to the robot's left.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_body_to_global_velocity">
+    <title>Translating Body-Frame Velocity into the Global Frame</title>
+    <p>To translate velocity commands from the robot's body frame (forward velocity <m>v</m> and angular velocity <m>\omega</m>) into motion in the global frame <m>(\dot{x}, \dot{y}, \dot{\theta})</m>, we use the rotation matrix:</p>
+    <me>
+      \begin{bmatrix} \dot{x} \\ \dot{y} \\ \dot{\theta} \end{bmatrix}
+      =
+      \begin{bmatrix} \cos\theta &amp; 0 \\ \sin\theta &amp; 0 \\ 0 &amp; 1 \end{bmatrix}
+      \begin{bmatrix} v \\ \omega \end{bmatrix}
+    </me>
+    <p>This matrix rotates the robot's own forward speed into global <m>x</m> and <m>y</m> components based on its current heading <m>\theta</m>, while angular velocity <m>\omega</m> updates heading directly.</p>
+    <p>Notice what the matrix is really doing conceptually: it is a translator between two languages. The robot only ever "feels" its own forward speed <m>v</m> and turning rate <m>\omega</m>&#8212;it has no innate sense of North or East. The rotation matrix takes that self-centered description and re-expresses it in the map's language, so that the robot's motion can be tracked and plotted on a fixed field or floor plan. Every time <m>\theta</m> changes, the "translation" changes too, which is exactly why heading must be updated continuously, not just once at the start.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_pose_real_world_vex_examples">
+    <title>Real-World &amp; VEX AIM Examples</title>
+    <p><em class="emphasis">Real-World Example (GPS Navigation &amp; Self-Driving Cars):</em> When a phone's map app shows a moving blue dot, that dot's position is a pose expressed in a Global Frame&#8212;latitude and longitude converted into local <m>x, y</m> meters. But the car's own onboard sensors, like a forward-facing camera or LiDAR, report everything relative to the car's Body Frame: "the pedestrian is 5 meters ahead and 2 meters to my left." Self-driving software constantly converts between these two frames, exactly like the rotation matrix above, so that a body-frame detection ("obstacle ahead of me") can be placed correctly on the global map, and a global-frame destination ("turn left on Main Street") can be turned into a body-frame steering command.</p>
+    <p><em class="emphasis">VEX AIM Robotics Example:</em> A VEX AIM robot's onboard odometry system continuously estimates its own pose <m>\mathbf{q} = [x, y, \theta]^T</m> relative to a fixed origin, typically a corner or center of the competition field. This lets an autonomous routine give a command as simple as "drive to field position (24, 36) inches," even though the robot has no idea where that point is in body-frame terms until it converts its current pose into the field's Global Frame. Without a shared coordinate space, the robot's drivetrain would only ever know "spin the left motor" and "spin the right motor"&#8212;it would have no concept of a scoring zone's location on the field at all.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_pose_codelens_exercise">
+    <title>Section 2.1 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_pose_codelens_trace">
+      <title>Exercise 2.1.2: CodeLens Trace &#8212; Global Pose Update</title>
+      <p>Step through the code below to see how a robot's local body velocity translates to updates in global frame coordinates.</p>
+      <program xml:id="cl_pose_update" interactive="codelens" language="python">
+        <input>
+import math
+
+def update_pose(x, y, theta, v, omega, dt):
+    # Calculate derivatives in global frame
+    x_dot = v * math.cos(theta)
+    y_dot = v * math.sin(theta)
+    theta_dot = omega
+
+    # Update state using Euler integration
+    new_x = x + x_dot * dt
+    new_y = y + y_dot * dt
+    new_theta = theta + theta_dot * dt
+
+    return new_x, new_y, new_theta
+
+# Starting at origin, facing along X axis (theta = 0)
+x0, y0, th0 = 0.0, 0.0, 0.0
+
+# Move forward at 1.0 m/s for 1.0 second
+x1, y1, th1 = update_pose(x0, y0, th0, v=1.0, omega=0.0, dt=1.0)
+
+# Turn counter-clockwise at pi/2 rad/s for 1.0 second
+x2, y2, th2 = update_pose(x1, y1, th1, v=0.0, omega=1.5708, dt=1.0)
+
+# Move forward at 1.0 m/s for 1.0 second in new direction
+x3, y3, th3 = update_pose(x2, y2, th2, v=1.0, omega=0.0, dt=1.0)
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_pose_frame_orientation">
+      <title>Exercise 2.1.1: Coordinate Frame Orientation Conceptual Check</title>
+      <statement>
+        <p>A robot is located 3 meters east (<m>x</m>-axis) and 4 meters north (<m>y</m>-axis) of the origin, facing directly North (along the positive <m>y</m>-axis). What is its pose vector <m>\mathbf{q} = [x, y, \theta]^T</m>?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p><m>(x = 3.0,\ y = 4.0,\ \theta = 0.0 \text{ rad})</m></p></statement>
+          <feedback><p>Incorrect. <m>\theta = 0.0</m> radians points along the positive <m>x</m>-axis (East).</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p><m>(x = 3.0,\ y = 4.0,\ \theta = 1.571 \text{ rad})</m></p></statement>
+          <feedback><p>Correct! <m>\theta = \frac{\pi}{2} \approx 1.571</m> rad points directly North along the positive <m>y</m>-axis.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p><m>(x = 4.0,\ y = 3.0,\ \theta = 3.141 \text{ rad})</m></p></statement>
+          <feedback><p>Incorrect. The position values <m>x</m> and <m>y</m> are swapped.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p><m>(x = 3.0,\ y = 4.0,\ \theta = -1.571 \text{ rad})</m></p></statement>
+          <feedback><p>Incorrect. <m>\theta = -\frac{\pi}{2}</m> rad points South along the negative <m>y</m>-axis.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

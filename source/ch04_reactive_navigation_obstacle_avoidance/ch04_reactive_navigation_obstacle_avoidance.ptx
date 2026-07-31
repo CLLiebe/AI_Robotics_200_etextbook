@@ -3,12 +3,12 @@
 <chapter xml:id="ch04_reactive_navigation_obstacle_avoidance" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Reactive Navigation &amp; Obstacle Avoidance</title>
   <introduction>
-    <p>This chapter focuses on fast, local decision-making for safe robot motion. You will study reactive strategies that respond directly to sensor data without requiring a complete global map. The material emphasizes obstacle avoidance, collision risk, and behavior under uncertainty. These methods are especially useful in dynamic environments where conditions change quickly.</p>
+    <p>This chapter focuses on fast, local decision-making for safe robot motion. You will start by organizing reactive if/else logic into Finite State Machines, then add multi-sensor arrays that give a robot the spatial awareness needed to steer around obstacles rather than just stopping in front of them. From there you will study Artificial Potential Fields, a physics-inspired alternative that treats the goal as an attractor and obstacles as repellers, and put both approaches into practice with a hands-on wall-avoidance coding exercise. The chapter closes by examining the central weakness shared by every purely reactive method, local minima traps, and shows how hybrid architectures combine global planning from Chapter 3 with local reactive control to escape them. These methods are especially useful in dynamic environments where conditions change quickly.</p>
   </introduction>
-  <xi:include href="./sec_sensor_driven_reactive_behaviors.ptx" />
-  <xi:include href="./sec_bug_algorithms.ptx" />
+  <xi:include href="./sec_reactive_control_state_machines.ptx" />
+  <xi:include href="./sec_distance_sensor_arrays_obstacle_avoidance.ptx" />
   <xi:include href="./sec_artificial_potential_fields.ptx" />
   <xi:include href="./sec_activecode_reactive_wall_avoidance_state_machine.ptx" />
-  <xi:include href="./sec_conceptual_check_local_minima.ptx" />
+  <xi:include href="./sec_local_minima_traps.ptx" />
   <xi:include href="./Glossary.ptx" />
 </chapter>

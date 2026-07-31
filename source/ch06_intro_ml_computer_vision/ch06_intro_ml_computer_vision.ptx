@@ -3,11 +3,11 @@
 <chapter xml:id="ch06_intro_ml_computer_vision" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Intro to Machine Learning &amp; Computer Vision</title>
   <introduction>
-    <p>This chapter introduces machine learning concepts that support robotic perception and decision-making. You will learn how vision pipelines transform raw images into meaningful features, detections, and scene understanding. The chapter emphasizes practical model behavior, data quality, and evaluation tradeoffs. These ideas prepare you to integrate learned components into larger robotic systems.</p>
+    <p>This chapter introduces machine learning concepts that support robotic perception and decision-making. You will start by contrasting supervised and unsupervised learning, and see why safety-critical robotics leans on labeled, supervised data for classification and regression tasks. From there you will see how a camera image breaks down into a grid of pixels, compare the RGB and HSV color spaces, and use color thresholding to isolate a target object into a binary mask. You will then learn how a bounding box condenses those matching pixels into a compact position and size estimate, letting a robot judge an object's distance and steer to keep it centered in frame. The chapter closes with a hands-on decision tree classifier challenge that ties feature-based classification back to a concrete sorting task. These ideas prepare you to integrate learned components into larger robotic systems.</p>
   </introduction>
   <xi:include href="./sec_supervised_learning_fundamentals.ptx" />
   <xi:include href="./sec_image_processing_basics.ptx" />
-  <xi:include href="./sec_activecode_decision_tree_classifier.ptx" />
-  <xi:include href="./sec_conceptual_check_bounding_box.ptx" />
+  <xi:include href="./sec_bounding_boxes_feature_extraction.ptx" />
+  <xi:include href="./sec_activecode_decision_tree_obstacle_sorting.ptx" />
   <xi:include href="./Glossary.ptx" />
 </chapter>

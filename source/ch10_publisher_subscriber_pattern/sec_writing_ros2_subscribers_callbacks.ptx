@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_writing_ros2_subscribers_callbacks" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Writing ROS 2 Subscribers &amp; Callback Functions</title>
+  <introduction>
+    <p><term>Event-Driven Callbacks</term></p>
+    <p>Unlike publishers, subscribers are event-driven. A subscriber does not poll or wait in a loop. Instead, it registers a <term>callback function</term> with ROS 2.</p>
+    <p>Whenever a new message arrives on the target topic:</p>
+    <p>
+      <ol>
+        <li><p>ROS 2 catches the incoming message payload.</p></li>
+        <li><p>It automatically invokes your callback function, passing the message payload as an argument.</p></li>
+      </ol>
+    </p>
+    <p>In short: a new message arriving on a topic triggers a ROS 2 middleware interrupt, which in turn invokes your <c>callback(msg)</c> function directly&#8212;there is no loop in your own code polling for new data.</p>
+    <program language="python">
+      <input>
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+
+class SimpleSubscriber(Node):
+    def __init__(self):
+        super().__init__('simple_subscriber')
+        # Create subscriber listening to 'chatter'
+        self.subscription = self.create_subscription(
+            String,
+            'chatter',
+            self.listener_callback,
+            10
+        )
+
+    def listener_callback(self, msg):
+        self.get_logger().info(f'Received: "{msg.data}"')
+</input>
+    </program>
+  </introduction>
+
+  <subsection xml:id="subsec_subscriber_exercises">
+    <title>Section 10.3 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_laser_scan_processing_activecode">
+      <title>Exercise 10.3.1: ActiveCode Exercise &#8212; Safety Laser Scan Processing</title>
+      <p>Because Runestone CodeLens standard execution environments run pure Python without ROS dependencies installed, we mock the incoming <c>sensor_msgs/LaserScan</c> data structure using standard Python classes.</p>
+      <p><term>Task:</term> Complete the callback function <c>laser_scan_callback(msg)</c>.</p>
+      <p>
+        <ol>
+          <li><p>Iterate through the array of range measurements in <c>msg.ranges</c>.</p></li>
+          <li><p>Extract the minimum distance detected (ignoring readings <m>\leq 0.0</m> which represent sensor errors).</p></li>
+          <li><p>If the minimum valid distance is less than 0.5 meters, flag a safety stop (<c>EMERGENCY_STOP = True</c>) and print an alert!</p></li>
+        </ol>
+      </p>
+      <program xml:id="ac_laser_scan_processing" interactive="activecode" language="python">
+        <input>
+class MockLaserScan:
+    def __init__(self, ranges):
+        self.ranges = ranges  # List of float distance readings in meters
+
+def laser_scan_callback(scan_msg):
+    # Filter out invalid readings (&lt;= 0.0 meters)
+    valid_ranges = [r for r in scan_msg.ranges if r &gt; 0.0]
+
+    if not valid_ranges:
+        print("No valid laser readings detected.")
+        return False
+
+    # Find the minimum distance to an obstacle
+    min_distance = min(valid_ranges)
+
+    # Check safety threshold (0.5 meters)
+    emergency_stop = False
+    if min_distance &lt; 0.5:
+        emergency_stop = True
+        print(f"ALERT: Obstacle detected at {min_distance:.2f}m! Triggering EMERGENCY STOP!")
+    else:
+        print(f"Path clear. Nearest obstacle: {min_distance:.2f}m")
+
+    return emergency_stop
+
+# Test Case 1: Obstacle nearby at 0.35m
+scan_stream_1 = MockLaserScan([0.0, 1.2, 0.8, 0.35, 2.1, 0.0])
+print("--- Test Frame 1 ---")
+laser_scan_callback(scan_stream_1)
+
+# Test Case 2: All obstacles far away (&gt; 0.5m)
+scan_stream_2 = MockLaserScan([1.5, 2.3, 0.85, 1.1, 0.9])
+print("\n--- Test Frame 2 ---")
+laser_scan_callback(scan_stream_2)
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+</section>

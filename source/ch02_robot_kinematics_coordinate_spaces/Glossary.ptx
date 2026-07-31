@@ -32,28 +32,40 @@
       <p>Computing wheel or joint commands needed to achieve a desired robot motion.</p>
     </li>
     <li>
-      <title>Odometry</title>
-      <p>Estimating pose over time from motion measurements such as wheel encoder data.</p>
+      <title>Pose (<m>\mathbf{q}</m>)</title>
+      <p>Robot position and orientation, represented as the Pose vector <m>\mathbf{q} = [x, y, \theta]^T</m>.</p>
     </li>
     <li>
-      <title>Pose</title>
-      <p>Robot position and orientation, commonly represented as <m>(x,y,\theta)</m>.</p>
+      <title>Global Frame (<m>W</m>)</title>
+      <p>A fixed reference frame attached to the room or arena floor, used to express a robot's absolute pose.</p>
+    </li>
+    <li>
+      <title>Robot Body Frame (<m>R</m>)</title>
+      <p>A moving reference frame fixed to the robot's chassis, with its positive <m>x</m>-axis pointing forward and its positive <m>y</m>-axis pointing to the robot's left.</p>
     </li>
     <li>
       <title>Wheel Velocity (<m>v_L</m>, <m>v_R</m>)</title>
-      <p>Left and right wheel speeds used in differential-drive motion equations.</p>
+      <p>Left and right wheel surface speeds used in differential-drive motion equations.</p>
     </li>
     <li>
-      <title>In-Place Rotation</title>
-      <p>Turning around the robot center by spinning wheels in opposite directions.</p>
+      <title>Wheel Radius (<m>r</m>)</title>
+      <p>The radius of a drive wheel, used to convert between wheel surface velocity and rotational motor speed.</p>
     </li>
     <li>
-      <title>Turning Radius</title>
-      <p>Radius of the curved path produced by unequal wheel speeds.</p>
+      <title>Instantaneous Center of Rotation (ICR)</title>
+      <p>The fixed point in the plane that a turning differential drive robot rotates around at a given instant.</p>
     </li>
     <li>
-      <title>Closed Navigation Cycle</title>
-      <p>Repeated loop of planning desired motion, commanding wheels, sensing outcome, and updating state.</p>
+      <title>Turn Radius / Radius of Curvature (<m>R</m>)</title>
+      <p>The distance from the robot's center to the ICR, computed as <m>R = v/\omega</m>.</p>
+    </li>
+    <li>
+      <title>Spin-in-Place / Point Turn</title>
+      <p>Turning around the robot's own center point by driving the wheels at equal and opposite speeds (<m>v_L = -v_R</m>), giving <m>R = 0</m>.</p>
+    </li>
+    <li>
+      <title>Pivot Turn</title>
+      <p>Turning around one stationary wheel by driving only the other wheel (<m>v_L = 0</m> or <m>v_R = 0</m>), giving <m>R = L/2</m>.</p>
     </li>
   </dl>
 </section>

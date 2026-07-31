@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_nodes_topics_messages" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Nodes, Topics, and Messages (.msg)</title>
+  <introduction>
+    <p>Now that you understand why ROS 2 uses middleware to connect separate processes, let's look at the three building blocks that make up the ROS 2 Computation Graph in practice: nodes, topics, and messages.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_nodes_single_purpose">
+    <title>Nodes: Single-Purpose Workers</title>
+    <p>A <term>Node</term> is a modular process designed to perform a single computational task. Keeping nodes focused makes system design modular and reusable. For instance, a self-driving car might have:</p>
+    <p>
+      <ul>
+        <li>A <c>lidar_driver_node</c> responsible solely for receiving raw laser data.</li>
+        <li>A <c>planner_node</c> responsible for mapping a path.</li>
+        <li>A <c>motor_driver_node</c> responsible for pushing PWM signals to physical motors.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_topics_pubsub">
+    <title>Topics: The Publish-Subscribe Pattern</title>
+    <p>Nodes exchange data using a <term>Publish-Subscribe (Pub/Sub)</term> model:</p>
+    <p>
+      <ul>
+        <li>A <term>Publisher</term> node produces data and broadcasts it over a specific <term>Topic</term>.</li>
+        <li>A <term>Subscriber</term> node listens to a Topic and receives data whenever a new message is published.</li>
+        <li>Communication is <term>anonymous</term>: publishers don't know who is listening, and subscribers don't know who generated the data.</li>
+      </ul>
+    </p>
+    <p><term>Real-World Example:</term> Consider a warehouse mobile robot (like an AMR in a fulfillment center).</p>
+    <p>
+      <ul>
+        <li>The <c>battery_monitor</c> node continuously publishes state-of-charge data to the <c>/battery_status</c> topic.</li>
+        <li>Both the <c>ui_display</c> node on the robot's screen and the <c>fleet_management</c> node on a cloud server subscribe to <c>/battery_status</c>. The battery monitor node doesn't care who is listening; it just publishes the data!</li>
+      </ul>
+    </p>
+    <p>The <c>battery_monitor</c> node publishes onto the <c>/battery_status</c> topic, and both the <c>ui_display</c> node and the <c>fleet_mgmt</c> node subscribe independently to that same topic&#8212;neither subscriber needs to know the other exists.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_messages_msg_files">
+    <title>Messages (.msg files)</title>
+    <p>Data sent over topics must follow a structured contract known as a <term>ROS 2 Message (.msg)</term>. A message definition lists field types and field names.</p>
+    <p>For example, a custom sensor payload message (<c>SensorPayload.msg</c>) might look like this:</p>
+    <program language="text">
+      <input>
+int32 sensor_id
+float64 temperature
+float64 humidity
+string status
+</input>
+    </program>
+    <p>ROS 2 provides built-in primitive types (<c>int32</c>, <c>float64</c>, <c>string</c>, <c>bool</c>) as well as complex multi-field messages (such as <c>geometry_msgs/msg/Twist</c>, used to command linear and angular velocity for mobile robots).</p>
+  </subsection>
+
+  <subsection xml:id="subsec_nodes_topics_exercises">
+    <title>Section 9.2 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_ros_message_parsing_activecode">
+      <title>Exercise 9.2.1: ActiveCode Exercise &#8212; Python Parsing</title>
+      <p>Because Runestone CodeLens runs standard Python without third-party ROS libraries installed, let's practice how ROS message deserialization works under the hood!</p>
+      <p>Write a Python script that parses incoming raw text payload strings (simulating a stream of message packets over a ROS topic) and extracts key sensor fields.</p>
+      <p><term>Task:</term> Parse the incoming string format <c>"ID:&lt;id_num&gt;;TEMP:&lt;temp_val&gt;;STATUS:&lt;status_str&gt;"</c> and print the extracted values.</p>
+      <program xml:id="ac_ros_message_parsing" interactive="activecode" language="python">
+        <input>
+import re
+
+def parse_ros_message(raw_msg):
+    # TODO: Extract sensor_id (int), temperature (float), and status (str)
+    # Hint: You can use string split or regex!
+
+    # Using string split:
+    parts = raw_msg.split(';')
+    sensor_id = int(parts[0].split(':')[1])
+    temp = float(parts[1].split(':')[1])
+    status = parts[2].split(':')[1]
+
+    return sensor_id, temp, status
+
+# Test Data Stream
+data_stream = [
+    "ID:101;TEMP:24.5;STATUS:OK",
+    "ID:102;TEMP:88.1;STATUS:WARN_OVERHEAT",
+    "ID:103;TEMP:21.0;STATUS:OK"
+]
+
+for packet in data_stream:
+    s_id, temp, status = parse_ros_message(packet)
+    print(f"Sensor [{s_id}] -&gt; Temp: {temp}C | Status: {status}")
+</input>
+      </program>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_ros2_node_creation_parsons">
+      <title>Exercise 9.2.2: Parsons Problem &#8212; Python ROS 2 Node Creation Sequence</title>
+      <p>Put the standard lines of a minimal <c>rclpy</c> subscriber node setup in the correct order.</p>
+      <exercise xml:id="ex_pp_ros2_node_creation" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks to form a minimal <c>rclpy</c> subscriber node: initialize the client library, create the node, create the subscription, spin, then shut down.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>import rclpy</cline>
+          </block>
+          <block order="2">
+            <cline>rclpy.init(args=args)</cline>
+          </block>
+          <block order="3">
+            <cline>node = rclpy.create_node('sensor_subscriber')</cline>
+          </block>
+          <block order="4">
+            <cline>subscription = node.create_subscription(String, 'sensor_data', callback, 10)</cline>
+          </block>
+          <block order="5">
+            <cline>rclpy.spin(node)</cline>
+          </block>
+          <block order="6">
+            <cline>rclpy.shutdown()</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+  </subsection>
+</section>

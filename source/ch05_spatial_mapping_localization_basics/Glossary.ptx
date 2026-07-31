@@ -4,16 +4,16 @@
   <title>Glossary</title>
   <dl>
     <li>
-      <title>Simultaneous Localization and Mapping (SLAM)</title>
-      <p>The problem of building a map of an unknown environment while simultaneously tracking a robot's position within it.</p>
+      <title>Localization</title>
+      <p>Answering the question "Where am I?"&#8212;estimating a robot's own position and orientation within its environment.</p>
     </li>
     <li>
-      <title>Loop Closure</title>
-      <p>Recognizing a previously visited location to correct accumulated position and map error.</p>
+      <title>Mapping</title>
+      <p>Answering the question "What does the world look like around me?"&#8212;building a representation of the environment from sensor data.</p>
     </li>
     <li>
-      <title>Odometry</title>
-      <p>Position estimation computed by integrating wheel or motion sensor data over time.</p>
+      <title>Odometry (Dead Reckoning)</title>
+      <p>Position estimation computed by integrating wheel or motion sensor data over time, without reference to external landmarks.</p>
     </li>
     <li>
       <title>Drift</title>
@@ -29,7 +29,23 @@
     </li>
     <li>
       <title>Landmark</title>
-      <p>A recognizable environmental feature used to correct a robot's estimated position.</p>
+      <p>A recognizable environmental feature used to correct a robot's estimated position, either artificial (e.g., an AprilTag or QR code placed in the environment) or natural (e.g., a wall corner or pillar already present).</p>
+    </li>
+    <li>
+      <title>Feature-Based Mapping</title>
+      <p>A map representation that stores the environment as a list of discrete landmark coordinates, rather than a fixed grid of cells as in an occupancy grid map.</p>
+    </li>
+    <li>
+      <title>Simultaneous Localization and Mapping (SLAM)</title>
+      <p>The "chicken-and-egg" problem of building a map of an unknown environment while simultaneously tracking a robot's position within it, since each depends on the other.</p>
+    </li>
+    <li>
+      <title>Uncertainty Cloud</title>
+      <p>A probability distribution over possible values for a robot's position or a landmark's location, rather than a single fixed estimate; it grows during motion and shrinks after a sensor observation.</p>
+    </li>
+    <li>
+      <title>Probabilistic Co-estimation</title>
+      <p>The SLAM strategy of repeating a prediction step (odometry grows uncertainty), an observation step (sensors scan landmarks), and a correction step (both pose and landmark estimates are updated together) to solve localization and mapping at the same time.</p>
     </li>
     <li>
       <title>Sensor Fusion</title>

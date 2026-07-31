@@ -5,19 +5,15 @@
   <dl>
     <li>
       <title>Occupancy Grid</title>
-      <p>A map representation that divides space into cells marked as free, occupied, or unknown.</p>
+      <p>A map representation that divides space into a 2D matrix of uniform cells marked as free, occupied, or unknown.</p>
     </li>
     <li>
-      <title>Cell Resolution</title>
-      <p>The physical size represented by one grid cell; smaller cells increase detail but require more memory.</p>
+      <title>Grid Connectivity (4-Connected / 8-Connected)</title>
+      <p>The set of neighboring cells a robot may step to from its current cell: orthogonal-only (4-connected) or orthogonal plus diagonal (8-connected).</p>
     </li>
     <li>
       <title>Node</title>
-      <p>A graph element representing a state or location, such as a traversable grid cell.</p>
-    </li>
-    <li>
-      <title>Edge</title>
-      <p>A connection between nodes indicating an allowed transition or movement.</p>
+      <p>A graph element representing a state or location that a search algorithm can visit, such as a traversable grid cell.</p>
     </li>
     <li>
       <title>Path Planning</title>
@@ -37,15 +33,19 @@
     </li>
     <li>
       <title>Manhattan Distance</title>
-      <p>A grid-based heuristic computed as <m>|x_{goal}-x_{current}| + |y_{goal}-y_{current}|</m>.</p>
+      <p>A grid-based heuristic for 4-connected movement, computed as <m>h(n) = |x_n - x_{\text{goal}}| + |y_n - y_{\text{goal}}|</m>.</p>
     </li>
     <li>
-      <title>Admissible Heuristic</title>
-      <p>A heuristic that never overestimates true remaining cost, preserving A* optimality.</p>
+      <title>Euclidean Distance</title>
+      <p>A straight-line heuristic for movement in any continuous direction, computed as <m>h(n) = \sqrt{(x_n - x_{\text{goal}})^2 + (y_n - y_{\text{goal}})^2}</m>.</p>
     </li>
     <li>
-      <title>Replanning</title>
-      <p>Recomputing a path when new obstacle information or dynamic changes alter the environment.</p>
+      <title>Open List</title>
+      <p>The set of discovered but not yet processed nodes that A* selects its next expansion from, ordered by lowest <m>f(n)</m>.</p>
+    </li>
+    <li>
+      <title>Closed List</title>
+      <p>The set of nodes A* has already expanded and will not revisit.</p>
     </li>
   </dl>
 </section>

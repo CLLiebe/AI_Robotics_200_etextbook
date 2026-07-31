@@ -1,27 +1,76 @@
 <?xml version='1.0' encoding='utf-8'?>
 
 <section xml:id="sec_pubsub_asynchronous_communication" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Asynchronous Communication in the Publisher/Subscriber Pattern</title>
+  <title>Asynchronous Communication &amp; Mechanics</title>
   <introduction>
-    <p>The publisher/subscriber pattern lets nodes exchange data without either side waiting on the other. A publisher sends messages whenever it has new data, and a subscriber processes messages whenever they arrive, with no direct call-and-response required between the two.</p>
+    <p>Now that you understand the high-level ROS 2 architecture and graph concepts from Chapter 9, it is time to write code that makes robots move and react.</p>
+    <p>In this chapter, we will focus on the most fundamental communication dynamic in robotics: the <term>Publisher/Subscriber (Pub/Sub) pattern</term>. We will explore how nodes communicate asynchronously, how to construct publishers and subscribers in Python using <c>rclpy</c>, how callback functions process data streams, and how to control simulations like TurtleSim.</p>
   </introduction>
 
-  <subsection xml:id="subsec_asynchronous_vs_synchronous">
-    <title>Why Asynchronous Communication</title>
-    <p>If a sensor node had to wait for every downstream node to finish processing before publishing its next reading, a single slow subscriber could stall the entire system. Asynchronous publish/subscribe communication avoids this: a publisher's rate of sending data is decoupled from how quickly any individual subscriber consumes it.</p>
+  <subsection xml:id="subsec_what_is_async_communication">
+    <title>What is Asynchronous Communication?</title>
+    <p>In computer science, communication can be synchronous or asynchronous:</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">Synchronous:</em> A process sends a request and blocks (stops and waits) until it gets a response before moving on. Think of a phone call&#8212;you ask a question and wait on the line until the other person answers.</li>
+        <li><em class="emphasis">Asynchronous:</em> A process broadcasts data or sets up a listener, then immediately continues executing its own work without waiting. Think of sending a text message or posting a tweet&#8212;you post the information and go about your day. When someone replies, your phone alerts you.</li>
+      </ul>
+    </p>
+    <p>In a synchronous exchange, a Publisher sends data and then waits for a response before resuming. In an asynchronous exchange, the Publisher instead fires the data off and immediately continues its own execution, with no waiting involved at all.</p>
+    <p>Robotics systems rely heavily on asynchronous communication. If an autonomous vehicle's steering controller had to pause and block execution every time it sent a wheel command, the robot couldn't process safety-critical LiDAR data simultaneously!</p>
   </subsection>
 
-  <subsection xml:id="subsec_decoupling_benefits">
-    <title>Decoupling Publishers and Subscribers</title>
-    <p>A publisher does not need to know which nodes, or how many nodes, are subscribed to its topic. This decoupling makes it easy to add a new subscriber, such as a logging node, without changing the publisher at all, and makes it easy to swap out a sensor's driver node as long as the new one publishes to the same topic with the same message type.</p>
+  <subsection xml:id="subsec_pubsub_model_real_world">
+    <title>The Pub/Sub Model in Real-World Robotics</title>
+    <p>In a ROS 2 Pub/Sub pipeline:</p>
+    <p>
+      <ol>
+        <li><p><term>Publishers</term> send data updates periodically or on events (e.g., publishing camera images at 30 Hz).</p></li>
+        <li><p><term>Subscribers</term> register interest in a topic and execute a <term>callback function</term> whenever a new message arrives.</p></li>
+        <li><p>Publishers and subscribers are <term>decoupled</term>: they do not need to know where the data comes from or where it is going.</p></li>
+      </ol>
+    </p>
+    <p><term>Real-World Example:</term> Consider a Boston Dynamics Spot robot navigating an uneven outdoor environment.</p>
+    <p>
+      <ul>
+        <li>An <term>IMU (Inertial Measurement Unit) driver node</term> continuously publishes orientation data to <c>/imu/data</c> at 200 Hz.</li>
+        <li>A <em class="emphasis">balance controller node</em> subscribes to <c>/imu/data</c> to continuously adjust leg joints.</li>
+        <li>A <em class="emphasis">logging node</em> also subscribes to <c>/imu/data</c> to record telemetry for engineers.</li>
+      </ul>
+    </p>
+    <p>The IMU node simply broadcasts readings without caring how many subscribers exist or what they do with the data.</p>
   </subsection>
 
-  <subsection xml:id="subsec_pubsub_tradeoffs">
-    <title>Practical Concerns</title>
-    <ul>
-      <li><p><em class="emphasis">Rate control:</em> publishing too frequently can flood the network or overload subscribers; publishing too rarely can starve time-sensitive consumers.</p></li>
-      <li><p><em class="emphasis">Latency:</em> asynchronous delivery means a subscriber always processes slightly stale data, so time-critical control loops must account for this delay.</p></li>
-      <li><p><em class="emphasis">Data consistency:</em> if multiple topics must be used together, subscribers need a strategy for handling messages that arrive at different rates or times.</p></li>
-    </ul>
-  </subsection>
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_async_communication_check">
+      <title>Exercise 10.1.1: Asynchronous Communication Conceptual Check</title>
+      <statement>
+        <p>Why is asynchronous communication preferred over synchronous communication for high-rate sensor streams (like LiDAR or IMU) in robotics?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Asynchronous communication guarantees that no messages will ever be lost over Wi-Fi.</p></statement>
+          <feedback><p>Incorrect. Asynchronous communication does not guarantee delivery over an unreliable network; it simply avoids blocking execution while waiting.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Asynchronous communication allows nodes to publish and process sensor data concurrently without stalling execution.</p></statement>
+          <feedback><p>Correct! Because a publisher does not wait for a response, it can keep publishing new sensor readings while subscribers process earlier messages at their own pace.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Asynchronous communication eliminates the need to specify topic message types.</p></statement>
+          <feedback><p>Incorrect. Every ROS 2 topic still requires a defined message type, whether communication is synchronous or asynchronous.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Synchronous communication consumes less memory than asynchronous communication.</p></statement>
+          <feedback><p>Incorrect. Memory usage is not the deciding factor; the key difference is whether execution blocks while waiting for a response.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
 </section>

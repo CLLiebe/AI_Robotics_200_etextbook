@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_turtlesim_navigation_primer" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>TurtleSim Simulation Navigation (Homework Primer)</title>
+  <introduction>
+    <p><term>TurtleSim</term> is the standard 2D simulator shipped with ROS 2. It presents a simple turtle inside a 2D canvas, making it an ideal testing ground for learning pub/sub control dynamics before deploying code to real hardware (like a Differential Drive mobile robot or a TurtleBot).</p>
+    <p>Picture a simple screen canvas with a single turtle icon drawn on it. The turtle's state is described by its pose <m>(x, y, \theta)</m>: its 2D position on the canvas and the heading angle it currently faces.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_turtlesim_key_topics">
+    <title>Key Topics in TurtleSim</title>
+    <p>
+      <ul>
+        <li><p><c>/turtle1/cmd_vel</c> (<c>geometry_msgs/msg/Twist</c>): Subscribed by TurtleSim. Publishing linear velocity (<m>v</m>) and angular velocity (<m>\omega</m>) moves the turtle.</p></li>
+        <li><p><c>/turtle1/pose</c> (<c>turtlesim/msg/Pose</c>): Published by TurtleSim. Provides the turtle's current 2D coordinates <m>(x, y)</m> and heading orientation (<m>\theta</m>).</p></li>
+      </ul>
+    </p>
+  </subsection>
+</section>

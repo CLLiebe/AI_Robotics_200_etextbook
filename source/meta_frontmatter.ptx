@@ -6,9 +6,9 @@
 <frontmatter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="meta_frontmatter">
   <titlepage>
     <author>
-      <personname>Me</personname>
-      <department>My department</department>
-      <institution>My school</institution>
+      <personname>Xiaoli Zhang, PhD and Christine Liebe, PhD</personname>
+      <department>Mechanical Engineering and Computer Science</department>
+      <institution>Colorado School of Mines</institution>
     </author>
     <date><today/></date>
   </titlepage>
@@ -42,13 +42,15 @@
 
   <dedication>
     <p>
-      For ...
+      For all people who wish to express their intelligence and creativity through computing.
     </p>
   </dedication>
 
   <acknowledgement>
     <p>
-      I would like to thank...
+      We are grateful to the Colorado School of Mines, Zhaoda Du, PhD Student, 
+      and high school teachers who participated in our summer AI Robotics Research
+      Experiences for Teachers programs.
     </p>
   </acknowledgement>
 
@@ -56,17 +58,11 @@
     <!-- You should be a little careful about what you put here -->
     <!-- Avoid elements that should have a number, for example  -->
     <p>
-      About this book:
+      About this book:AI Robotics 200 is specifically designed as a brief 
+      introduction to more advanced AI topics. As of Fall 2026, we use VEX AIM robots to introduce undergraduates to AI robotics. You will see many examples of each topic related to real world and VEX AIM robotics.
     </p>
   </preface>
 
-  <!-- You can have more than one preface. -->
-  <preface>
-    <title>Not just that..</title>
-    <p>
-      I still have more to say!
-    </p>
-  </preface>
+  
 
 </frontmatter>
-

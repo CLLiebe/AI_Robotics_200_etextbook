@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_distance_sensor_arrays_obstacle_avoidance" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Distance Sensor Arrays and Local Obstacle Avoidance</title>
+  <introduction>
+    <p>While a single front-facing sensor can tell a robot when to stop, it cannot tell the robot <em class="emphasis">which way to turn</em> to avoid a collision. Most small mobile robots utilize a <term>multi-sensor array</term>&#8212;such as three distance sensors positioned on the Left, Front, and Right of the chassis&#8212;to construct a 180-degree local perception field.</p>
+    <p>Picture the robot's chassis as a small circle with three sensors mounted around its forward half: one pointing straight ahead (Front), one angled out to the left (Left), and one angled out to the right (Right), together sweeping a 180-degree arc in front of the robot.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_sensor_array_applications">
+    <title>Real-World &amp; VEX Robotics Applications</title>
+    <p>
+      <ul>
+        <li><em class="emphasis">Real-World Example (Autonomous Vehicles &amp; Robotic Lawn Mowers):</em> Self-driving cars use arrayed Time-of-Flight (ToF) sensors and ultrasonic transducers along their front and side bumpers. If a vehicle detects a stalled car directly ahead (<c>front_dist &lt; safe_threshold</c>), it uses its side-looking sensors to determine whether the left lane or right shoulder has enough clearance to perform a lane change without striking a guardrail or neighboring vehicle.</li>
+        <li><em class="emphasis">VEX Robotics Example (VEX V5 Distance Sensors &amp; Ultrasonic Range Finders):</em> In VEX robotics competitions, equipping your drivetrain with a trio of VEX V5 Distance Sensors (or VEX Ultrasonic Range Finders) gives your robot continuous spatial awareness. During autonomous routines or maze navigation labs, if the front sensor detects an arena perimeter wall or an opponent's robot, the robot can inspect the left and right sensor values to automatically turn toward whichever side has more open room, avoiding dynamic collisions during high-stakes matches.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_sensor_rule_logic">
+    <title>Intuitive Sensor Rule Logic</title>
+    <p>By evaluating relative distances across all three sensors simultaneously, the robot can make clear steering decisions using simple conditional logic:</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">Clear Path Ahead:</em> If <c>front_dist &gt; safe_threshold</c>, the path is wide open&#8212;drive straight ahead at normal speed.</li>
+        <li><em class="emphasis">Obstacle Ahead (Right Side is Clearer):</em> If <c>front_dist &lt; safe_threshold</c> and <c>right_dist &gt; left_dist</c>, the obstacle is blocking the front-left&#8212;steer Right into open space.</li>
+        <li><em class="emphasis">Obstacle Ahead (Left Side is Clearer):</em> If <c>front_dist &lt; safe_threshold</c> and <c>left_dist &gt; right_dist</c>, the obstacle is blocking the front-right&#8212;steer Left into open space.</li>
+        <li><em class="emphasis">Trapped (Obstacles on All Sides):</em> If all three distance readings fall below the safety threshold, the robot is boxed in&#8212;execute an emergency stop, reverse backward, or pivot 180 degrees in place.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_sensor_array_exercises">
+    <title>Section 4.2 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_sensor_rules_parsons">
+      <title>Exercise 4.2.1: Parsons Problem &#8212; Sensor Array Decision Logic</title>
+      <p>Reorder the Python code blocks to construct the steering decision logic for a 3-sensor array (<c>left_dist</c>, <c>front_dist</c>, <c>right_dist</c>).</p>
+      <exercise xml:id="ex_pp_sensor_rules" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks to form a complete function <c>choose_steering_action</c> that drives straight when the front is clear, and otherwise steers toward whichever side has more open space.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>def choose_steering_action(left_dist, front_dist, right_dist, safe_margin=0.5):</cline>
+          </block>
+          <block order="2">
+            <cline>    if front_dist &gt;= safe_margin:</cline>
+            <cline>        return "DRIVE_STRAIGHT"</cline>
+          </block>
+          <block order="3">
+            <cline>    else:</cline>
+            <cline>        # Obstacle detected in front! Compare left vs right space</cline>
+          </block>
+          <block order="4">
+            <cline>        if right_dist &gt; left_dist:</cline>
+            <cline>            return "STEER_RIGHT"</cline>
+          </block>
+          <block order="5">
+            <cline>        else:</cline>
+            <cline>            return "STEER_LEFT"</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_virtual_roomba_activecode">
+      <title>Exercise 4.2.2: Virtual Roomba Sensor Loop Challenge</title>
+      <p>Implement the conditional logic for a virtual roomba driving through a hallway.</p>
+      <p><term>Task:</term> Complete the <c>steer_roomba</c> function using if/elif/else statements.</p>
+      <p>
+        <ul>
+          <li>If <c>front_dist &gt;= 0.6</c>, return <c>"FORWARD"</c>.</li>
+          <li>Otherwise, if <c>left_dist &gt; right_dist</c>, return <c>"TURN_LEFT"</c>.</li>
+          <li>Otherwise, return <c>"TURN_RIGHT"</c>.</li>
+        </ul>
+      </p>
+      <program xml:id="ac_roomba" interactive="activecode" language="python">
+        <input>
+def steer_roomba(left_dist, front_dist, right_dist):
+    safe_dist = 0.6
+
+    # TODO: Complete the sensor logic using if/elif/else!
+    action = "STOP"
+
+    return action
+
+# Simulated Sensor Telemetry Log: (Left, Front, Right)
+telemetry = [
+    (1.0, 1.2, 0.9),  # Open space ahead
+    (0.8, 0.4, 0.3),  # Obstacle ahead, left is clearer
+    (0.2, 0.3, 0.7)   # Obstacle ahead, right is clearer
+]
+
+for i, (l, f, r) in enumerate(telemetry):
+    decision = steer_roomba(l, f, r)
+    print("Step", i+1, "| Sensors (L,F,R):", (l, f, r), "-&gt; Action:", decision)
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+</section>

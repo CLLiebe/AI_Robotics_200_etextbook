@@ -48,6 +48,26 @@
       <p>The tuning coefficient that scales how strongly proportional control responds to error.</p>
     </li>
     <li>
+      <title>Integral Control (I-Control)</title>
+      <p>A control method that accumulates past error over time and pushes the system harder the longer an error persists, often written as <m>u_i = K_i \int_0^t e(\tau)\,d\tau</m>.</p>
+    </li>
+    <li>
+      <title>Integral Gain (<m>K_i</m>)</title>
+      <p>The tuning coefficient that scales how strongly integral control responds to accumulated error.</p>
+    </li>
+    <li>
+      <title>Integral Windup</title>
+      <p>Excessive accumulated error in the integral term, typically caused by an overly high <m>K_i</m>, that causes the system to overshoot its setpoint before correcting.</p>
+    </li>
+    <li>
+      <title>Derivative Control (D-Control)</title>
+      <p>A control method that reacts to the rate of change of error to anticipate and dampen future error, often written as <m>u_d = K_d \frac{de(t)}{dt}</m>.</p>
+    </li>
+    <li>
+      <title>Derivative Gain (<m>K_d</m>)</title>
+      <p>The tuning coefficient that scales how strongly derivative control responds to the rate of change of error.</p>
+    </li>
+    <li>
       <title>PID Control</title>
       <p>A closed-loop controller combining proportional, integral, and derivative terms for improved accuracy and stability.</p>
     </li>
@@ -74,14 +94,6 @@
     <li>
       <title>LiDAR</title>
       <p>A ranging sensor that measures distance by laser reflections to build geometric environment structure.</p>
-    </li>
-    <li>
-      <title>Verification Stage</title>
-      <p>The closed-loop step where measured outcome is checked against expected outcome after acting.</p>
-    </li>
-    <li>
-      <title>Closed-Loop Robotics Pipeline</title>
-      <p>A full cycle of perception, planning, action, and verification used repeatedly during operation.</p>
     </li>
   </dl>
 </section>

@@ -1,20 +1,74 @@
 <?xml version='1.0' encoding='utf-8'?>
 
 <section xml:id="sec_artificial_potential_fields" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Artificial Potential Fields</title>
+  <title>Artificial Potential Fields: Attractors and Repellers</title>
   <introduction>
-    <p>Artificial Potential Field (APF) navigation models robot motion as movement through a virtual force landscape. The goal attracts the robot while obstacles repel it, and the resulting vector determines steering direction.</p>
+    <p>An intuitive, physics-inspired mathematical approach to reactive navigation is the <term>Artificial Potential Field (APF)</term> method.</p>
+    <p>Instead of writing long lists of if/else statements for every possible sensor combination, imagine placing the robot in an imaginary physical landscape:</p>
+    <p>
+      <ol>
+        <li><p><em class="emphasis">The Goal is an Attractor (a deep valley):</em> It exerts a continuous Attractive Force <m>F_{\text{att}}</m> pulling the robot toward the target location.</p></li>
+        <li><p><em class="emphasis">Obstacles are Repellers (steep hilltops):</em> They exert Repulsive Forces <m>F_{\text{rep}}</m> pushing the robot away when it gets too close.</p></li>
+      </ol>
+    </p>
+    <p>Picture the goal as a hole in the landscape that pulls the robot downhill toward it, and each obstacle as a hill that pushes the robot away as it climbs closer&#8212;the robot's position sits between them, pulled toward the goal and pushed away from every nearby obstacle at once.</p>
   </introduction>
 
-  <subsection xml:id="subsec_apf_components">
-    <title>Attractive and Repulsive Components</title>
-    <p>The attractive component pulls the robot toward target coordinates, often with strength proportional to distance from the goal. Each nearby obstacle contributes a repulsive component that grows stronger as clearance decreases.</p>
-    <p>The controller sums attractive and repulsive vectors to produce one net motion command, then maps that command to wheel velocities.</p>
+  <subsection xml:id="subsec_apf_applications">
+    <title>Real-World &amp; VEX Robotics Applications</title>
+    <p>
+      <ul>
+        <li><em class="emphasis">Real-World Example (Autonomous Drones &amp; Marine Ships):</em> Aerial inspection drones and autonomous cargo ships frequently use potential field concepts for local collision avoidance. A drone flying toward a GPS waypoint (attractor) will dynamically calculate repulsive force vectors around high-voltage power lines or crane towers (repellers). The drone smoothly curves around the hazard without ever stopping or losing momentum toward its destination.</li>
+        <li><em class="emphasis">Real-World Example (MagLev Train Safety Buffers):</em> High-speed magnetic levitation trains utilize magnetic repulsion principles analogous to potential fields&#8212;as the train drifts closer to a track barrier, the opposing physical field strength increases exponentially, naturally pushing the vehicle back toward the center of the lane.</li>
+        <li><em class="emphasis">VEX Robotics Example (AI Vision Target Tracking with Obstacle Safety):</em> In VEX games involving game elements (like collecting rings or balls), you can set the game element detected by a VEX AI Vision Sensor as an attractive target. Concurrently, signals from ultrasonic or distance sensors measuring nearby field barriers or opponent chassis generate repulsive forces. The VEX drivetrain continuously computes the vector sum to glide directly toward scoring objects while smoothly veering away from collisions.</li>
+      </ul>
+    </p>
   </subsection>
 
-  <subsection xml:id="subsec_local_minima_trap">
-    <title>The Local Minima Trap</title>
-    <p>A key weakness of APF methods is local minima. In some geometries, such as symmetric U-shaped barriers, repulsive forces from obstacles can exactly counter the goal attraction before the target is reached.</p>
-    <p>When the net force becomes zero away from the goal, the robot stalls at an equilibrium point. Practical systems often add escape heuristics, random perturbations, or hybrid planning layers to recover from these states.</p>
+  <subsection xml:id="subsec_apf_vector_combination">
+    <title>Resultant Vector Combination</title>
+    <p>The robot calculates the overall net force vector <m>F_{\text{total}}</m> by superimposing (adding together) the attractive force vector and all surrounding repulsive force vectors:</p>
+    <me>F_{\text{total}} = F_{\text{att}} + F_{\text{rep}}</me>
+    <p>The robot's onboard controller then translates <m>F_{\text{total}}</m> into wheel speed adjustments: steering the chassis toward the direction of the combined vector while scaling drive speed proportionally to the vector's magnitude.</p>
   </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_apf_vector_combination_check">
+      <title>Exercise 4.3.1: Vector Combination Conceptual Check</title>
+      <statement>
+        <p>A robot is moving toward a Goal directly East. An obstacle is detected directly ahead (East).</p>
+        <p>
+          <ul>
+            <li>Attractive Force (<m>F_{\text{att}}</m>): Points East (toward Goal).</li>
+            <li>Repulsive Force (<m>F_{\text{rep}}</m>): Points West (away from Obstacle) and slightly North.</li>
+          </ul>
+        </p>
+        <p>What happens when these two force vectors are added together (<m>F_{\text{total}}</m>)?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>The robot will stop moving completely.</p></statement>
+          <feedback><p>Incorrect. The forces will not cancel out perfectly because of the Northward component.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>The robot will drive directly into the obstacle.</p></statement>
+          <feedback><p>Incorrect. The repulsive force pushes the robot away from the obstacle.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>The robot will veer sideways to bypass the obstacle while continuing toward the goal.</p></statement>
+          <feedback><p>Correct! Combining the Eastward goal pull with the Northward repulsive push produces a diagonal northeast vector, causing the robot to gently steer around the obstacle.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>The robot will teleport to the goal position.</p></statement>
+          <feedback><p>Incorrect. Physical motion updates are vector-driven, not instantaneous teleportation.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
 </section>

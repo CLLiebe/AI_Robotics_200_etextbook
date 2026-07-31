@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_dataset_bias_right_turn_trap" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Dataset Bias &amp; The "Right-Turn Trap"</title>
+  <introduction>
+    <p>Because end-to-end models learn strictly from provided examples, they inherit every flaw, pattern, and imbalance present in the training data. <term>Dataset Bias</term> occurs when the training data does not evenly represent all real-world conditions the robot will encounter.</p>
+    <p>Picture a training set split into 90% Right Turns and only 10% Left Turns. From that imbalance, the robot learns "When in doubt, ALWAYS TURN RIGHT!"&#8212;and as a direct consequence, the robot fails and crashes whenever it encounters a left-hand curve.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_right_turn_trap">
+    <title>The "Right-Turn Trap"</title>
+    <p>A classic failure mode in behavioral cloning is the <term>Right-Turn Trap</term>:</p>
+    <p>
+      <ul>
+        <li>Imagine a human operator records a training dataset by driving a robot around an oval track in a clockwise direction.</li>
+        <li>In this dataset, 90% of the recorded commands are Right Turns (<m>\omega &gt; 0</m>), and only 10% are straight lines or left turns.</li>
+        <li><em class="emphasis">The Result:</em> The neural network learns a strong mathematical bias toward turning right. When deployed on a new track requiring a sharp left turn, the robot ignores the left curve visual cues and turns right directly into a wall!</li>
+      </ul>
+    </p>
+    <p><term>VEX AI Real-World Example:</term> A VEX competition team trains an end-to-end model to drive toward red game rings on the right side of the field. During a match, a red ring appears on the far left. Because the training dataset contained almost no left-steering demonstrations near field walls, the robot turns right toward empty space, missing the scoring opportunity entirely.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_mitigating_bias">
+    <title>Mitigating Bias: Data Augmentation &amp; Recovery Trajectories</title>
+    <p>To prevent dataset bias, robotics engineers use two key strategies:</p>
+    <p>
+      <ol>
+        <li>
+          <p><em class="emphasis">Data Augmentation (Flipping Images &amp; Controls):</em></p>
+          <p>Horizontally flipping a camera frame (left to right) and simultaneously negating the angular steering command (<m>\omega_{\text{new}} = -\omega</m>) creates a synthetic left-turn example from a right-turn example! This doubles dataset size and eliminates left/right bias.</p>
+        </li>
+        <li>
+          <p><em class="emphasis">Recording Recovery Trajectories:</em></p>
+          <p>If a model is trained only on perfect human driving, it never learns how to recover when it drifts near a wall. Engineers intentionally record "recovery data": placing the robot near a wall or off-center, turning on recording, and demonstrating how to steer back toward the center line.</p>
+        </li>
+      </ol>
+    </p>
+    <p>Normal driving data pairs a centered robot with driving straight ahead; recovery driving data instead pairs a robot positioned near a wall with steering sharply away from it&#8212;teaching the model a behavior it would never see if every recording started from the center of the lane.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_dataset_bias_scenarios">
+    <title>Conceptual Check: Dataset Bias Scenarios</title>
+    <p>Read each scenario below and determine the primary source of dataset bias causing the robot failure.</p>
+    <p>
+      <ol>
+        <li>
+          <p><em class="emphasis">Scenario A:</em> A delivery robot is trained on camera data collected exclusively on bright, sunny days. When deployed during a rainy evening, it fails to recognize path boundaries.</p>
+          <p><em class="emphasis">Bias Source:</em> Environmental / Lighting Bias. The training set lacked low-light and wet surface visual features.</p>
+        </li>
+        <li>
+          <p><em class="emphasis">Scenario B:</em> An automated warehouse AMR is trained by a human operator who always drives at maximum speed (1.5 m/s). When navigating tight, crowded aisles, the robot fails to slow down and collides with shelving units.</p>
+          <p><em class="emphasis">Bias Source:</em> Action Range / Operator Bias. The dataset lacked low-speed demonstration data required for tight maneuvering.</p>
+        </li>
+      </ol>
+    </p>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_image_flipping_bias_check">
+      <title>Exercise 7.3.1: Data Augmentation Conceptual Check</title>
+      <statement>
+        <p>How does horizontal image flipping combined with steering angle inversion (<m>\omega_{\text{new}} = -\omega</m>) help overcome dataset bias in end-to-end autonomous driving?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>It increases the camera resolution so the robot can see further ahead.</p></statement>
+          <feedback><p>Incorrect. Flipping an image does not change its resolution.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>It creates balanced synthetic training examples (converting right turns into left turns), preventing the model from favoring one steering direction.</p></statement>
+          <feedback><p>Correct! Flipping the image and negating the steering angle produces a valid, physically consistent left-turn example from every recorded right-turn example, balancing the dataset.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>It converts supervised regression tasks into unsupervised classification tasks.</p></statement>
+          <feedback><p>Incorrect. The task remains supervised regression; only the dataset's balance changes, not the learning paradigm.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>It reduces motor power consumption during sharp turns.</p></statement>
+          <feedback><p>Incorrect. Image flipping is a data preprocessing technique and has no effect on physical motor power consumption.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

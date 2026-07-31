@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_ros2_workspace_environment" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>The ROS 2 Workspace Environment</title>
+  <introduction>
+    <p>A <term>ROS 2 Workspace</term> is a dedicated folder structure on your filesystem where you write, build, and source custom ROS 2 packages.</p>
+    <p>The standard workspace layout follows a convention:</p>
+    <program language="text">
+      <input>
+ros2_ws/                       &lt;-- Workspace Root Directory
+├── src/                       &lt;-- Source Directory (your packages go here)
+│   └── my_robot_package/
+│       ├── package.xml        &lt;-- Package manifest (dependencies, meta-info)
+│       ├── setup.py           &lt;-- Build configuration for Python packages
+│       └── my_robot_package/
+│           ├── __init__.py
+│           └── robot_node.py
+├── build/                     &lt;-- Created automatically during build phase
+├── install/                   &lt;-- Houses compiled executables &amp; setup scripts
+└── log/                       &lt;-- Build and execution log files
+</input>
+    </program>
+  </introduction>
+
+  <subsection xml:id="subsec_build_sourcing_workflow">
+    <title>Build &amp; Sourcing Workflow</title>
+    <p>
+      <ol>
+        <li><p>Write custom code in packages within <c>ros2_ws/src/</c>.</p></li>
+        <li><p>Compile and assemble packages using <c>colcon build</c> at the workspace root directory (<c>ros2_ws/</c>).</p></li>
+        <li>
+          <p>Overlay the workspace environment onto the active shell environment by sourcing the install setup file:</p>
+          <program language="text">
+            <input>
+source install/setup.bash
+</input>
+          </program>
+        </li>
+      </ol>
+    </p>
+    <p>This step informs system environment variables (such as <c>PATH</c> and <c>PYTHONPATH</c>) where your custom nodes and message definitions live, allowing <c>ros2 run</c> command execution from any terminal path!</p>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_workspace_sourcing_check">
+      <title>Exercise 9.4.1: Workspace Sourcing Conceptual Check</title>
+      <statement>
+        <p>After creating a new ROS 2 package in <c>ros2_ws/src/</c> and building it with <c>colcon build</c>, your terminal says <c>ros2 run my_pkg my_node</c> cannot be found. What step was likely skipped?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>You forgot to restart Ubuntu.</p></statement>
+          <feedback><p>Incorrect. Restarting the operating system has no effect on whether the workspace environment variables are loaded into your shell.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>You forgot to source the workspace setup script (<c>source install/setup.bash</c>).</p></statement>
+          <feedback><p>Correct! Without sourcing <c>install/setup.bash</c>, your shell's <c>PATH</c> and <c>PYTHONPATH</c> never learn where your newly built package's executables live, so <c>ros2 run</c> cannot find them.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>You forgot to delete the <c>log/</c> folder.</p></statement>
+          <feedback><p>Incorrect. The <c>log/</c> folder only stores build and execution logs; it has no effect on whether commands are found.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>You didn't run <c>colcon build</c> inside the <c>src/</c> folder.</p></statement>
+          <feedback><p>Incorrect. <c>colcon build</c> is meant to be run at the workspace root, not inside <c>src/</c>; running it from the wrong directory would produce a build error, not a missing-command error after a successful build.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

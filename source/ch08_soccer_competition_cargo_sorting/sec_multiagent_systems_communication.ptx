@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_multiagent_systems_communication" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Introduction to Multi-Agent Systems and Communication Paradigms</title>
+  <introduction>
+    <p>Up to this point, we have treated our robot as a solitary agent working alone in its environment. However, many real-world challenges&#8212;such as searching a vast disaster area, managing an automated warehouse, or harvesting an entire agricultural field&#8212;are far too large or complex for a single robot to complete efficiently.</p>
+    <p>A <term>Multi-Agent System (MAS)</term> consists of multiple autonomous robots (agents) that interact, coordinate, and share tasks to achieve individual or collective goals.</p>
+    <p>Picture two different ways to organize a fleet of robots. In a <term>Centralized Architecture</term>, a single Central Controller sits above every agent, sending commands down to Agent A, Agent B, and Agent C individually. In a <term>Decentralized Architecture</term>, there is no central controller at all: Agent A talks directly to Agent B, and Agent C talks directly to Agent D, each pair coordinating peer-to-peer.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_centralized_vs_decentralized">
+    <title>Coordination Architectures: Centralized vs. Decentralized</title>
+    <p>When designing multi-robot systems, roboticists choose between two primary control architectures:</p>
+    <p>
+      <ol>
+        <li>
+          <p><em class="emphasis">Centralized Systems:</em> A single master computer collects data from every robot, computes all decisions, and sends back movement commands.</p>
+          <p>
+            <ul>
+              <li><em class="emphasis">Pros:</em> Optimal task allocation and globally efficient paths.</li>
+              <li><em class="emphasis">Cons:</em> Single point of failure (if the central server crashes, the whole fleet stops); heavy network bandwidth bottlenecks.</li>
+            </ul>
+          </p>
+        </li>
+        <li>
+          <p><em class="emphasis">Decentralized (Distributed) Systems:</em> Each robot runs its own decision-making logic locally based on local sensor data and short-range messages from neighboring peers.</p>
+          <p>
+            <ul>
+              <li><em class="emphasis">Pros:</em> Scalable to thousands of robots; highly robust to individual agent failures.</li>
+              <li><em class="emphasis">Cons:</em> Sub-optimal global decisions; potential for local conflicts.</li>
+            </ul>
+          </p>
+        </li>
+      </ol>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_mas_examples">
+    <title>Real-World &amp; VEX Robotics Examples</title>
+    <p>
+      <ul>
+        <li><em class="emphasis">Real-World Example (Amazon Fulfillment Warehouses):</em> Hundreds of Kiva drive units move packages across factory floors. A central cloud server assigns tasks and calculates collision-free intersection schedules (Centralized Control). However, if an unexpected obstacle appears, individual drive units use local proximity sensors to stop instantly without waiting for server confirmation (Decentralized Safety Override).</li>
+        <li><em class="emphasis">VEX Robotics Example (VEX V5 VEXnet Communication):</em> In VEX AI competitions or multi-robot cooperative labs, VEX V5 Robot Brains communicate wirelessly using VEXnet or custom peer-to-peer radio protocols. Robots share field telemetry&#8212;such as target positions or current locations&#8212;so one robot can collect game elements while its teammate blocks opponent pathways.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_mas_exercises">
+    <title>Section 8.1 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_p2p_message_handling_codelens">
+      <title>Exercise 8.1.2: CodeLens Trace &#8212; Peer-to-Peer Message Handling</title>
+      <p>Step through the execution below to observe how a robot agent updates its local knowledge table based on incoming peer messages.</p>
+      <program xml:id="cl_p2p_trace" interactive="codelens" language="python">
+        <input>
+def process_incoming_peer_messages(agent_id, local_knowledge, message_queue):
+    # Process each broadcast message from neighboring peers
+    for msg in message_queue:
+        sender = msg["sender_id"]
+
+        # Skip messages sent by self
+        if sender == agent_id:
+            continue
+
+        target_x = msg["target_x"]
+        target_y = msg["target_y"]
+
+        # Update local database with peer's claimed target
+        local_knowledge[sender] = (target_x, target_y)
+        print(f"Agent {agent_id}: Recorded target for Agent {sender} at ({target_x}, {target_y})")
+
+    return local_knowledge
+
+# Initial local state for Agent 1
+my_id = 1
+agent_knowledge = {}
+
+# Incoming radio broadcast queue
+network_queue = [
+    {"sender_id": 2, "target_x": 4.5, "target_y": 1.2},
+    {"sender_id": 1, "target_x": 0.0, "target_y": 0.0},  # Self broadcast
+    {"sender_id": 3, "target_x": 2.1, "target_y": 5.8}
+]
+
+updated_knowledge = process_incoming_peer_messages(my_id, agent_knowledge, network_queue)
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_control_architectures_check">
+      <title>Exercise 8.1.1: Control Architectures Conceptual Check</title>
+      <statement>
+        <p>Why might an engineering team choose a decentralized control architecture over a centralized server when deploying a fleet of 500 search-and-rescue drones?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Centralized systems scale better to thousands of agents because there is no network traffic.</p></statement>
+          <feedback><p>Incorrect. Centralized systems experience severe bandwidth bottlenecks as agent counts grow.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Decentralized systems prevent a single point of failure and scale better across large robot fleets.</p></statement>
+          <feedback><p>Correct! Decentralized systems lack a single point of failure; if one drone breaks or loses connection, the rest of the fleet continues operating.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Decentralized systems guarantee optimal global path routes for all agents.</p></statement>
+          <feedback><p>Incorrect. Decentralized systems make local choices that may be sub-optimal globally.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Centralized systems do not require any communication infrastructure.</p></statement>
+          <feedback><p>Incorrect. Centralized systems depend entirely on continuous communication infrastructure.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

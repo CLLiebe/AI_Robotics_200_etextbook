@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_ros2_cli_tools" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>ROS 2 Command Line Interface (CLI) Tools</title>
+  <introduction>
+    <p>To inspect, debug, and interact with a running ROS 2 graph, developers use <term>ROS 2 CLI commands</term> in the terminal.</p>
+    <p>Three of the most common CLI tools branch off from the top-level <c>ros2</c> command: <c>ros2 node list</c>, which reports the graph's nodes; <c>ros2 topic echo</c>, which streams live topic data; and <c>ros2 topic pub</c>, which injects data onto a topic.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_key_debugging_commands">
+    <title>Key Debugging Commands</title>
+    <p>
+      <ol>
+        <li>
+          <p><c>ros2 node list</c></p>
+          <p>
+            <ul>
+              <li><em class="emphasis">Behavior:</em> Queries the active ROS 2 graph and prints names of all nodes currently running across the network.</li>
+              <li><em class="emphasis">Use Case:</em> Verifying that your vision process or hardware driver actually launched properly.</li>
+            </ul>
+          </p>
+        </li>
+        <li>
+          <p><c>ros2 topic echo &lt;topic_name&gt;</c></p>
+          <p>
+            <ul>
+              <li><em class="emphasis">Behavior:</em> Subscribes to specified topic and prints live stream of incoming messages directly to terminal screen in real time.</li>
+              <li><em class="emphasis">Use Case:</em> Checking if a LiDAR node is outputting live distance readings without needing to write a separate plotting script.</li>
+            </ul>
+          </p>
+        </li>
+        <li>
+          <p><c>ros2 topic pub &lt;topic_name&gt; &lt;msg_type&gt; "&lt;data&gt;"</c></p>
+          <p>
+            <ul>
+              <li><em class="emphasis">Behavior:</em> Acts as a manual publisher from the terminal, injecting a user-specified message into the target topic once or continuously.</li>
+              <li><em class="emphasis">Use Case:</em> Testing robot response (e.g., publishing velocity commands directly to motor drivers) without running the full navigation software stack.</li>
+            </ul>
+          </p>
+        </li>
+      </ol>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_cli_matching_check">
+    <title>Section 9.3 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_cli_matching_exercise">
+      <title>Exercise 9.3.1: Conceptual Matching Check</title>
+      <p>Match each ROS 2 CLI command to its precise system behavior during debugging.</p>
+      <exercise xml:id="ex_cli_matching_check">
+        <statement>
+          <p>
+            <tabular>
+              <row header="yes">
+                <cell>CLI Command</cell>
+                <cell>Behavioral Description</cell>
+              </row>
+              <row>
+                <cell>1. <c>ros2 node list</c></cell>
+                <cell>A. Injects a user-crafted message into a specific topic to simulate or trigger behavior.</cell>
+              </row>
+              <row>
+                <cell>2. <c>ros2 topic echo</c></cell>
+                <cell>B. Scans the network and lists all currently running process entities in the computational graph.</cell>
+              </row>
+              <row>
+                <cell>3. <c>ros2 topic pub</c></cell>
+                <cell>C. Subscribes to a specified topic and prints incoming data frames live to the console stream.</cell>
+              </row>
+            </tabular>
+          </p>
+        </statement>
+        <answer>
+          <p>
+            <ul>
+              <li>1 &#8594; B (<c>ros2 node list</c> lists active nodes in the graph)</li>
+              <li>2 &#8594; C (<c>ros2 topic echo</c> displays incoming topic streams live)</li>
+              <li>3 &#8594; A (<c>ros2 topic pub</c> publishes artificial messages to a topic)</li>
+            </ul>
+          </p>
+        </answer>
+      </exercise>
+    </subsubsection>
+  </subsection>
+</section>

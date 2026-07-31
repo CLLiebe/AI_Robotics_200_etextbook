@@ -8,6 +8,10 @@
       <p>Software layer that handles discovery, message passing, and timing between separate programs so they can cooperate without direct wiring.</p>
     </li>
     <li>
+      <title>DDS (Data Distribution Service)</title>
+      <p>The underlying middleware backbone ROS2 is built on, responsible for auto-discovery and message delivery between nodes across a network.</p>
+    </li>
+    <li>
       <title>ROS2 Graph</title>
       <p>The set of running nodes and the communication links between them at a given point in time.</p>
     </li>
@@ -33,7 +37,15 @@
     </li>
     <li>
       <title>Workspace</title>
-      <p>The directory structure containing a ROS2 project's source code, build artifacts, and installed packages.</p>
+      <p>The directory structure (<c>src/</c>, <c>build/</c>, <c>install/</c>, <c>log/</c>) containing a ROS2 project's source code, build artifacts, and installed packages.</p>
+    </li>
+    <li>
+      <title><c>colcon build</c></title>
+      <p>The command run at a workspace's root directory that compiles and assembles the packages found in its <c>src/</c> folder.</p>
+    </li>
+    <li>
+      <title><c>source install/setup.bash</c></title>
+      <p>The command that overlays a workspace's install directory onto the active shell, updating environment variables like <c>PATH</c> and <c>PYTHONPATH</c> so <c>ros2 run</c> can find its packages.</p>
     </li>
     <li>
       <title><c>ros2 node list</c></title>

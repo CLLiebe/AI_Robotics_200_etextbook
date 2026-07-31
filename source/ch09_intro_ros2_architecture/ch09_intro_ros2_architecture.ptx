@@ -3,11 +3,11 @@
 <chapter xml:id="ch09_intro_ros2_architecture" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Introduction to ROS2 Architecture</title>
   <introduction>
-    <p>This chapter introduces ROS2 as the middleware framework used to connect the modular robot software you have designed conceptually in earlier chapters. You will learn the roles of nodes, topics, messages, and the workspace environment in a distributed robot application, and practice parsing structured sensor data and reading a running system's state from the command line. Understanding these foundations is a prerequisite for writing the publisher and subscriber code introduced in the next chapter.</p>
+    <p>This chapter introduces ROS 2 as the middleware framework used to connect the modular robot software you have designed conceptually in earlier chapters. You will start with why ROS 2 decouples a robot's software into separate, modular processes that communicate over DDS rather than one fragile monolithic script, then learn how nodes perform dedicated tasks and communicate anonymously over named topics using structured message definitions (.msg). From there you will practice the command-line tools&#8212;<c>ros2 node list</c>, <c>ros2 topic echo</c>, and <c>ros2 topic pub</c>&#8212;used to debug a running computational graph. The chapter closes with the ROS 2 workspace: the <c>src/</c> &#8594; <c>colcon build</c> &#8594; <c>source install/setup.bash</c> workflow used to integrate your own custom packages into the environment. Understanding these foundations is a prerequisite for writing the publisher and subscriber code introduced in the next chapter.</p>
   </introduction>
-  <xi:include href="./sec_ros2_middleware_graph.ptx" />
-  <xi:include href="./sec_nodes_topics_messages_workspace.ptx" />
-  <xi:include href="./sec_activecode_message_parsing.ptx" />
-  <xi:include href="./sec_conceptual_check_ros2_cli_tools.ptx" />
+  <xi:include href="./sec_middleware_ros2_computation_graph.ptx" />
+  <xi:include href="./sec_nodes_topics_messages.ptx" />
+  <xi:include href="./sec_ros2_cli_tools.ptx" />
+  <xi:include href="./sec_ros2_workspace_environment.ptx" />
   <xi:include href="./Glossary.ptx" />
 </chapter>

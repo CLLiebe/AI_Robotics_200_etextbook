@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 
 <section xml:id="sec_activecode_odometry_drift_simulation" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>ActiveCode Exercise: Simulating Odometer Drift Over Time</title>
+  <title>ActiveCode Exercise: Simulating Random Heading Drift</title>
   <introduction>
     <p>This exercise simulates a robot that estimates its position purely from wheel encoder readings, with no external correction. At each timestep, a small random error is added to the estimated heading and distance traveled, and students observe how these small errors accumulate into large position error over time.</p>
   </introduction>

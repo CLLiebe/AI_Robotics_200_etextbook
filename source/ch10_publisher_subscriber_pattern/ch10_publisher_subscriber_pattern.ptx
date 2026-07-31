@@ -3,12 +3,13 @@
 <chapter xml:id="ch10_publisher_subscriber_pattern" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>The Publisher/Subscriber Pattern</title>
   <introduction>
-    <p>This chapter focuses on the publisher/subscriber communication model used heavily in modern robotic software. You will analyze message flow, decoupling, and latency tradeoffs in asynchronous systems. The chapter includes practical concerns such as topic design, rate control, and data consistency. Mastering this pattern is key to building responsive, modular, and reusable robot applications.</p>
+    <p>This chapter focuses on the publisher/subscriber communication model used heavily in modern robotic software. You will start by contrasting synchronous and asynchronous communication and seeing why ROS 2's Pub/Sub pattern lets nodes broadcast and receive data without blocking on one another. From there you will write your own publisher node using <c>rclpy</c>, then write the complementary subscriber side, learning how event-driven callback functions react to incoming messages instead of polling for them. You will practice this callback pattern directly with a LaserScan safety-stop exercise, then get introduced to TurtleSim, the standard 2D simulator used to test publisher and subscriber code without physical hardware, before applying everything you've learned in a hands-on TurtleSim navigation assignment. Mastering this pattern is key to building responsive, modular, and reusable robot applications.</p>
   </introduction>
   <xi:include href="./sec_pubsub_asynchronous_communication.ptx" />
   <xi:include href="./sec_writing_publishers_subscribers.ptx" />
-  <xi:include href="./sec_parsons_cmd_vel_publisher_node.ptx" />
+  <xi:include href="./sec_writing_ros2_subscribers_callbacks.ptx" />
   <xi:include href="./sec_activecode_laserscan_safety_stop.ptx" />
+  <xi:include href="./sec_turtlesim_navigation_primer.ptx" />
   <xi:include href="./sec_homework_turtlesim_navigation.ptx" />
   <xi:include href="./Glossary.ptx" />
 </chapter>

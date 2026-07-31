@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_data_collection_training_regression_evaluation" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Data Collection, Training Loops, &amp; Regression Evaluation</title>
+  <introduction>
+    <p><term>The Data Collection Loop</term></p>
+    <p>A behavioral cloning model is only as good as the data used to train it. The end-to-end training loop follows four main steps: Record Human Drive &#8594; Preprocess Data &#8594; Train Model (Regression) &#8594; Evaluate &amp; Deploy.</p>
+    <p>
+      <ol>
+        <li><p><em class="emphasis">Recording:</em> Capture synchronized camera frames (30 Hz) and control actions <m>(v, \omega)</m>.</p></li>
+        <li><p><em class="emphasis">Preprocessing:</em> Normalize image pixel values and scale control inputs (e.g., mapping motor values to <m>[-1.0, 1.0]</m>).</p></li>
+        <li><p><em class="emphasis">Training (Regression Task):</em> Because motor outputs like velocity <m>v</m> and turn rate <m>\omega</m> are continuous numerical values, behavioral cloning treats control estimation as a regression problem. The training algorithm minimizes the difference between human actions <m>y_{\text{human}}</m> and model predictions <m>\hat{y}_{\text{model}}</m>.</p></li>
+        <li><p><em class="emphasis">Evaluation:</em> Calculate error metrics such as Mean Squared Error (MSE) before deploying the model to physical hardware.</p></li>
+      </ol>
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec_data_collection_exercises">
+    <title>Section 7.2 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_regression_evaluation_loop_activecode">
+      <title>Exercise 7.2.1: ActiveCode Exercise &#8212; Building a Motor Command Regression Evaluation Loop</title>
+      <p>Note: Because Runestone CodeLens runs standard Python without external machine learning libraries, we implement a pure-Python regression evaluation loop below!</p>
+      <p>In this exercise, you will complete a function that evaluates a trained end-to-end control model against a mock dataset of human expert steering actions <m>(v, \omega)</m>.</p>
+      <p><term>Task:</term></p>
+      <p>
+        <ol>
+          <li><p>Compute the Mean Absolute Error (MAE) between the human's linear velocity commands and the model's predicted commands.</p></li>
+          <li><p>Print whether the model passes safety evaluation (Average Error <m>&lt; 0.1</m> m/s).</p></li>
+        </ol>
+      </p>
+      <program xml:id="ac_driving_model_evaluation" interactive="activecode" language="python">
+        <input>
+def evaluate_driving_model(human_dataset, model_predictions):
+    """
+    Evaluates model accuracy against expert human driver commands.
+    Both inputs are lists of tuples: (linear_velocity_v, angular_velocity_w)
+    """
+    total_v_error = 0.0
+    total_w_error = 0.0
+    num_samples = len(human_dataset)
+
+    for i in range(num_samples):
+        v_human, w_human = human_dataset[i]
+        v_model, w_model = model_predictions[i]
+
+        # Calculate absolute errors
+        total_v_error += abs(v_human - v_model)
+        total_w_error += abs(w_human - w_model)
+
+    mae_v = total_v_error / num_samples
+    mae_w = total_w_error / num_samples
+
+    return mae_v, mae_w
+
+# Mock Dataset: (linear_velocity v in m/s, angular_velocity w in rad/s)
+human_expert_data = [
+    (0.5, 0.0),   # Drive straight
+    (0.5, 0.2),   # Slight right turn
+    (0.0, 0.0),   # Stop at obstacle
+    (0.4, -0.3),  # Left turn
+    (0.0, 0.0)    # Stop at goal
+]
+
+# Model Predictions from an End-to-End Network
+model_predictions = [
+    (0.48, 0.01),  # Close to straight
+    (0.52, 0.18),  # Close to slight right
+    (0.02, 0.00),  # Almost stopped
+    (0.38, -0.28), # Close to left turn
+    (0.01, 0.01)   # Almost stopped
+]
+
+# Evaluate performance
+error_v, error_w = evaluate_driving_model(human_expert_data, model_predictions)
+
+print(f"Linear Velocity MAE (v): {error_v:.4f} m/s")
+print(f"Angular Velocity MAE (w): {error_w:.4f} rad/s")
+
+# Safety Threshold Check
+if error_v &lt; 0.1 and error_w &lt; 0.1:
+    print("STATUS: Model Evaluation PASSED! Safe for robot deployment.")
+else:
+    print("STATUS: Model Evaluation FAILED! Error too high.")
+</input>
+      </program>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_end_to_end_pipeline_parsons">
+      <title>Exercise 7.2.2: Parsons Problem &#8212; End-to-End Data Pipeline Execution</title>
+      <p>Reorder the steps below to form the correct sequence for training and deploying an end-to-end behavioral cloning robot.</p>
+      <exercise xml:id="ex_pp_end_to_end_pipeline" indent="show" language="python">
+        <statement>
+          <p>Arrange the steps in the order they must occur to collect data, train, and deploy an end-to-end behavioral cloning model.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>Mount camera and connect human joystick controller to robot platform.</cline>
+          </block>
+          <block order="2">
+            <cline>Teleoperate the robot along target paths while recording (Camera Image, Motor Speed) data pairs.</cline>
+          </block>
+          <block order="3">
+            <cline>Preprocess dataset and normalize motor output targets.</cline>
+          </block>
+          <block order="4">
+            <cline>Train regression model to minimize difference between predicted and human motor outputs.</cline>
+          </block>
+          <block order="5">
+            <cline>Deploy trained model to robot onboard computer to drive autonomously from camera feed.</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+  </subsection>
+</section>

@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_representing_space_grid_maps_graphs" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Representing Space: Grid Maps and Graphs</title>
+  <introduction>
+    <p>Before a robot can plan a route from start to finish, it needs a way to store the world in memory. Physical environments are continuous, but computers process information best when space is broken down into discrete chunks.</p>
+    <p>Imagine a rectangular room with a single rectangular obstacle sitting inside it. To store that continuous floor plan in memory, we overlay it with a uniform grid of square cells and mark each cell with a single number: <c>0</c> where the floor is clear, and <c>1</c> wherever the cell overlaps the obstacle.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_occupancy_grid_maps">
+    <title>Occupancy Grid Maps</title>
+    <p>An <term>Occupancy Grid Map</term> divides the robot's environment into a 2D matrix of uniform square cells.</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">Free Space (0):</em> Safe for the robot to drive through.</li>
+        <li><em class="emphasis">Occupied Space (1):</em> Represents walls, furniture, or obstacles.</li>
+        <li><em class="emphasis">Unknown Space (-1 or 0.5):</em> Areas the robot's sensors haven't scanned yet.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_grid_connectivity">
+    <title>Grid Connectivity: 4-Way vs. 8-Way</title>
+    <p>When moving between cells, we define how a robot can step:</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">4-Connected Neighborhood:</em> The robot moves only up, down, left, or right (orthogonally) &#8212; its North, South, East, and West neighbors.</li>
+        <li><em class="emphasis">8-Connected Neighborhood:</em> The robot can also move diagonally, adding the Northeast, Northwest, Southeast, and Southwest neighbors to the four orthogonal ones.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_grid_maps_exercises">
+    <title>Section 3.1 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_grid_neighbors_codelens">
+      <title>Exercise 3.1.2: CodeLens Trace &#8212; Neighbor Generation</title>
+      <p>Step through the code to trace how a robot finds its valid, unblocked 4-connected neighbors on a 2D grid.</p>
+      <program xml:id="cl_neighbors" interactive="codelens" language="python">
+        <input>
+def get_valid_neighbors(grid, current_node):
+    row, col = current_node
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+
+    # 4-connected directions: Up, Down, Left, Right
+    moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    valid_neighbors = []
+
+    for dr, dc in moves:
+        r_new, c_new = row + dr, col + dc
+
+        # Check bounds
+        if 0 &lt;= r_new &lt; num_rows and 0 &lt;= c_new &lt; num_cols:
+            # Check if cell is free (0)
+            if grid[r_new][c_new] == 0:
+                valid_neighbors.append((r_new, c_new))
+
+    return valid_neighbors
+
+# Sample Map: 0 = Free, 1 = Wall
+map_grid = [
+    [0, 1, 0],
+    [0, 0, 0],
+    [1, 1, 0]
+]
+
+# Find valid moves from starting position (1, 1) - center
+neighbors = get_valid_neighbors(map_grid, (1, 1))
+print("Valid adjacent cells:", neighbors)
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_grid_indexing_check">
+      <title>Exercise 3.1.1: Map Grid Indexing Conceptual Check</title>
+      <statement>
+        <p>Given a 2D occupancy grid represented in Python as:</p>
+        <p><c>grid = [[0, 0, 0], [0, 0, 1], [0, 1, 0]]</c></p>
+        <p>What is located at <c>grid[1][2]</c> (row 1, column 2)?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Free space, because <c>grid[1][2]</c> contains a 0.</p></statement>
+          <feedback><p>Incorrect. Remember that 1 represents an occupied cell (obstacle).</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Obstacle, because <c>grid[1][2]</c> contains a 1.</p></statement>
+          <feedback><p>Correct! <c>grid[1]</c> is the second row <c>[0, 0, 1]</c>, and index 2 selects the value 1 (Obstacle).</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Unknown space, because <c>grid[1][2]</c> is out of bounds.</p></statement>
+          <feedback><p>Incorrect. Row 1, Column 2 is well within bounds of a 3x3 grid.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Free space, because 1 means clear path.</p></statement>
+          <feedback><p>Incorrect. By standard convention in occupancy grids, 1 represents an obstacle.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

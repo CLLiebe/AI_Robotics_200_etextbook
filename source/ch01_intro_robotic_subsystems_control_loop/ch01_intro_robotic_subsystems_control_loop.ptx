@@ -3,11 +3,11 @@
 <chapter xml:id="ch01_intro_robotic_subsystems_control_loop" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Introduction to Robotic Subsystems &amp; Control Loop</title>
   <introduction>
-    <p>This chapter introduces the core subsystems that appear in most robotic systems, including sensing, computation, actuation, and power. You will learn how these parts interact to turn high-level goals into physical behavior. The chapter also presents the control loop as the central organizing idea behind robotic autonomy. By the end, you should be able to describe how information and commands flow through a robot during operation.</p>
+    <p>This chapter introduces the control loop as the central organizing idea behind robotic autonomy. You will start with the Sense-Plan-Act paradigm that structures how robots turn sensor data into physical action, then contrast open-loop and closed-loop control as two fundamental approaches to commanding a robot's motion. The chapter concludes with Proportional-Integral-Derivative (PID) control, the algorithm most widely used to close that loop in practice. By the end, you should be able to describe how information and commands flow through a robot during operation, and how a PID controller combines present, past, and predicted error to keep a robot on target.</p>
   </introduction>
   <xi:include href="./sec_core_paradigms.ptx" />
   <xi:include href="./sec_control_system_foundations.ptx" />
   <xi:include href="./sec_closed_loop_control_systems.ptx" />
-  <xi:include href="./sec_sensors_actuators_pipeline.ptx" />
+  <xi:include href="./sec_pid_control_fundamentals.ptx" />
   <xi:include href="./Glossary.ptx" />
 </chapter>

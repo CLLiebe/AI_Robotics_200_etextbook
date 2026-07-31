@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_activecode_multirobot_auction_simulation" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>ActiveCode Challenge: Simulating a Multi-Robot Auction System</title>
+  <introduction>
+    <p>In this hands-on exercise, you will complete a pure Python simulation of a market-based auction system for a 2-robot fleet.</p>
+    <p>Because Runestone environments do not support external network or graphics libraries, you will use pure Python lists, dictionaries, and math functions to calculate travel distances, evaluate bids, and assign tasks.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_auction_simulation_exercises">
+    <title>Section 8.4 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_multirobot_auction_simulator">
+      <title>Exercise 8.4.1: Multi-Robot Auction Simulator</title>
+      <p>Complete the task assignment auction loop below.</p>
+      <p><term>Task:</term></p>
+      <p>
+        <ol>
+          <li>
+            <p>Complete the <c>calculate_bid</c> function to compute the Euclidean distance between a robot's current position and a task position:</p>
+            <p><m>\text{Distance} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}</m></p>
+          </li>
+          <li><p>Iterate through the task list, determine which available robot has the lowest cost bid for each task, and assign ownership accordingly!</p></li>
+        </ol>
+      </p>
+      <program xml:id="ac_auction_sim" interactive="activecode" language="python">
+        <input>
+import math
+
+def calculate_bid(robot_pos, task_pos):
+    # TODO: Return Euclidean distance between robot_pos (x,y) and task_pos (x,y)
+    rx, ry = robot_pos
+    tx, ty = task_pos
+
+    distance = math.sqrt((tx - rx)**2 + (ty - ry)**2)
+    return distance
+
+# Robot Fleet Locations
+robots = {
+    "Robot_Alpha": (1.0, 1.0),
+    "Robot_Beta": (8.0, 7.0)
+}
+
+# List of unassigned work tasks in the arena
+tasks = [
+    {"id": "Task_1", "pos": (2.0, 1.5)},
+    {"id": "Task_2", "pos": (7.0, 8.0)},
+    {"id": "Task_3", "pos": (0.5, 2.0)}
+]
+
+print("--- Executing Multi-Robot Auction Allocation ---")
+
+for task in tasks:
+    t_id = task["id"]
+    t_pos = task["pos"]
+
+    best_bidder = None
+    lowest_cost = float("inf")
+
+    # Auction evaluation loop
+    for r_name, r_pos in robots.items():
+        bid_cost = calculate_bid(r_pos, t_pos)
+        print(f"  {t_id} -&gt; {r_name} submitted bid: {bid_cost:.2f} meters")
+
+        if bid_cost &lt; lowest_cost:
+            lowest_cost = bid_cost
+            best_bidder = r_name
+
+    print(f"==&gt; RESULT: {t_id} awarded to [{best_bidder}] (Cost: {lowest_cost:.2f}m)\n")
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_conceptual_check_misclassified_cargo">
+      <title>Exercise 8.4.2: Misclassified Cargo Conceptual Check</title>
+      <statement>
+        <p>A cargo-sorting robot's vision system reports low classification confidence for an object sitting between two bins. The routing logic must decide what to do before the arm commits to a pickup.</p>
+        <p>What is the best design choice for the robot's routing logic in this situation?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>
+            <p>Pick the bin with the higher of the two possible scores, no matter how small the margin.</p>
+          </statement>
+          <feedback>
+            <p>Committing to whichever score is higher, even by a negligible margin, ignores the fact that the classifier itself reported low confidence in either answer.</p>
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            <p>Route the item to a holding zone or request another sensor reading before committing.</p>
+          </statement>
+          <feedback>
+            <p>Correct. Committing to a low-confidence classification risks an incorrect placement that is costly to reverse, so the safer design treats low confidence as its own case rather than forcing a guess between the two closest categories.</p>
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            <p>Skip the item entirely and never attempt to sort it.</p>
+          </statement>
+          <feedback>
+            <p>Permanently abandoning the item discards a task that could still be completed correctly with a second reading or a brief hold, so this throws away recoverable work.</p>
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            <p>Always default to the near-side bin regardless of classification.</p>
+          </statement>
+          <feedback>
+            <p>Ignoring the classifier output entirely and routing by convenience defeats the purpose of the vision system and will misplace cargo whenever the near-side bin is wrong.</p>
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

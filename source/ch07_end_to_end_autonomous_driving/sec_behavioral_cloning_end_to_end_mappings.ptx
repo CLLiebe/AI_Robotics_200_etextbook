@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_behavioral_cloning_end_to_end_mappings" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Behavioral Cloning &amp; End-to-End Mappings</title>
+  <introduction>
+    <p>In Chapters 5 and 6, we looked at traditional robotics pipelines where systems are divided into explicit stages: sensing, object detection, path planning, and motor control.</p>
+    <p>Now, we explore a radically different philosophy: <term>End-to-End Autonomous Driving</term>. Instead of writing hand-crafted rules or breaking driving into separate modules, can a machine learning model learn to drive directly by observing a human expert? In this chapter, we investigate behavioral cloning, pixel-to-action mappings, data collection strategies, and dataset bias.</p>
+    <p>In traditional modular robotics, control follows a strict pipeline: a camera feeds an object detector, which feeds a path planner, which feeds a motor controller, which finally drives the wheels. If any intermediate module fails (e.g., if object detection misses a sign), the whole system breaks down.</p>
+    <p><term>End-to-End Learning</term> replaces these intermediate steps with a single machine learning model (often a Deep Neural Network). The model takes raw camera/vision inputs and directly outputs motor control commands: camera and vision inputs feed straight into the end-to-end AI model, which outputs motor commands <m>(v, \omega)</m> directly&#8212;no intermediate object detector or path planner in between.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_behavioral_cloning_demonstration">
+    <title>Behavioral Cloning: Learning by Demonstration</title>
+    <p><term>Behavioral Cloning</term> is a form of supervised learning where a robot "mimics" or "clones" human expert demonstrations.</p>
+    <p>
+      <ol>
+        <li><p><em class="emphasis">Human Demonstration:</em> A human operator drives the robot using a joystick or remote controller.</p></li>
+        <li>
+          <p><em class="emphasis">Data Recording:</em> While driving, an onboard computer continuously records pairs of data:</p>
+          <p>
+            <ul>
+              <li><em class="emphasis">Input Features (<m>X</m>):</em> Raw image frames or vision sensor features.</li>
+              <li><em class="emphasis">Target Labels (<m>y</m>):</em> The human's simultaneous control inputs&#8212;linear velocity (<m>v</m>) and angular velocity (<m>\omega</m>), or left/right wheel torques.</li>
+            </ul>
+          </p>
+        </li>
+        <li><p><em class="emphasis">Training:</em> An AI model is trained on these recorded pairs until it learns to output the same steering commands as the human when presented with similar visual scenes.</p></li>
+      </ol>
+    </p>
+    <p>During the data collection phase, the human driver's joystick commands <m>(v, \omega)</m> and the onboard camera stream are recorded together in lockstep, producing a dataset of <m>(\text{Image}, v, \omega)</m> triples that the model later learns from.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_behavioral_cloning_examples">
+    <title>Real-World &amp; VEX AI Examples</title>
+
+    <subsubsection xml:id="subsubsec_pilotnet_wayve">
+      <title>Real-World Autonomous Vehicles: NVIDIA PilotNet &amp; Wayve</title>
+      <p>
+        <ul>
+          <li><em class="emphasis">NVIDIA PilotNet:</em> One of the pioneering end-to-end driving models. A car equipped with three front-facing cameras drove thousands of miles driven by humans. The neural network learned lane-keeping and road curvature steering directly from raw steering wheel angle recordings without ever being programmed with explicit lane-finding algorithms.</li>
+          <li><em class="emphasis">Wayve AI:</em> Modern autonomous delivery vans use end-to-end AI to navigate busy urban streets, learning complex maneuvers like roundabouts and pedestrian yield responses through imitation and reinforcement learning.</li>
+        </ul>
+      </p>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_vaic_applications">
+      <title>VEX AI Competition (VAIC) Applications</title>
+      <p>In high-level VEX AI matches, time during autonomous periods is critical. Rather than writing long sequences of <c>driveFor()</c> and <c>turnFor()</c> commands with manual conditional branches:</p>
+      <p>
+        <ul>
+          <li><em class="emphasis">Cloning High-Scoring Autons:</em> A team records a driver manually executing a perfect game element intake routine using a V5 controller.</li>
+          <li><em class="emphasis">Direct Sensor Mappings:</em> The vision system pairs the VEX AI Vision camera features (e.g., target tracking coordinates) directly with motor velocity outputs <m>v</m> (forward speed) and <m>\omega</m> (turning rate). The robot learns to mimic the smooth line choices of the human driver when driving toward scoring goals or game pieces.</li>
+        </ul>
+      </p>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_end_to_end_vs_modular_check">
+      <title>Exercise 7.1.1: End-to-End vs. Modular Pipeline Conceptual Check</title>
+      <statement>
+        <p>What is the primary difference between a traditional modular robotics pipeline and an end-to-end behavioral cloning pipeline?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Modular pipelines require cameras, whereas end-to-end models do not use any sensors.</p></statement>
+          <feedback><p>Incorrect. End-to-end models still rely on raw camera/vision sensor input; they just skip the intermediate hand-crafted processing stages.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>End-to-End models eliminate intermediate hand-crafted stages (like explicit object detection) by mapping sensor inputs directly to motor outputs.</p></statement>
+          <feedback><p>Correct! An end-to-end model replaces the entire chain of object detection, path planning, and motor control with a single learned mapping from raw sensor input to motor commands.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Behavioral cloning only works on 4-wheeled vehicles, while modular pipelines work on all robots.</p></statement>
+          <feedback><p>Incorrect. Behavioral cloning is a general learning approach and is not restricted to any particular wheel configuration.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Modular pipelines use supervised learning, while end-to-end pipelines use unsupervised clustering exclusively.</p></statement>
+          <feedback><p>Incorrect. Behavioral cloning is itself a form of supervised learning, trained on labeled (image, control command) pairs.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

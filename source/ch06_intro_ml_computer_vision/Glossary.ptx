@@ -4,8 +4,20 @@
   <title>Glossary</title>
   <dl>
     <li>
+      <title>Machine Learning (ML)</title>
+      <p>An approach to building robot behavior by learning patterns from data, rather than hand-coding every rule explicitly.</p>
+    </li>
+    <li>
       <title>Supervised Learning</title>
-      <p>A machine learning approach that trains a model on labeled feature-label pairs to predict outputs for new inputs.</p>
+      <p>A machine learning approach that trains a model on labeled feature-label pairs (<m>y = f(X)</m>) to predict outputs for new inputs.</p>
+    </li>
+    <li>
+      <title>Unsupervised Learning</title>
+      <p>A machine learning approach that works from features (<m>X</m>) alone, with no ground-truth labels, discovering hidden patterns or clusters (e.g., <m>k</m>-Means Clustering) based on statistical similarity.</p>
+    </li>
+    <li>
+      <title>Dataset</title>
+      <p>A collection of examples, each pairing a set of features with its correct label, fed to a machine learning algorithm.</p>
     </li>
     <li>
       <title>Feature</title>
@@ -28,16 +40,32 @@
       <p>A classification or regression model that makes predictions by following a sequence of feature-based decision rules.</p>
     </li>
     <li>
+      <title>Pixel</title>
+      <p>A single picture element in a digital image's 2D grid, the smallest unit a camera image is broken into.</p>
+    </li>
+    <li>
+      <title>Color Channel (RGB)</title>
+      <p>One of three numerical values (Red, Green, Blue), each ranging from 0 to 255, that together describe a pixel's color.</p>
+    </li>
+    <li>
+      <title>HSV (Hue, Saturation, Value)</title>
+      <p>A color space that separates a pixel's pure color type (Hue) from how vivid it is (Saturation) and how bright or dark it is (Value), making it more resilient to lighting changes than RGB.</p>
+    </li>
+    <li>
       <title>Color Thresholding</title>
       <p>An image processing technique that classifies each pixel as matching or not matching a target color range.</p>
     </li>
     <li>
-      <title>Bounding Box</title>
-      <p>The smallest rectangle that contains a detected region of interest in an image, typically defined by a corner coordinate, width, and height.</p>
+      <title>Binary Mask</title>
+      <p>The output of color thresholding: an image where pixels inside the target color range are set to 1 (white) and all others are set to 0 (black).</p>
     </li>
     <li>
-      <title>Training Set</title>
-      <p>The collection of labeled examples used to fit a machine learning model.</p>
+      <title>Bounding Box</title>
+      <p>The smallest rectangle that contains a detected region of interest in an image, defined by a top-left corner <m>(x_{\min}, y_{\min})</m> and bottom-right corner <m>(x_{\max}, y_{\max})</m>, from which width, height, and center coordinates <m>(C_x, C_y)</m> are computed.</p>
+    </li>
+    <li>
+      <title>Visual Servoing</title>
+      <p>Using visual feedback, such as a bounding box's size and center position, to guide a robot's steering and approach toward a target in real time.</p>
     </li>
   </dl>
 </section>

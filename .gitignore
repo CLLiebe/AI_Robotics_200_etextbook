@@ -5,8 +5,15 @@
 # don't track unpublished builds
 output
 
+# don't track published builds
+published
+
 # don't track assets generated from source
 generated-assets
+
+# don't track build tool caches and logs
+.cache
+logs
 
 # don't track node packages
 node_modules

@@ -1,0 +1,54 @@
+/* Move reading-question numbers inside the question box, in front of the
+   first word of the question, instead of showing them as a separate
+   heading above the box. */
+
+.reading-questions {
+    counter-reset: rq-question;
+}
+
+.reading-questions > .exercise {
+    counter-increment: rq-question;
+}
+
+.reading-questions > .exercise > .heading {
+    display: none;
+}
+
+.reading-questions .exercise-statement .para:first-child::before {
+    content: counter(rq-question) ". ";
+    font-weight: bold;
+}
+
+/* Section 1.1 only: hide the auto-numbering on the "Real-World Robotics
+   Examples" subsubsections (Self-Driving Car Engineer, etc.) while keeping
+   them as real headings/divisions. */
+#subsec_examples .subsubsection > .heading > .codenumber,
+#subsec_examples .subsubsection > .heading > .heading-divison-mark {
+    display: none;
+}
+
+/* Parsons Problems (all "Checkpoint" drag-and-drop exercises): keep the
+   draggable code blocks and the yellow drop target side by side instead of
+   letting the drop target wrap underneath the blocks on narrower pages, and
+   draw one unified border around both panels together instead of a border
+   around just the left (source) panel. */
+.sortable-code-container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: center;
+    gap: 24px;
+    border: 2px solid var(--componentBorderColor, #2b6ea6);
+    border-radius: 10px;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.sortable-code-container .sortable-code {
+    display: block;
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    border: none !important;
+    box-shadow: none !important;
+}

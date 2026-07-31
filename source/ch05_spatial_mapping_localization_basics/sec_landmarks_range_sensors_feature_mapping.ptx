@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_landmarks_range_sensors_feature_mapping" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Landmarks, Range Sensors, and Feature-Based Mapping</title>
+  <introduction>
+    <p>To combat encoder drift, robots must continuously look out at external landmarks in their environment using range sensors (e.g., LiDAR, Ultrasonic, or Vision sensors).</p>
+    <p>Picture a robot whose wheel encoders currently report a pose of <m>(x=3.0, y=1.0)</m>. It detects a known landmark, a column or wall corner, at a distance reading of <m>d = 2.1</m> meters. Because the landmark's true position is already known, this single reading resets the accumulated drift and corrects the robot's pose to <m>(x=3.1, y=0.9)</m>&#8212;independent of however much error had built up in the encoders beforehand.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_what_is_a_landmark">
+    <title>What is a Landmark?</title>
+    <p>A <term>Landmark</term> is a distinct, easily recognizable feature in the physical environment. Landmarks can be:</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">Artificial Landmarks:</em> Specially designed markers placed in the environment, such as AprilTags, QR codes, or reflective VEX vision targets.</li>
+        <li><em class="emphasis">Natural Landmarks:</em> Permanent structural features already present in the room, such as wall corners, pillars, doorframes, or distinct furniture edges.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_feature_mapping_vs_occupancy">
+    <title>Feature-Based Mapping vs. Occupancy Grids</title>
+    <p>In Chapter 3, we studied Occupancy Grid Maps, which divide space into a fixed grid of cells. In contrast, <term>Feature-Based Mapping</term> represents the world as a geometric list of discrete landmark coordinates:</p>
+    <me>\text{Map } M = \{L_1(x_1, y_1), L_2(x_2, y_2), \ldots, L_n(x_n, y_n)\}</me>
+    <p>Instead of storing thousands of empty or full grid cells, the robot only maintains the positions of high-confidence landmark features, significantly reducing computational memory usage.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_landmark_mapping_examples">
+    <title>Real-World &amp; VEX Robotics Examples</title>
+    <p>
+      <ul>
+        <li><em class="emphasis">Real-World Example (Self-Driving Cars &amp; LiDAR Mapping):</em> Self-driving vehicles match live LiDAR point clouds against pre-mapped 3D features (such as retroreflective highway signs and traffic light poles). When the car's wheel odometry drifts slightly, detecting a known landmark immediately recalibrates the car's position back to millimeter precision.</li>
+        <li><em class="emphasis">Real-World Example (Vacuum Robots &amp; Optical Ceiling Tracking):</em> High-end robotic vacuums feature upward-pointing optical cameras that track distinct feature points on household ceilings (light fixtures, structural beams) to correct floor wheel drift.</li>
+        <li><em class="emphasis">VEX Robotics Example (VEX AI Vision &amp; AprilTag Tracking):</em> A VEX robot equipped with a VEX AI Vision Sensor can identify known colored game elements or AprilTags posted on field walls. When the robot detects an AprilTag at a known position <m>(x_{\text{tag}}, y_{\text{tag}})</m>, it calculates its distance and angle to that tag, instantly resetting any accumulated wheel encoder drift before making a turn.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_landmark_mapping_exercises">
+    <title>Section 5.2 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_feature_map_lookup_parsons">
+      <title>Exercise 5.2.2: Parsons Problem &#8212; Feature Map Lookup Function</title>
+      <p>Reorder the Python code blocks below to construct a function that searches a feature map and finds the nearest landmark to a robot's estimated position.</p>
+      <exercise xml:id="ex_pp_map_lookup" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks to form a complete function <c>find_nearest_landmark</c> that returns the closest landmark ID and distance from a robot's position.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>import math</cline>
+          </block>
+          <block order="2">
+            <cline>def find_nearest_landmark(robot_pos, feature_map):</cline>
+          </block>
+          <block order="3">
+            <cline>    rx, ry = robot_pos</cline>
+            <cline>    closest_landmark = None</cline>
+            <cline>    min_dist = float("inf")</cline>
+          </block>
+          <block order="4">
+            <cline>    for lm_id, (lx, ly) in feature_map.items():</cline>
+            <cline>        # Calculate Euclidean distance to landmark</cline>
+            <cline>        dist = math.sqrt((lx - rx)**2 + (ly - ry)**2)</cline>
+          </block>
+          <block order="5">
+            <cline>        if dist &lt; min_dist:</cline>
+            <cline>            min_dist = dist</cline>
+            <cline>            closest_landmark = lm_id</cline>
+          </block>
+          <block order="6">
+            <cline>    return closest_landmark, min_dist</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_landmark_selection_check">
+      <title>Exercise 5.2.1: Landmark Selection Conceptual Check</title>
+      <statement>
+        <p>Which of the following objects serves as the most effective natural landmark for a mobile robot's feature map?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>A moving human walking through a hallway.</p></statement>
+          <feedback><p>Incorrect. Moving humans shift position constantly and cannot serve as fixed spatial references.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>A stationary, distinct vertical support column in a warehouse.</p></statement>
+          <feedback><p>Correct! Stationary, permanent structural features provide reliable, repeatable reference coordinates for map creation and drift correction.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>A pile of small cardboard boxes that are periodically re-stacked.</p></statement>
+          <feedback><p>Incorrect. Frequently moved objects lead to inconsistent map representations.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>A rolling office chair on wheels.</p></statement>
+          <feedback><p>Incorrect. Mobile items on wheels shift position and corrupt map accuracy.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

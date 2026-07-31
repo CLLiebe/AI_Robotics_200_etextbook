@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 
 <section xml:id="sec_activecode_reactive_wall_avoidance_state_machine" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>ActiveCode Exercise: Reactive Wall Avoidance State Machine</title>
+  <title>ActiveCode Exercise: Reactive Wall Avoidance Steering Logic</title>
   <introduction>
     <p>This exercise models a reactive controller that uses three distance inputs: left, front, and right. The goal is to return one steering command at each update step: move forward, steer left, or steer right.</p>
   </introduction>

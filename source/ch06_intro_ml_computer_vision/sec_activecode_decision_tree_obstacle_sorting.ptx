@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_activecode_decision_tree_obstacle_sorting" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>ActiveCode Challenge: Decision Tree Classifier for Obstacle Sorting</title>
+  <introduction>
+    <p>In this exercise, you will build a pure Python decision tree classification loop. Standard Runestone CodeLens and ActiveCode environments do not support external libraries like <c>scikit-learn</c> or <c>opencv</c>. Therefore, you will write pure Python logic that mimics a decision tree classifier to sort data coordinates into "obstacle" or "free space".</p>
+  </introduction>
+
+  <subsection xml:id="subsec_decision_tree_obstacle_sorting_exercises">
+    <title>Section 6.4 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_decision_tree_classifier_challenge">
+      <title>Exercise 6.4.1: Decision Tree Classifier Challenge</title>
+      <p>Complete the decision tree classifier below to sort incoming coordinate telemetry into "OBSTACLE" vs. "FREE_SPACE".</p>
+      <p><term>Task:</term></p>
+      <p>
+        <ol>
+          <li>
+            <p>Complete the <c>predict_decision_tree</c> function according to these decision rules:</p>
+            <p>
+              <ul>
+                <li>If <c>x_coord &lt; 2.0</c> AND <c>y_coord &lt; 2.0</c>, classify as <c>"OBSTACLE"</c>.</li>
+                <li>Otherwise, classify as <c>"FREE_SPACE"</c>.</li>
+              </ul>
+            </p>
+          </li>
+          <li><p>Run the script to evaluate the accuracy of your classifier against the test dataset!</p></li>
+        </ol>
+      </p>
+      <program xml:id="ac_decision_tree" interactive="activecode" language="python">
+        <input>
+def predict_decision_tree(x_coord, y_coord):
+    # TODO: Implement decision tree logic
+    # Rule: If x &lt; 2.0 AND y &lt; 2.0 -&gt; return "OBSTACLE"
+    # Otherwise -&gt; return "FREE_SPACE"
+
+    predicted_label = "FREE_SPACE"
+    return predicted_label
+
+# Telemetry Test Dataset: List of ((x, y), ground_truth_label)
+test_dataset = [
+    ((0.5, 1.2), "OBSTACLE"),
+    ((3.1, 0.8), "FREE_SPACE"),
+    ((1.8, 1.9), "OBSTACLE"),
+    ((2.5, 4.0), "FREE_SPACE"),
+    ((0.2, 3.5), "FREE_SPACE")
+]
+
+print("--- Running Decision Tree Classifier Evaluation ---")
+correct_predictions = 0
+
+for i, (coords, true_label) in enumerate(test_dataset):
+    x, y = coords
+    pred_label = predict_decision_tree(x, y)
+
+    is_correct = (pred_label == true_label)
+    if is_correct:
+        correct_predictions += 1
+
+    print(f"Sample {i+1}: Coords=({x}, {y}) | True={true_label:10s} | Pred={pred_label:10s} | Match={is_correct}")
+
+accuracy = (correct_predictions / len(test_dataset)) * 100.0
+print(f"\nClassifier Accuracy: {accuracy:.1f}%")
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+</section>

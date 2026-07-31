@@ -12,6 +12,22 @@
       <p>Immediate rule-based response to sensed conditions.</p>
     </li>
     <li>
+      <title>Finite State Machine (FSM)</title>
+      <p>A way of structuring reactive control as a set of discrete, mutually exclusive states, avoiding disorganized if/else "spaghetti code."</p>
+    </li>
+    <li>
+      <title>State</title>
+      <p>One discrete mode of robot behavior within an FSM (for example, <c>DRIVE_FORWARD</c> or <c>TURN_LEFT</c>), active until a transition condition is met.</p>
+    </li>
+    <li>
+      <title>Transition</title>
+      <p>A change from one FSM state to another, triggered by a specific sensor reading crossing a defined threshold.</p>
+    </li>
+    <li>
+      <title>Distance Sensor Array</title>
+      <p>Multiple distance sensors (for example, Left, Front, and Right) combined to give a robot a wide local perception field, enabling it to decide which direction to turn rather than only when to stop.</p>
+    </li>
+    <li>
       <title>Decision Rule</title>
       <p>A conditional rule (for example, if-then) that selects actions from sensor measurements.</p>
     </li>
@@ -25,27 +41,27 @@
     </li>
     <li>
       <title>Artificial Potential Fields (APF)</title>
-      <p>Navigation method using virtual attractive and repulsive forces to guide motion.</p>
+      <p>Navigation method that treats the goal as an attractor and obstacles as repellers, using virtual attractive and repulsive forces to guide motion.</p>
     </li>
     <li>
-      <title>Attractive Force</title>
+      <title>Attractive Force (<m>F_{\text{att}}</m>)</title>
       <p>Virtual force that pulls the robot toward a goal state.</p>
     </li>
     <li>
-      <title>Repulsive Force</title>
+      <title>Repulsive Force (<m>F_{\text{rep}}</m>)</title>
       <p>Virtual force that pushes the robot away from obstacles.</p>
     </li>
     <li>
-      <title>Net Force Vector</title>
-      <p>Combined motion influence after summing attractive and repulsive effects.</p>
+      <title>Net Force Vector (<m>F_{\text{total}}</m>)</title>
+      <p>The combined steering influence after summing the attractive and all repulsive force vectors: <m>F_{\text{total}} = F_{\text{att}} + F_{\text{rep}}</m>.</p>
     </li>
     <li>
       <title>Local Minima Trap</title>
-      <p>APF failure mode where net force becomes approximately zero before reaching the goal.</p>
+      <p>APF and other purely reactive failure mode where <m>F_{\text{att}} + F_{\text{rep}} = 0</m> before the goal is reached, leaving the robot frozen or oscillating with no sensed way out.</p>
     </li>
     <li>
-      <title>Bug Algorithms</title>
-      <p>Boundary-following obstacle navigation methods often contrasted with potential-field navigation.</p>
+      <title>Hybrid Architecture</title>
+      <p>A navigation design that combines a global planner (such as A*) to avoid choosing a path into a trap, with a local reactive controller (FSM or vector avoidance) to handle dynamic obstacles along that path.</p>
     </li>
     <li>
       <title>Dynamic Environment</title>

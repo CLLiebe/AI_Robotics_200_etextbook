@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_multirobot_task_allocation_fleet_coordination" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Multi-Robot Task Allocation (MRTA) and Fleet Coordination</title>
+  <introduction>
+    <p>When multiple robots work together, a fundamental management challenge arises: <em class="emphasis">Which robot should perform which task?</em></p>
+    <p>This is known as the <term>Multi-Robot Task Allocation (MRTA)</term> problem.</p>
+    <p>Picture two robots and two available tasks, Pick Ring A and Pick Ring B. Robot 1 sits close to Ring A (1.2 m) but far from Ring B (4.5 m), while Robot 2 sits far from Ring A (3.8 m) but close to Ring B (0.8 m). Matching each robot to the task it is closest to, rather than assigning both robots to the same ring, produces the most efficient overall assignment: Robot 1 takes Ring A, and Robot 2 takes Ring B.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_market_based_auction">
+    <title>Market-Based Auction Protocols</title>
+    <p>One of the most popular methods for decentralized task allocation is the <term>Market-Based (Auction) Protocol</term>:</p>
+    <p>
+      <ol>
+        <li><p><em class="emphasis">Task Announcement:</em> A task (e.g., "Collect game piece at <m>(x = 2, y = 5)</m>") is broadcast to the fleet.</p></li>
+        <li><p><em class="emphasis">Bidding:</em> Each available robot calculates its Cost/Bid to complete the task based on its current distance, battery level, or tool capability. Lower distance/cost = better bid.</p></li>
+        <li><p><em class="emphasis">Awarding:</em> The robot with the lowest cost bid wins the contract and claims ownership of the task.</p></li>
+      </ol>
+    </p>
+    <p>In this scheme, an Auctioneer Agent broadcasts Task A to every Bidder Agent in the fleet. Each bidder replies with its own cost bid&#8212;for example, Robot 1 bids 8 and Robot 2 bids 2. Because Robot 2's bid is lower, the auctioneer awards Task A to Robot 2, the winner.</p>
+  </subsection>
+
+  <subsection xml:id="subsec_priority_traffic_control">
+    <title>Traffic Control: Priority-Based Intersection Management</title>
+    <p>When multiple robots share the same physical floor space, two robots will eventually want to occupy the exact same coordinate at the same time.</p>
+    <p>To prevent gridlock, multi-robot coordinators use <term>Priority Rules</term>:</p>
+    <p>
+      <ul>
+        <li><em class="emphasis">Fixed Priority:</em> Robots with critical or time-sensitive tasks (e.g., carrying a heavy load or running low on battery) are granted right-of-way.</li>
+        <li><em class="emphasis">First-Come, First-Served:</em> The first robot to reserve an intersection block claims the space; other robots pause at wait-lines outside the block until it clears.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_mrta_examples">
+    <title>Real-World &amp; VEX Robotics Examples</title>
+    <p>
+      <ul>
+        <li><em class="emphasis">Real-World Example (Autonomous Container Terminals):</em> Port terminals like those in Rotterdam use market auctions to coordinate dozens of Automated Guided Vehicles (AGVs) carrying shipping containers. When a crane unloads a ship, AGVs submit bids based on their current proximity and battery status. The optimal AGV receives the job instantly.</li>
+        <li><em class="emphasis">VEX Robotics Example (2v2 VEX Alliance Coordination):</em> During two-robot alliance strategy in VEX competitions, one robot might be configured with a mobile goal clamp while its alliance partner has an elevated ring intake. The team allocates tasks dynamically: Robot A handles goal transport (low cost for heavy pushing), while Robot B focuses on scoring rings (low cost for high reach).</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_task_allocation_auction_check">
+      <title>Exercise 8.3.1: Task Allocation Auction Logic</title>
+      <statement>
+        <p>Three robots bid on a task located at coordinate <m>(x = 3.0, y = 0.0)</m>:</p>
+        <p>
+          <ul>
+            <li>Robot A is at <m>(0.0, 0.0)</m> &#8594; Distance Cost = 3.0</li>
+            <li>Robot B is at <m>(2.0, 0.0)</m> &#8594; Distance Cost = 1.0</li>
+            <li>Robot C is at <m>(8.0, 0.0)</m> &#8594; Distance Cost = 5.0</li>
+          </ul>
+        </p>
+        <p>Under a standard lowest-cost market auction protocol, which robot is awarded the task?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Robot A wins because it submitted its bid first.</p></statement>
+          <feedback><p>Incorrect. Auctions evaluate cost bids, not submission timing order.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Robot C wins because it has the highest score number.</p></statement>
+          <feedback><p>Incorrect. Higher distance costs represent lower efficiency.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Robot B wins because it has the lowest execution cost (closest distance).</p></statement>
+          <feedback><p>Correct! Robot B has the lowest cost bid (distance of 1.0), making it the most efficient choice to handle the task.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Robot A and Robot B split the task in half.</p></statement>
+          <feedback><p>Incorrect. Individual tasks are assigned to a single winning bidder.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

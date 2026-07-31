@@ -3,10 +3,11 @@
 <chapter xml:id="ch02_robot_kinematics_coordinate_spaces" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Robot Kinematics &amp; Coordinate Spaces</title>
   <introduction>
-    <p>This chapter develops the geometric language needed to model robot motion. You will work with coordinate frames, transformations, and the distinction between forward and inverse kinematics. These tools let us move between joint-level commands and task-space goals. A strong kinematics foundation is essential for planning, control, and perception in later chapters.</p>
+    <p>This chapter develops the geometric language needed to model robot motion. You will start by defining a robot's pose and the coordinate frames used to describe it, then move to differential drive forward kinematics, which predicts robot motion from wheel speeds. From there you will work backward with inverse kinematics, converting a desired body velocity into the wheel speeds needed to produce it, and finish by examining the turning geometry those wheel speeds trace out, including the Instantaneous Center of Rotation and radius of curvature. These tools let us move between joint-level commands and task-space goals, and they form the geometric foundation for planning, control, and perception in later chapters.</p>
   </introduction>
-  <xi:include href="./sec_kinematic_configurations_differential_drive.ptx" />
-  <xi:include href="./sec_forward_kinematics_odometry.ptx" />
-  <xi:include href="./sec_inverse_kinematics_applications.ptx" />
+  <xi:include href="./sec_coordinate_spaces_robot_pose.ptx" />
+  <xi:include href="./sec_differential_drive_forward_kinematics.ptx" />
+  <xi:include href="./sec_inverse_kinematics_wheel_velocity_commands.ptx" />
+  <xi:include href="./sec_turning_geometry_radius_curvature.ptx" />
   <xi:include href="./Glossary.ptx" />
 </chapter>

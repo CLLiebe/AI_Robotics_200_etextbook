@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_pathfinding_heuristics_estimating_distance" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Pathfinding Heuristics: Estimating Distance</title>
+  <introduction>
+    <p>When searching a large grid map, how does a robot decide which direction to try first? It uses a <term>Heuristic function</term>, denoted as <m>h(n)</m>.</p>
+    <p>A heuristic is an educated guess that estimates the remaining distance from any given cell <m>n</m> to the goal cell.</p>
+    <p>On a 4-connected grid, a path from a start cell <m>S</m> to a goal cell <m>G</m> must zig-zag along orthogonal grid lines, so its length is the sum of horizontal and vertical steps taken. On an open continuous space, the same trip could instead be measured as one straight diagonal line directly from <m>S</m> to <m>G</m>. These two ways of measuring distance, stair-stepped along grid lines versus a direct straight line, correspond to the two most common heuristics used in grid-based pathfinding.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_common_distance_metrics">
+    <title>Common Distance Metrics</title>
+
+    <subsubsection xml:id="subsubsec_manhattan_distance">
+      <title>Manhattan Distance (<m>h_{\text{manhattan}}</m>)</title>
+      <p>
+        <ul>
+          <li><em class="emphasis">When to use:</em> When the robot can only move in 4 orthogonal directions (up, down, left, right).</li>
+          <li><em class="emphasis">Intuition:</em> Sum of absolute horizontal and vertical differences (like walking along city blocks).</li>
+          <li><em class="emphasis">Formula:</em></li>
+        </ul>
+      </p>
+      <me>h(n) = |x_n - x_{\text{goal}}| + |y_n - y_{\text{goal}}|</me>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_euclidean_distance">
+      <title>Euclidean Distance (<m>h_{\text{euclidean}}</m>)</title>
+      <p>
+        <ul>
+          <li><em class="emphasis">When to use:</em> When the robot can move in any continuous direction or at arbitrary angles.</li>
+          <li><em class="emphasis">Intuition:</em> Straight-line distance ("as the crow flies").</li>
+          <li><em class="emphasis">Formula:</em></li>
+        </ul>
+      </p>
+      <me>h(n) = \sqrt{(x_n - x_{\text{goal}})^2 + (y_n - y_{\text{goal}})^2}</me>
+    </subsubsection>
+  </subsection>
+
+  <subsection xml:id="subsec_heuristics_exercises">
+    <title>Section 3.2 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_manhattan_heuristic_parsons">
+      <title>Exercise 3.2.2: Parsons Problem &#8212; Manhattan Heuristic Function</title>
+      <p>Construct a Python function that takes a current cell position <c>(r1, c1)</c> and goal position <c>(r2, c2)</c> and calculates the Manhattan distance heuristic.</p>
+      <exercise xml:id="ex_pp_manhattan" indent="show" language="python">
+        <statement>
+          <p>Arrange the blocks to form a complete function <c>manhattan_heuristic</c> that computes the Manhattan distance heuristic between a current cell and a goal cell.</p>
+        </statement>
+        <blocks>
+          <block order="1">
+            <cline>def manhattan_heuristic(current, goal):</cline>
+          </block>
+          <block order="2">
+            <cline>r1, c1 = current</cline>
+            <cline>r2, c2 = goal</cline>
+          </block>
+          <block order="3">
+            <cline>row_diff = abs(r1 - r2)</cline>
+            <cline>col_diff = abs(c1 - c2)</cline>
+          </block>
+          <block order="4">
+            <cline>h_cost = row_diff + col_diff</cline>
+          </block>
+          <block order="5">
+            <cline>return h_cost</cline>
+          </block>
+        </blocks>
+      </exercise>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_selecting_right_heuristic">
+      <title>Exercise 3.2.1: Selecting the Right Heuristic</title>
+      <statement>
+        <p>A robot is navigating a grid using strict 4-connected movement (no diagonal steps allowed). Which heuristic function is most appropriate for estimating the remaining path cost to the goal?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement><p>Manhattan Distance, because movement is constrained to orthogonal grid steps.</p></statement>
+          <feedback><p>Correct! Manhattan distance accurately measures distance along orthogonal grid lines without underestimating or relying on impossible diagonal cuts.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Euclidean Distance, because straight-line distance is always faster to calculate.</p></statement>
+          <feedback><p>Incorrect. Euclidean distance represents straight-line cuts across diagonal cells, which the robot cannot actually take in a 4-connected setup.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Manhattan Distance, because diagonal movement is allowed in 4-connected grids.</p></statement>
+          <feedback><p>Incorrect. 4-connected grids explicitly forbid diagonal moves.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Euclidean Distance, because Manhattan distance underestimates the distance on a grid.</p></statement>
+          <feedback><p>Incorrect. Manhattan distance does not underestimate orthogonal grid paths.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>

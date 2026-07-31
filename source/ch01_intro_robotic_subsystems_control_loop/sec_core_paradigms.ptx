@@ -27,6 +27,11 @@
 			<p><em class="emphasis">Professional role:</em> Autonomous vehicle engineers often focus on robust perception algorithms for object and scene understanding.</p>
 		</subsubsection>
 
+		<figure align="center" xml:id="fig_autonomous_vehicles">
+			<caption>Inside a self-driving car.</caption>
+			<image source="ch01_intro_robotic_subsystems_control_loop/self-driving_car.jpeg" width="45%" alt="Inside a self-driving car"/>
+		</figure>
+
 		<subsubsection xml:id="subsubsec_warehouse_robotics">
 			<title>Warehouse Robotics Engineer</title>
 			<p><em class="emphasis">Sense:</em> Barcode scanners, cameras, floor markers, and proximity sensors support localization and detection.</p>
@@ -34,6 +39,11 @@
 			<p><em class="emphasis">Act:</em> Robots drive, lift racks, and deliver items to stations.</p>
 			<p><em class="emphasis">Professional role:</em> Logistics robotics engineers design path-planning and fleet-coordination software for dense shared spaces.</p>
 		</subsubsection>
+
+		<figure align="center" xml:id="fig_warehouse_robotics">
+			<caption>Warehouse robotics in action.</caption>
+			<image source="ch01_intro_robotic_subsystems_control_loop/warehouse_robot.jpeg" width="45%" alt="Warehouse robotics in action"/>
+		</figure>
 
 		<subsubsection xml:id="subsubsec_agricultural_robotics">
 			<title>Agricultural Robotics Engineer</title>
@@ -43,6 +53,11 @@
 			<p><em class="emphasis">Professional role:</em> Agricultural robotics engineers combine sensing and control to improve yield and reduce resource waste.</p>
 		</subsubsection>
 
+		<figure align="center" xml:id="fig_agricultural_robotics">
+			<caption>An agricultural robot at work in a field.</caption>
+			<image source="ch01_intro_robotic_subsystems_control_loop/ag_robot.jpeg" width="45%" alt="An agricultural robot at work in a field"/>
+		</figure>
+
 		<subsubsection xml:id="subsubsec_surgical_robotics">
 			<title>Surgical Robotics Engineer</title>
 			<p><em class="emphasis">Sense:</em> Sensors track instrument pose, camera views, and applied force.</p>
@@ -50,6 +65,11 @@
 			<p><em class="emphasis">Act:</em> The robot repositions tools and executes precise, constrained movements.</p>
 			<p><em class="emphasis">Professional role:</em> Medical robotics engineers develop safety-critical systems where reliability is mandatory.</p>
 		</subsubsection>
+
+		<figure align="center" xml:id="fig_surgical_robotics">
+			<caption>A surgical robot performing a precise procedure.</caption>
+			<image source="ch01_intro_robotic_subsystems_control_loop/surgical_robot.jpeg" width="45%" alt="A surgical robot performing a precise procedure"/>
+		</figure>
 
 		<subsubsection xml:id="subsubsec_space_robotics">
 			<title>Planetary Exploration Engineer</title>
@@ -59,6 +79,11 @@
 			<p><em class="emphasis">Professional role:</em> Space robotics engineers build autonomous decision systems because communication delay limits direct human control.</p>
 		</subsubsection>
 
+		<figure align="center" xml:id="fig_space_robotics">
+			<caption>A planetary exploration rover on the lunar surface.</caption>
+			<image source="ch01_intro_robotic_subsystems_control_loop/moon_robot.jpeg" width="45%" alt="A planetary exploration rover on the lunar surface"/>
+		</figure>
+
 		<subsubsection xml:id="subsubsec_manufacturing_robotics">
 			<title>Industrial Manufacturing Engineer</title>
 			<p><em class="emphasis">Sense:</em> Vision and position systems identify parts, orientation, and conveyor state.</p>
@@ -66,21 +91,166 @@
 			<p><em class="emphasis">Act:</em> Robotic arms weld, tighten, paint, and assemble components.</p>
 			<p><em class="emphasis">Professional role:</em> Manufacturing automation engineers optimize repeatable, high-throughput robot motions.</p>
 		</subsubsection>
+
+		<figure align="center" xml:id="fig_manufacturing_robotics">
+			<caption>An industrial manufacturing robot on the assembly line.</caption>
+			<image source="ch01_intro_robotic_subsystems_control_loop/manufacturing_robot.jpeg" width="45%" alt="An industrial manufacturing robot on the assembly line"/>
+		</figure>
 	</subsection>
 
 	<subsection xml:id="subsec_career_comparison">
 		<title>Comparing Robotics Careers</title>
 		<p>Across domains, the specific sensors and actuators differ, but the same paradigm appears: sense the environment, plan the next step, and act through control. This common structure helps engineers transfer methods between applications such as driving, warehousing, medicine, and exploration.</p>
+		<p>Robotics engineering offers several exciting career paths. One option is becoming a robotics engineer, where you design, build, and test robotic systems. These engineers work with mechanical components, sensors, and control systems to create robots that can perform specific tasks in industries such as manufacturing, healthcare, and defense.</p>
+
+		<p>Another career is robotics software engineering. In this role, you focus on the programming side of robotics by developing the software that controls how robots move, interact with their environment, and make decisions. Robotics software engineers often work with technologies like artificial intelligence, computer vision, and machine learning to make robots smarter and more capable.</p>
+
+		<p>A third option is becoming an automation engineer. Automation engineers use robots and other advanced technologies to improve efficiency in manufacturing and industrial settings. They design and maintain automated systems that help businesses increase productivity, improve quality, and reduce the need for repetitive manual tasks.</p>
+
+		<p>All three careers combine problem-solving, technology, and innovation, making robotics engineering a fast-growing and rewarding field for people interested in engineering and computer science.</p>
 	</subsection>
 
-	<subsection xml:id="subsec_review_questions">
-		<title>Review Questions</title>
-		<ol>
-			<li><p><em class="emphasis">Sense phase:</em> A robotic vacuum cleaner is cleaning a living room. Which sensors are most relevant in the sense phase: wheels and drive motors, cameras and infrared sensors, vacuum brush, or charging dock?</p></li>
-			<li><p><em class="emphasis">Plan phase:</em> After detecting a chair in its path, what decision should the vacuum make before acting?</p></li>
-			<li><p><em class="emphasis">Act phase:</em> Which behavior belongs to the act phase: detecting furniture, building a map, computing a path, or physically turning and moving around obstacles?</p></li>
-			<li><p><em class="emphasis">Environment feedback:</em> Why must a robot continuously update sensor data instead of following one fixed plan from start to finish?</p></li>
-			<li><p><em class="emphasis">Application:</em> A vacuum detects a pet in the hallway. Write the correct Sense-Plan-Act sequence that leads to safe navigation around the pet.</p></li>
-		</ol>
-	</subsection>
+	<reading-questions>
+		<introduction>
+			<p>
+				<term>Check your understanding</term>
+			</p>
+		</introduction>
+
+		<exercise label="ex_review_sense_phase">
+			<statement>
+				<p>A robotic vacuum cleaner is navigating a living room. Which set of components is most relevant to the Sense phase?</p>
+			</statement>
+			<choices>
+				<choice>
+					<statement><p>Wheels and drive motors</p></statement>
+					<feedback><p>Wheels and drive motors are actuators used during the Act phase, not sensors.</p></feedback>
+				</choice>
+				<choice correct="yes">
+					<statement><p>Cameras and infrared sensors</p></statement>
+					<feedback><p>Correct. The Sense phase relies on sensors to gather environmental data. Cameras and infrared sensors detect physical obstacles and boundaries, whereas wheels, motors, and brushes are actuators (Act phase).</p></feedback>
+				</choice>
+				<choice>
+					<statement><p>Vacuum brush and suction motor</p></statement>
+					<feedback><p>The vacuum brush and suction motor are actuators that execute cleaning, which belongs to the Act phase.</p></feedback>
+				</choice>
+				<choice>
+					<statement><p>Charging dock and battery terminals</p></statement>
+					<feedback><p>The charging dock and battery terminals support power management, not environmental sensing.</p></feedback>
+				</choice>
+			</choices>
+		</exercise>
+
+		<exercise label="ex_review_plan_phase">
+			<statement>
+				<p>A robotic vacuum detects a chair directly in its path. Which decision should the robot's logic system make during the Plan phase before taking action?</p>
+			</statement>
+			<choices>
+				<choice>
+					<statement><p>Immediately shut down power to all drive motors.</p></statement>
+					<feedback><p>Shutting down all motors is an extreme Act-phase response, not a planning decision.</p></feedback>
+				</choice>
+				<choice correct="yes">
+					<statement><p>Calculate an alternative navigation path that routes around the chair.</p></statement>
+					<feedback><p>Correct. The Plan phase involves decision-making and path generation based on sensor inputs. Upon detecting an obstacle, the system processes the state and determines the safest path around it before sending signals to the motors.</p></feedback>
+				</choice>
+				<choice>
+					<statement><p>Engage maximum brush rotation speed to clear space.</p></statement>
+					<feedback><p>Increasing brush speed is an actuator command (Act phase) and would not resolve an obstacle in the path.</p></feedback>
+				</choice>
+				<choice>
+					<statement><p>Send a signal to the infrared sensor to measure distance again.</p></statement>
+					<feedback><p>Re-measuring distance is a Sense-phase action, not a planning decision.</p></feedback>
+				</choice>
+			</choices>
+		</exercise>
+
+		<exercise label="ex_review_act_phase">
+			<statement>
+				<p>Which of the following behaviors belongs strictly to the Act phase of a mobile robot?</p>
+			</statement>
+			<choices>
+				<choice>
+					<statement><p>Detecting furniture using ultrasonic pulses</p></statement>
+					<feedback><p>Detecting furniture via ultrasonic pulses is a Sense-phase action.</p></feedback>
+				</choice>
+				<choice>
+					<statement><p>Building a topological map of the floorplan</p></statement>
+					<feedback><p>Building a map is part of the Plan phase, where the robot organizes sensor data into a usable representation.</p></feedback>
+				</choice>
+				<choice>
+					<statement><p>Computing the shortest route to the charging station</p></statement>
+					<feedback><p>Computing a route is a planning decision made before any motor commands are issued.</p></feedback>
+				</choice>
+				<choice correct="yes">
+					<statement><p>Physically turning wheel motors to steer around obstacles</p></statement>
+					<feedback><p>Correct. The Act phase executes decisions in the physical world through actuators. Steering motor outputs represent mechanical execution, whereas detecting is Sense, and mapping/computing route are Plan.</p></feedback>
+				</choice>
+			</choices>
+		</exercise>
+
+		<exercise label="ex_review_feedback_loop">
+			<statement>
+				<p>Why must a robot continuously update its sensor data in a loop instead of executing one fixed plan from start to finish?</p>
+			</statement>
+			<choices>
+				<choice>
+					<statement><p>Fixed plans consume significantly more computing memory than real-time sensing loops.</p></statement>
+					<feedback><p>Memory consumption is not the reason continuous sensing loops are needed.</p></feedback>
+				</choice>
+				<choice>
+					<statement><p>Sensor readings are only valid for one loop cycle before they are permanently erased.</p></statement>
+					<feedback><p>Sensor readings are not erased between cycles; they are simply updated with new measurements.</p></feedback>
+				</choice>
+				<choice correct="yes">
+					<statement><p>Environments are dynamic and unpredictable, so real-time feedback is required to correct errors and avoid dynamic obstacles.</p></statement>
+					<feedback><p>Correct. Real-world environments change continuously (e.g., moving people, pets, altered terrain). Closed-loop feedback ensures the robot adjusts its actions to real-time changes rather than relying on stale assumptions.</p></feedback>
+				</choice>
+				<choice>
+					<statement><p>Continuous updates prevent the motor drive boards from overheating.</p></statement>
+					<feedback><p>Continuous sensing loops are unrelated to thermal management of motor drive boards.</p></feedback>
+				</choice>
+			</choices>
+		</exercise>
+
+		<exercise label="ex_review_sequencing">
+			<statement>
+				<p>A robotic vacuum is moving down a hallway when a pet suddenly steps into its path. Which sequence correctly represents the Sense <m>\rightarrow</m> Plan <m>\rightarrow</m> Act response for safe navigation around the pet?</p>
+			</statement>
+			<choices>
+				<choice>
+					<statement>
+						<p><em class="emphasis">Sense:</em> Motors rotate wheels to alter direction.</p>
+						<p><em class="emphasis">Plan:</em> Distance sensor measures a drop in clear path distance.</p>
+						<p><em class="emphasis">Act:</em> Logic computes a dynamic path to maintain a 1-meter safety buffer.</p>
+					</statement>
+					<feedback><p>This option mislabels each stage: the listed "Sense" action is actually an Act-phase behavior, and the phases are out of order.</p></feedback>
+				</choice>
+				<choice correct="yes">
+					<statement>
+						<p><em class="emphasis">Sense:</em> Camera detects a living object moving into the path.</p>
+						<p><em class="emphasis">Plan:</em> Software determines a safe bypass route around the pet.</p>
+						<p><em class="emphasis">Act:</em> Motor controllers signal left/right drive wheels to turn and execute the bypass.</p>
+					</statement>
+					<feedback><p>Correct. The correct sequence flows strictly from gathering sensor data (Sense) to algorithm processing/decision making (Plan) to mechanical execution via actuators (Act).</p></feedback>
+				</choice>
+				<choice>
+					<statement>
+						<p><em class="emphasis">Sense:</em> Pathfinding algorithm updates coordinates.</p>
+						<p><em class="emphasis">Plan:</em> Infrared sensor transmits voltage changes.</p>
+						<p><em class="emphasis">Act:</em> Robot saves updated hallway map to storage.</p>
+					</statement>
+					<feedback><p>This option scrambles the phases: the listed "Sense" step is actually a Plan-phase computation, and the listed "Act" step is not a physical action at all.</p></feedback>
+				</choice>
+				<choice>
+					<statement>
+						<p><em class="emphasis">Sense:</em> Vacuum brush slows down to reduce noise.</p>
+						<p><em class="emphasis">Plan:</em> Drive motors halt movement.</p>
+						<p><em class="emphasis">Act:</em> Distance sensor re-calibrates target position.</p>
+					</statement>
+					<feedback><p>This option assigns actuator and sensor behaviors to the wrong phases and does not represent a coherent Sense-Plan-Act sequence.</p></feedback>
+				</choice>
+			</choices>
+		</exercise>
+	</reading-questions>
 </section>

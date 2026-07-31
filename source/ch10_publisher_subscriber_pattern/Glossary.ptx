@@ -4,6 +4,14 @@
   <title>Glossary</title>
   <dl>
     <li>
+      <title>Synchronous Communication</title>
+      <p>A communication style where a process sends a request and blocks, waiting for a response before continuing its own execution.</p>
+    </li>
+    <li>
+      <title>Asynchronous Communication</title>
+      <p>A communication style where a process broadcasts data or registers a listener, then immediately continues its own execution without waiting for a response.</p>
+    </li>
+    <li>
       <title>Publisher</title>
       <p>A node component that sends messages onto a topic.</p>
     </li>
@@ -18,6 +26,10 @@
     <li>
       <title>Timer Callback</title>
       <p>A callback function invoked repeatedly at a fixed interval, commonly used to trigger periodic publishing.</p>
+    </li>
+    <li>
+      <title>Quality of Service (QoS)</title>
+      <p>Settings, such as a publisher's queue size, that control how message delivery is handled between a publisher and its subscribers.</p>
     </li>
     <li>
       <title><c>spin</c></title>
@@ -42,6 +54,10 @@
     <li>
       <title>TurtleSim</title>
       <p>A lightweight ROS2 simulator used to practice publishing and subscribing without physical robot hardware.</p>
+    </li>
+    <li>
+      <title><c>turtlesim/msg/Pose</c></title>
+      <p>The standard ROS2 message type published by TurtleSim on <c>/turtle1/pose</c>, describing the turtle's current position <m>(x, y)</m> and heading (<m>\theta</m>).</p>
     </li>
   </dl>
 </section>

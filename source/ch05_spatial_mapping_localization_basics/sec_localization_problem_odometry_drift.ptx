@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_localization_problem_odometry_drift" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>The Localization Problem and Odometry Drift</title>
+  <introduction>
+    <p>To navigate autonomously, a robot must answer two fundamental questions: "Where am I?" (<term>Localization</term>) and "What does the world look like around me?" (<term>Mapping</term>).</p>
+    <p>The simplest way for a robot to track its movement is through <term>Odometry</term> (also called <term>Dead Reckoning</term>). Wheel encoders measure how many times the drive wheels rotate, and using the kinematic formulas from Chapter 2, the onboard computer estimates the robot's current position <m>(x, y, \theta)</m>.</p>
+    <p>Imagine commanding a robot to drive straight for exactly 10.0 meters. In an ideal world with no drift, the robot's estimated position and its actual position both land right at the 10.0 meter mark. In the real world, small errors accumulate along the way, so by the time the encoders report 10.0 meters traveled, the robot may actually be sitting at 9.2 meters and rotated slightly off its intended heading.</p>
+  </introduction>
+
+  <subsection xml:id="subsec_cumulative_encoder_drift">
+    <title>The Problem of Cumulative Encoder Drift</title>
+    <p>While odometry works well over short distances, it suffers from unbounded cumulative error (drift):</p>
+    <p>
+      <ol>
+        <li><p><em class="emphasis">Wheel Slip:</em> Acceleration, quick turns, or slick floor surfaces cause wheels to spin without moving the chassis.</p></li>
+        <li><p><em class="emphasis">Surface Imperfections:</em> Bumps, floor seams, or worn tire treads alter the effective wheel radius over time.</p></li>
+        <li><p><em class="emphasis">Integration Error:</em> Because position is calculated by continuously adding up small changes over time, small errors at step 1 accumulate into massive positional errors by step 100.</p></li>
+      </ol>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_localization_drift_examples">
+    <title>Real-World &amp; VEX Robotics Examples</title>
+    <p>
+      <ul>
+        <li><em class="emphasis">Real-World Example (Mars Rovers &amp; Autonomous Forklifts):</em> NASA's Mars rovers driving across sandy terrain frequently experience up to 40% wheel slip. If rovers relied solely on wheel encoders, they would quickly drift hundreds of meters off target and potentially drive into hazardous ravines. Similarly, warehouse forklifts driving over polished concrete lose accuracy within seconds without external reference tracking.</li>
+        <li><em class="emphasis">VEX Robotics Example (VEX Shaft Encoders in Autonomous Matches):</em> In VEX competitions, driving over field foam tiles introduces wheel friction variations. If your autonomous code relies purely on VEX Optical Shaft Encoders, your robot might execute a perfectly programmed turn on tile A, but land 10 centimeters off target by the time it reaches tile D due to accumulated encoder drift.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec_localization_exercises">
+    <title>Section 5.1 Interactive Exercises</title>
+
+    <subsubsection xml:id="subsubsec_drift_accumulation_codelens">
+      <title>Exercise 5.1.2: CodeLens Trace &#8212; Odometry Error Accumulation</title>
+      <p>Step through the execution below to observe how a small 5% distance under-estimation error compounds over multiple motion steps.</p>
+      <program xml:id="cl_drift_trace" interactive="codelens" language="python">
+        <input>
+def trace_encoder_drift(steps, step_distance, error_per_step):
+    true_x = 0.0
+    estimated_x = 0.0
+
+    for i in range(1, steps + 1):
+        # True motion affected by friction/slip
+        actual_move = step_distance - error_per_step
+
+        true_x += actual_move
+        estimated_x += step_distance  # Encoders "think" full motion occurred
+
+        drift_error = estimated_x - true_x
+        print(f"Step {i}: Estimated={estimated_x:.2f}m | Actual={true_x:.2f}m | Drift={drift_error:.2f}m")
+
+# Trace 5 steps of 1.0m movement with 0.05m wheel slip per step
+trace_encoder_drift(steps=5, step_distance=1.0, error_per_step=0.05)
+</input>
+      </program>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions>
+    <introduction>
+      <p>
+        <term>Check your understanding</term>
+      </p>
+    </introduction>
+
+    <exercise label="ex_encoder_drift_check">
+      <title>Exercise 5.1.1: Encoder Drift Conceptual Check</title>
+      <statement>
+        <p>Why is wheel encoder odometry alone insufficient for long-duration autonomous robot navigation?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><p>Wheel encoders provide absolute global position coordinates that never drift.</p></statement>
+          <feedback><p>Incorrect. Encoders measure relative wheel rotation, not absolute global position.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Encoder drift stays constant over time and can be removed with a fixed subtraction formula.</p></statement>
+          <feedback><p>Incorrect. Drift continuously accumulates over time rather than remaining constant.</p></feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><p>Small measurement errors, wheel slip, and surface friction accumulate over time, causing unbounded positional drift.</p></statement>
+          <feedback><p>Correct! Odometry integrates small changes over time, meaning wheel slip and surface imperfections cause positional errors to accumulate without bound.</p></feedback>
+        </choice>
+        <choice>
+          <statement><p>Wheel encoders automatically correct for wheel slip when driving on smooth surfaces.</p></statement>
+          <feedback><p>Incorrect. Encoders cannot detect when a wheel spins without gripping the floor surface.</p></feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </reading-questions>
+</section>
