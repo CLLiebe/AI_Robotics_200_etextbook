@@ -8,6 +8,11 @@
     <p>Imagine commanding a robot to drive straight for exactly 10.0 meters. In an ideal world with no drift, the robot's estimated position and its actual position both land right at the 10.0 meter mark. In the real world, small errors accumulate along the way, so by the time the encoders report 10.0 meters traveled, the robot may actually be sitting at 9.2 meters and rotated slightly off its intended heading.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_odometry_drift">
+    <caption>Wheel slip and sensor noise cause real-world odometry estimates to drift from the robot's actual position and heading.</caption>
+    <image source="ch05_spatial_mapping_localization_basics/drift.png" width="90%" alt="Comparison of ideal straight-line odometry with a real robot path affected by wheel slip, sensor noise, and rotation"/>
+  </figure>
+
   <subsection xml:id="subsec_cumulative_encoder_drift">
     <title>The Problem of Cumulative Encoder Drift</title>
     <p>While odometry works well over short distances, it suffers from unbounded cumulative error (drift):</p>

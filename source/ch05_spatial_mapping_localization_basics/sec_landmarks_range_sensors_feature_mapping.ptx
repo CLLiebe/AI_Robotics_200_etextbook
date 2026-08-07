@@ -7,6 +7,11 @@
     <p>Picture a robot whose wheel encoders currently report a pose of <m>(x=3.0, y=1.0)</m>. It detects a known landmark, a column or wall corner, at a distance reading of <m>d = 2.1</m> meters. Because the landmark's true position is already known, this single reading resets the accumulated drift and corrects the robot's pose to <m>(x=3.1, y=0.9)</m>&#8212;independent of however much error had built up in the encoders beforehand.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_landmark_pose_correction">
+    <caption>A range measurement to a known landmark corrects the robot's encoder-based pose estimate and reduces accumulated drift.</caption>
+    <image source="ch05_spatial_mapping_localization_basics/landmark.png" width="80%" alt="Robot using a distance reading to a known landmark to correct its encoded position estimate"/>
+  </figure>
+
   <subsection xml:id="subsec_what_is_a_landmark">
     <title>What is a Landmark?</title>
     <p>A <term>Landmark</term> is a distinct, easily recognizable feature in the physical environment. Landmarks can be:</p>

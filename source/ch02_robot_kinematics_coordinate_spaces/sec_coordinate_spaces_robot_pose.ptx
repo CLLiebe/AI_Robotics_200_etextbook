@@ -15,6 +15,11 @@
     <p>Why bother with a formal pose vector at all? Because every question a robot needs to answer&#8212;"How far am I from the goal?", "Is that obstacle to my left or right?", "Did I actually turn 90 degrees like I commanded?"&#8212;is meaningless without a shared, numerical frame of reference. A human can point and say "over there," but a robot's motor controller only understands numbers. The pose vector <m>\mathbf{q}</m> is the single, unambiguous answer to "where am I, and which way am I facing?" that every algorithm in this book, from odometry to path planning, is built on top of.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_robot_pose_frames">
+    <caption>A robot pose <m>(x, y, \theta)</m> expressed in the global coordinate frame, with the robot's forward and left body-frame axes.</caption>
+    <image source="ch02_robot_kinematics_coordinate_spaces/robotpose.png" width="80%" alt="Robot at position x y and heading theta with global and robot body coordinate axes"/>
+  </figure>
+
   <subsection xml:id="subsec_local_vs_global_frame">
     <title>Local Body Frame vs. Global Frame</title>
     <p>

@@ -27,28 +27,82 @@
     display: none;
 }
 
+/* Exercise wrappers already include their intended number in the authored
+   title (for example, "Exercise 9.2.2"), so suppress the redundant structural
+   prefix (such as "9.2.4.2") without affecting instructional subsections. */
+.subsubsection:has(> .ptx-runestone-container, > details.exercise, > article.exercise-like)
+    > .heading > .codenumber,
+.subsubsection:has(> .ptx-runestone-container, > details.exercise, > article.exercise-like)
+    > .heading > .heading-divison-mark {
+    display: none;
+}
+
+.toc-subsubsection a:is(
+    [href*="_parsons"],
+    [href*="_activecode"],
+    [href*="_codelens"],
+    [href*="_challenge"],
+    [href*="_exercise"],
+    [href*="_simulator"],
+    [href*="_matching"],
+    [href*="_trace"]
+) > .codenumber {
+    display: none;
+}
+
 /* Parsons Problems (all "Checkpoint" drag-and-drop exercises): keep the
    draggable code blocks and the yellow drop target side by side instead of
-   letting the drop target wrap underneath the blocks on narrower pages, and
-   draw one unified border around both panels together instead of a border
-   around just the left (source) panel. */
+   letting the drop target wrap underneath the blocks on narrower pages. */
 .sortable-code-container {
     display: flex;
     flex-wrap: nowrap;
     align-items: stretch;
     justify-content: center;
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
     gap: 24px;
-    border: 2px solid var(--componentBorderColor, #2b6ea6);
-    border-radius: 10px;
     padding: 12px;
     box-sizing: border-box;
 }
 
 .sortable-code-container .sortable-code {
     display: block;
-    flex: 1 1 0;
-    min-width: 0;
+    flex: 0 0 auto;
+    width: max-content;
+    min-width: max-content;
     margin: 0;
     border: none !important;
     box-shadow: none !important;
+}
+
+.parsons_section {
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+}
+
+.born-hidden-knowl > .knowl__content:has(.parsons_section) {
+    border: none;
+}
+
+/* Wrap the Chapter 7 introduction around its AI hierarchy figure while
+   containing the float before the first section begins. */
+.introduction:has(> #fig_chapter7_ai_umbrella) {
+    display: flow-root;
+}
+
+#fig_chapter7_ai_umbrella {
+    float: right;
+    width: 34%;
+    margin: 0 0 1rem 1.5rem;
+}
+
+@media (max-width: 700px) {
+    #fig_chapter7_ai_umbrella {
+        float: none;
+        width: 100%;
+        margin: 0 0 1rem;
+    }
 }

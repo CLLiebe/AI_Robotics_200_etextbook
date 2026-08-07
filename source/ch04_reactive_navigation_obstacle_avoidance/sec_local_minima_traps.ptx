@@ -8,6 +8,11 @@
     <p>Picture a goal sitting just behind a U-shaped wall. As the robot drives into the pocket of the U, the attractive force keeps pulling it toward the goal on the far side of the wall, while the repulsive forces from the two inner walls of the pocket push back against it from both sides. Once those forces balance, the robot is trapped in the center of the pocket, unable to sense any way out.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_local_minimum_trap">
+    <caption>A U-shaped obstacle can trap a robot where attractive and repulsive potential-field forces balance at a local minimum.</caption>
+    <image source="ch04_reactive_navigation_obstacle_avoidance/minima.png" width="75%" alt="Robot trapped inside a U-shaped obstacle where attractive and repulsive forces oppose each other"/>
+  </figure>
+
   <subsection xml:id="subsec_what_is_local_minimum">
     <title>What is a Local Minimum?</title>
     <p>Mathematically, a <term>Local Minimum</term> occurs when the vector pulling the robot toward its goal (<m>F_{\text{att}}</m>) is equal in magnitude and opposite in direction to the repulsive vectors pushing away from surrounding walls (<m>F_{\text{rep}}</m>):</p>

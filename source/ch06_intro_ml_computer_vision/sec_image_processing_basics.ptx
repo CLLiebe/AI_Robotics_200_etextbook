@@ -8,8 +8,14 @@
 
   <subsection xml:id="subsec_pixel_grids_color_spaces">
     <title>Images as Pixel Grids &amp; Color Spaces</title>
-    <p>To a human, a camera photo shows an arena, a game piece, or a warehouse aisle. To a robot's onboard processor, an image is simply a giant 2D grid (matrix) of numerical values called <term>pixels</term>.</p>
-    <p>Picture that grid running from the top-left corner <m>(0, 0)</m> down to the bottom-right corner <m>(\text{Width}, \text{Height})</m>. Each cell in the grid holds a triplet of numbers&#8212;for example, a pixel with values <m>[200, 45, 30]</m> has a notably high red channel value (200), marking it as a strongly red pixel compared to its neighbors.</p>
+    <introduction>
+      <p>To a human, a camera photo shows an arena, a game piece, or a warehouse aisle. To a robot's onboard processor, an image is simply a giant 2D grid (matrix) of numerical values called <term>pixels</term>.</p>
+      <p>Picture that grid running from the top-left corner <m>(0, 0)</m> down to the bottom-right corner <m>(\text{Width}, \text{Height})</m>. Each cell in the grid holds a triplet of numbers&#8212;for example, a pixel with values <m>[200, 45, 30]</m> has a notably high red channel value (200), marking it as a strongly red pixel compared to its neighbors.</p>
+      <figure align="center" xml:id="fig_pixel_grid_rgb_channels">
+        <caption>A digital image is a two-dimensional pixel grid in which each pixel stores red, green, and blue channel values.</caption>
+        <image source="ch06_intro_ml_computer_vision/pixels.png" width="80%" alt="Two-dimensional pixel grid mapped to red, green, and blue color channels with values from zero to 255"/>
+      </figure>
+    </introduction>
 
     <subsubsection xml:id="subsubsec_rgb_vs_hsv">
       <title>Understanding Color Spaces: RGB vs. HSV</title>
@@ -37,6 +43,19 @@
       </p>
       <p>The two models split from a common root, Color Representation. The RGB Model (Red, Green, Blue) is sensitive to shadows and lighting&#8212;a pixel like <m>[200, 30, 20]</m> can shift dramatically as light changes. The HSV Model (Hue, Saturation, Value) instead isolates color (Hue) from brightness (Value), which is why it is the ideal choice for robotics.</p>
     </subsubsection>
+    <conclusion>
+      <p>Use the simulator below to compare how fixed RGB thresholds and HSV thresholds respond as environmental lighting changes.</p>
+      <interactive xml:id="interactive_rgb_hsv_threshold" iframe="ch06_intro_ml_computer_vision/rgb-hsv-threshold-simulator.html" width="100%" aspect="0.8">
+        <shortdescription>Interactive RGB and HSV color-thresholding comparison with adjustable lighting and threshold controls</shortdescription>
+      </interactive>
+      <p><em class="emphasis">How to test the failure mode:</em></p>
+      <ol>
+        <li><p>Open the file in your browser.</p></li>
+        <li><p>Under default lighting (<em class="emphasis">100%</em>), both RGB and HSV successfully detect the red ring.</p></li>
+        <li><p>Increase the <em class="emphasis">Environmental Lighting</em> slider to <em class="emphasis">180%</em> (simulating bright stadium lights or direct sunlight).</p></li>
+        <li><p><em class="emphasis">Observe:</em> The RGB mask loses detection because the green and blue channels rise above <c>gMax</c> and <c>bMax</c>. Meanwhile, the HSV mask continues to detect the target reliably because <em class="emphasis">Hue</em> remains stable regardless of brightness.</p></li>
+      </ol>
+    </conclusion>
   </subsection>
 
   <subsection xml:id="subsec_color_thresholding">
@@ -51,6 +70,11 @@
     <p>Picture a raw color image containing a light red ring sitting on a dark shadowed floor. Passing each pixel through the question "Is pixel Hue within Red Range?" keeps the ring's pixels as 1s and turns every floor pixel into a 0, producing a binary mask that marks exactly where the ring is and nothing else.</p>
     <p>By filtering out non-essential background data, the robot reduces the amount of information it needs to process from millions of color values down to a simple target shape mask.</p>
   </subsection>
+
+  <figure align="center" xml:id="fig_binary_color_threshold">
+    <caption>Color thresholding converts a raw camera frame into a binary mask that preserves target pixels and removes the background.</caption>
+    <image source="ch06_intro_ml_computer_vision/binaryThreshold.png" width="85%" alt="Raw camera frame containing a red ball converted into a binary mask of zeros and ones"/>
+  </figure>
 
   <subsection xml:id="subsec_real_world_image_processing_examples">
     <title>Real-World Robotics Examples</title>

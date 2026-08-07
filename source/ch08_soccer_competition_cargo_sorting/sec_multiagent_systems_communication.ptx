@@ -6,6 +6,10 @@
     <p>Up to this point, we have treated our robot as a solitary agent working alone in its environment. However, many real-world challenges&#8212;such as searching a vast disaster area, managing an automated warehouse, or harvesting an entire agricultural field&#8212;are far too large or complex for a single robot to complete efficiently.</p>
     <p>A <term>Multi-Agent System (MAS)</term> consists of multiple autonomous robots (agents) that interact, coordinate, and share tasks to achieve individual or collective goals.</p>
     <p>Picture two different ways to organize a fleet of robots. In a <term>Centralized Architecture</term>, a single Central Controller sits above every agent, sending commands down to Agent A, Agent B, and Agent C individually. In a <term>Decentralized Architecture</term>, there is no central controller at all: Agent A talks directly to Agent B, and Agent C talks directly to Agent D, each pair coordinating peer-to-peer.</p>
+    <figure align="center" xml:id="fig_centralized_decentralized_architectures">
+      <caption>Centralized coordination routes commands through one controller, while decentralized coordination relies on direct communication among peer agents.</caption>
+      <image source="ch08_soccer_competition_cargo_sorting/centralArchitecture.png" width="95%" alt="Comparison of a centralized architecture with one controller directing three agents and a decentralized architecture with four agents communicating peer to peer"/>
+    </figure>
   </introduction>
 
   <subsection xml:id="subsec_centralized_vs_decentralized">

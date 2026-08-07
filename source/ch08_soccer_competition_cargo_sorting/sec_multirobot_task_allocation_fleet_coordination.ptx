@@ -6,6 +6,10 @@
     <p>When multiple robots work together, a fundamental management challenge arises: <em class="emphasis">Which robot should perform which task?</em></p>
     <p>This is known as the <term>Multi-Robot Task Allocation (MRTA)</term> problem.</p>
     <p>Picture two robots and two available tasks, Pick Ring A and Pick Ring B. Robot 1 sits close to Ring A (1.2 m) but far from Ring B (4.5 m), while Robot 2 sits far from Ring A (3.8 m) but close to Ring B (0.8 m). Matching each robot to the task it is closest to, rather than assigning both robots to the same ring, produces the most efficient overall assignment: Robot 1 takes Ring A, and Robot 2 takes Ring B.</p>
+    <figure align="center" xml:id="fig_mrta_closest_task_assignment">
+      <caption>Assigning each robot to its closest task minimizes the fleet's total travel cost.</caption>
+      <image source="ch08_soccer_competition_cargo_sorting/MRTA.png" width="95%" alt="Two robots assigned to the closest of two rings, producing a total travel distance of two meters instead of 8.3 meters"/>
+    </figure>
   </introduction>
 
   <subsection xml:id="subsec_market_based_auction">
@@ -19,6 +23,10 @@
       </ol>
     </p>
     <p>In this scheme, an Auctioneer Agent broadcasts Task A to every Bidder Agent in the fleet. Each bidder replies with its own cost bid&#8212;for example, Robot 1 bids 8 and Robot 2 bids 2. Because Robot 2's bid is lower, the auctioneer awards Task A to Robot 2, the winner.</p>
+    <figure align="center" xml:id="fig_auctioneer_bidder_task_award">
+      <caption>An auctioneer awards a task to the bidder offering the lowest execution cost.</caption>
+      <image source="ch08_soccer_competition_cargo_sorting/auctionbidder.png" width="95%" alt="Auctioneer broadcasting Task A to two bidder robots and awarding it to Robot 2 because its bid of two is lower than Robot 1's bid of eight"/>
+    </figure>
   </subsection>
 
   <subsection xml:id="subsec_priority_traffic_control">

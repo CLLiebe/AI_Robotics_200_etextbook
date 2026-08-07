@@ -41,6 +41,11 @@
     <p>The IMU node simply broadcasts readings without caring how many subscribers exist or what they do with the data.</p>
   </subsection>
 
+  <figure align="center" xml:id="fig_synchronous_asynchronous_ros2_communication">
+    <caption>Asynchronous communication lets a robot continue processing safety-critical sensor data instead of blocking while it waits for an actuator response.</caption>
+    <image source="ch10_publisher_subscriber_pattern/syncfig.png" width="95%" alt="Comparison of synchronous ROS 2 communication that blocks a steering controller while waiting for a wheel actuator and asynchronous communication that continues processing LiDAR data"/>
+  </figure>
+
   <reading-questions>
     <introduction>
       <p>

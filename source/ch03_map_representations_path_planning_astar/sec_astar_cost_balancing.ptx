@@ -20,6 +20,11 @@
     </p>
   </subsection>
 
+  <figure align="center" xml:id="fig_astar_pathfinding_video">
+    <caption>A* pathfinding balances the known cost from the start with the estimated cost to the goal as it searches for an efficient route.</caption>
+    <video source="ch03_map_representations_path_planning_astar/astar-video.mp4" width="90%"/>
+  </figure>
+
   <subsection xml:id="subsec_astar_intuition">
     <title>Intuition: Why A* Beats Breadth-First or Greedy Search</title>
     <p>

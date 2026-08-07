@@ -7,6 +7,11 @@
     <p>Picture the robot's chassis as a small circle with three sensors mounted around its forward half: one pointing straight ahead (Front), one angled out to the left (Left), and one angled out to the right (Right), together sweeping a 180-degree arc in front of the robot.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_multisensor_obstacle_avoidance">
+    <caption>A multi-sensor array expands local perception and provides directional information for choosing a clear path around obstacles.</caption>
+    <image source="ch04_reactive_navigation_obstacle_avoidance/multisensor.png" width="90%" alt="Comparison of a single front sensor and a three-sensor array providing a 180-degree perception field for obstacle avoidance"/>
+  </figure>
+
   <subsection xml:id="subsec_sensor_array_applications">
     <title>Real-World &amp; VEX Robotics Applications</title>
     <p>

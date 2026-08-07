@@ -11,6 +11,11 @@
   <subsection xml:id="subsec_common_distance_metrics">
     <title>Common Distance Metrics</title>
 
+    <figure align="center" xml:id="fig_manhattan_euclidean_distance">
+      <caption>Manhattan distance follows orthogonal grid steps, while Euclidean distance measures the straight-line path from the start to the goal.</caption>
+      <image source="ch03_map_representations_path_planning_astar/manhattan.png" width="90%" alt="Comparison of Manhattan grid distance and Euclidean straight-line distance from a start cell to a goal cell"/>
+    </figure>
+
     <subsubsection xml:id="subsubsec_manhattan_distance">
       <title>Manhattan Distance (<m>h_{\text{manhattan}}</m>)</title>
       <p>

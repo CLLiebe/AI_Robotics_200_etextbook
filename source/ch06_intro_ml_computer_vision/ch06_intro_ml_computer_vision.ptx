@@ -9,5 +9,6 @@
   <xi:include href="./sec_image_processing_basics.ptx" />
   <xi:include href="./sec_bounding_boxes_feature_extraction.ptx" />
   <xi:include href="./sec_activecode_decision_tree_obstacle_sorting.ptx" />
+  <xi:include href="./sec_model_evaluation_metrics.ptx" />
   <xi:include href="./Glossary.ptx" />
 </chapter>

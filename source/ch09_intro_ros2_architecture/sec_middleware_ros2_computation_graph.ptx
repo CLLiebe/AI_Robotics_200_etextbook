@@ -5,6 +5,10 @@
   <introduction>
     <p>In previous chapters, we looked at how individual components like sensors, actuators, and controllers work. Now, we face a bigger challenge: How do we get dozens of independent software modules&#8212;like camera drivers, path planners, and motor controllers&#8212;to talk to each other seamlessly and in real time?</p>
     <p>Enter <term>ROS 2 (Robot Operating System 2)</term>. Despite its name, ROS 2 is not a traditional operating system like Windows or Linux. Instead, it is a <term>robotics middleware</term>&#8212;a set of software tools, communication protocols, and conventions that glue complex robotic applications together.</p>
+    <figure align="center" xml:id="fig_ros2_software_layers">
+      <caption>The ROS 2 software stack connects application code through client libraries and DDS middleware to the underlying operating system.</caption>
+      <image source="ch09_intro_ros2_architecture/ROSlayers.png" width="90%" alt="Three-layer ROS 2 software stack with client libraries rclpy and rclcpp above DDS middleware and the Linux or Ubuntu operating system"/>
+    </figure>
   </introduction>
 
   <subsection xml:id="subsec_understanding_middleware">

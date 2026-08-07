@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RGB vs. HSV Color Thresholding Simulator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 5px;
+      text-align: center;
+      font-size: 1.7rem;
+    }
+
+    .subtitle {
+      margin: 0 0 20px;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      padding: 14px;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      background: #1e293b;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #334155;
+      font-size: 1.2rem;
+    }
+
+    .lighting-card {
+      margin-bottom: 16px;
+      border-color: rgba(2, 132, 199, 0.25);
+      background: rgba(2, 132, 199, 0.08);
+    }
+
+    .canvas-container {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .canvas-panel {
+      width: 48%;
+    }
+
+    .canvas-label {
+      margin-bottom: 2px;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      background: #000;
+    }
+
+    .control-group {
+      margin-bottom: 12px;
+    }
+
+    .control-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .control-group label {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      .grid {
+        gap: 8px;
+      }
+
+      .card {
+        padding: 8px;
+      }
+
+      .card h2 {
+        font-size: 1rem;
+      }
+
+      .control-group label {
+        display: block;
+        font-size: 0.78rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>RGB vs. HSV Color Thresholding</h1>
+    <p class="subtitle">Simulate how changing environmental lighting affects object segmentation.</p>
+
+    <section class="card lighting-card">
+      <div class="control-group">
+        <label for="lighting">
+          <strong>Environmental Lighting / Exposure Level:</strong>
+          <span id="lightVal">100%</span>
+        </label>
+        <input type="range" id="lighting" min="30" max="220" value="100">
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2 style="color: #ef4444;">RGB Thresholding</h2>
+        <div class="canvas-container">
+          <div class="canvas-panel">
+            <div class="canvas-label">Simulated View</div>
+            <canvas id="rgbOriginal" width="200" height="200" aria-label="Simulated red ring under the selected lighting"></canvas>
+          </div>
+          <div class="canvas-panel">
+            <div class="canvas-label">RGB Mask</div>
+            <canvas id="rgbMask" width="200" height="200" aria-label="Binary mask produced by RGB thresholds"></canvas>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="rMin">Min Red: <span id="rMinVal">150</span></label>
+          <input type="range" id="rMin" min="0" max="255" value="150">
+        </div>
+        <div class="control-group">
+          <label for="gMax">Max Green: <span id="gMaxVal">80</span></label>
+          <input type="range" id="gMax" min="0" max="255" value="80">
+        </div>
+        <div class="control-group">
+          <label for="bMax">Max Blue: <span id="bMaxVal">80</span></label>
+          <input type="range" id="bMax" min="0" max="255" value="80">
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 style="color: #38bdf8;">HSV Thresholding</h2>
+        <div class="canvas-container">
+          <div class="canvas-panel">
+            <div class="canvas-label">Simulated View</div>
+            <canvas id="hsvOriginal" width="200" height="200" aria-label="Simulated red ring under the selected lighting"></canvas>
+          </div>
+          <div class="canvas-panel">
+            <div class="canvas-label">HSV Mask</div>
+            <canvas id="hsvMask" width="200" height="200" aria-label="Binary mask produced by HSV thresholds"></canvas>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="hTolerance">Hue Range (Target Red): <span id="hRangeVal">340° - 20°</span></label>
+          <input type="range" id="hTolerance" min="5" max="40" value="20">
+        </div>
+        <div class="control-group">
+          <label for="sMin">Min Saturation (S): <span id="sMinVal">40%</span></label>
+          <input type="range" id="sMin" min="0" max="100" value="40">
+        </div>
+        <div class="control-group">
+          <label for="vMin">Min Value (V / Brightness): <span id="vMinVal">20%</span></label>
+          <input type="range" id="vMin" min="0" max="100" value="20">
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const rgbOriginal = document.getElementById("rgbOriginal");
+    const rgbMask = document.getElementById("rgbMask");
+    const hsvOriginal = document.getElementById("hsvOriginal");
+    const hsvMask = document.getElementById("hsvMask");
+    const rgbOriginalContext = rgbOriginal.getContext("2d");
+    const rgbMaskContext = rgbMask.getContext("2d");
+    const hsvOriginalContext = hsvOriginal.getContext("2d");
+    const hsvMaskContext = hsvMask.getContext("2d");
+    const lighting = document.getElementById("lighting");
+    const redMinimum = document.getElementById("rMin");
+    const greenMaximum = document.getElementById("gMax");
+    const blueMaximum = document.getElementById("bMax");
+    const hueTolerance = document.getElementById("hTolerance");
+    const saturationMinimum = document.getElementById("sMin");
+    const valueMinimum = document.getElementById("vMin");
+
+    function rgbToHsv(red, green, blue) {
+      const normalizedRed = red / 255;
+      const normalizedGreen = green / 255;
+      const normalizedBlue = blue / 255;
+      const maximum = Math.max(normalizedRed, normalizedGreen, normalizedBlue);
+      const minimum = Math.min(normalizedRed, normalizedGreen, normalizedBlue);
+      const difference = maximum - minimum;
+      let hue = 0;
+
+      if (difference !== 0) {
+        if (maximum === normalizedRed) {
+          hue = (normalizedGreen - normalizedBlue) / difference + (normalizedGreen < normalizedBlue ? 6 : 0);
+        } else if (maximum === normalizedGreen) {
+          hue = (normalizedBlue - normalizedRed) / difference + 2;
+        } else {
+          hue = (normalizedRed - normalizedGreen) / difference + 4;
+        }
+        hue /= 6;
+      }
+
+      const saturation = maximum === 0 ? 0 : difference / maximum;
+      return [hue * 360, saturation * 100, maximum * 100];
+    }
+
+    function renderScene(context, lightFactor) {
+      const width = context.canvas.width;
+      const height = context.canvas.height;
+      const background = Math.min(255, 80 * lightFactor);
+      const red = Math.min(255, 200 * lightFactor);
+      const green = Math.min(255, 20 * lightFactor);
+      const blue = Math.min(255, 20 * lightFactor);
+
+      context.fillStyle = `rgb(${background}, ${background}, ${background})`;
+      context.fillRect(0, 0, width, height);
+      context.beginPath();
+      context.arc(width / 2, height / 2, 60, 0, Math.PI * 2);
+      context.fillStyle = `rgb(${red}, ${green}, ${blue})`;
+      context.fill();
+      context.beginPath();
+      context.arc(width / 2, height / 2, 30, 0, Math.PI * 2);
+      context.fillStyle = `rgb(${background}, ${background}, ${background})`;
+      context.fill();
+    }
+
+    function writeMaskPixel(mask, index, selected) {
+      const value = selected ? 255 : 0;
+      mask.data[index] = value;
+      mask.data[index + 1] = value;
+      mask.data[index + 2] = value;
+      mask.data[index + 3] = 255;
+    }
+
+    function processThresholds() {
+      const lightFactor = Number.parseFloat(lighting.value) / 100;
+      const redMinimumValue = Number.parseInt(redMinimum.value, 10);
+      const greenMaximumValue = Number.parseInt(greenMaximum.value, 10);
+      const blueMaximumValue = Number.parseInt(blueMaximum.value, 10);
+      const hueToleranceValue = Number.parseInt(hueTolerance.value, 10);
+      const saturationMinimumValue = Number.parseInt(saturationMinimum.value, 10);
+      const valueMinimumValue = Number.parseInt(valueMinimum.value, 10);
+
+      document.getElementById("lightVal").textContent = `${lighting.value}%`;
+      document.getElementById("rMinVal").textContent = redMinimumValue;
+      document.getElementById("gMaxVal").textContent = greenMaximumValue;
+      document.getElementById("bMaxVal").textContent = blueMaximumValue;
+      document.getElementById("hRangeVal").textContent = `${360 - hueToleranceValue}° - ${hueToleranceValue}°`;
+      document.getElementById("sMinVal").textContent = `${saturationMinimumValue}%`;
+      document.getElementById("vMinVal").textContent = `${valueMinimumValue}%`;
+
+      renderScene(rgbOriginalContext, lightFactor);
+      renderScene(hsvOriginalContext, lightFactor);
+
+      const rgbPixels = rgbOriginalContext.getImageData(0, 0, rgbOriginal.width, rgbOriginal.height).data;
+      const rgbMaskData = rgbMaskContext.createImageData(rgbMask.width, rgbMask.height);
+      const hsvPixels = hsvOriginalContext.getImageData(0, 0, hsvOriginal.width, hsvOriginal.height).data;
+      const hsvMaskData = hsvMaskContext.createImageData(hsvMask.width, hsvMask.height);
+
+      for (let index = 0; index < rgbPixels.length; index += 4) {
+        const selected =
+          rgbPixels[index] >= redMinimumValue &&
+          rgbPixels[index + 1] <= greenMaximumValue &&
+          rgbPixels[index + 2] <= blueMaximumValue;
+        writeMaskPixel(rgbMaskData, index, selected);
+      }
+
+      for (let index = 0; index < hsvPixels.length; index += 4) {
+        const [hue, saturation, value] = rgbToHsv(
+          hsvPixels[index],
+          hsvPixels[index + 1],
+          hsvPixels[index + 2]
+        );
+        const redHue = hue >= 360 - hueToleranceValue || hue <= hueToleranceValue;
+        writeMaskPixel(
+          hsvMaskData,
+          index,
+          redHue && saturation >= saturationMinimumValue && value >= valueMinimumValue
+        );
+      }
+
+      rgbMaskContext.putImageData(rgbMaskData, 0, 0);
+      hsvMaskContext.putImageData(hsvMaskData, 0, 0);
+    }
+
+    [
+      lighting,
+      redMinimum,
+      greenMaximum,
+      blueMaximum,
+      hueTolerance,
+      saturationMinimum,
+      valueMinimum
+    ].forEach((input) => input.addEventListener("input", processThresholds));
+
+    processThresholds();
+  </script>
+</body>
+</html>

@@ -7,6 +7,11 @@
     <p>The <term>A* Search Processing Flow</term> repeats a two-step cycle: first, pull the node with the lowest <m>f(n)</m> score from the open list. If that node is the goal, the path is reconstructed and the search stops. Otherwise, the search evaluates all of that node's 4-connected neighbors, computing <m>g(\text{neighbor}) = g(\text{current}) + 1</m> and <m>f(\text{neighbor}) = g + h</m> for each one, and the cycle repeats by pulling the next lowest-<m>f(n)</m> node.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_astar_search_processing_flow">
+    <caption>The A* core loop selects the lowest-cost node, checks for the goal, and otherwise evaluates neighboring cells before continuing the search.</caption>
+    <image source="ch03_map_representations_path_planning_astar/astar-practice.png" width="85%" alt="Flowchart of the A-star search loop selecting the lowest f-score node, checking the goal, and evaluating neighbors"/>
+  </figure>
+
   <subsection xml:id="subsec_interactive_astar_exercises">
     <title>Section 3.4 Interactive Exercises</title>
 

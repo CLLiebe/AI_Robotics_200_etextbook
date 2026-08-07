@@ -17,6 +17,10 @@
         <li><em class="emphasis">Unknown Space (-1 or 0.5):</em> Areas the robot's sensors haven't scanned yet.</li>
       </ul>
     </p>
+    <figure align="center" xml:id="fig_occupancy_grid_map">
+      <caption>An occupancy grid converts a continuous environment into discrete cells labeled as free space or obstacles.</caption>
+      <image source="ch03_map_representations_path_planning_astar/occupancymap.png" width="90%" alt="Continuous room with an obstacle converted into an occupancy grid where zero is free and one is occupied"/>
+    </figure>
   </subsection>
 
   <subsection xml:id="subsec_grid_connectivity">
@@ -28,6 +32,10 @@
         <li><em class="emphasis">8-Connected Neighborhood:</em> The robot can also move diagonally, adding the Northeast, Northwest, Southeast, and Southwest neighbors to the four orthogonal ones.</li>
       </ul>
     </p>
+    <figure align="center" xml:id="fig_four_eight_connected_grid">
+      <caption>Four-connected movement uses orthogonal neighbors, while eight-connected movement also permits diagonal neighbors.</caption>
+      <image source="ch03_map_representations_path_planning_astar/4way8.png" width="75%" alt="Comparison of four-connected cardinal neighbors and eight-connected cardinal and diagonal neighbors"/>
+    </figure>
   </subsection>
 
   <subsection xml:id="subsec_grid_maps_exercises">

@@ -3,6 +3,10 @@
 <chapter xml:id="ch07_end_to_end_autonomous_driving" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>End-to-End Autonomous Driving</title>
   <introduction>
+    <figure xml:id="fig_chapter7_ai_umbrella">
+      <caption>Computer vision is nested within convolutional neural networks, deep learning, machine learning, and the broader field of artificial intelligence.</caption>
+      <image source="ch07_end_to_end_autonomous_driving/Umbrella_AI.png" width="100%" alt="Five nested umbrellas showing computer vision within convolutional neural networks, deep learning, machine learning, and artificial intelligence"/>
+    </figure>
     <p>This chapter studies End-to-End Autonomous Driving, an approach that replaces the traditional sense-plan-act pipeline with a single machine learning model mapping raw camera input directly to motor commands. You will start with Behavioral Cloning, where a robot learns by mimicking a human's recorded joystick demonstrations, then walk through the data collection and training loop that turns those demonstrations into a working regression model, evaluated with metrics like Mean Absolute Error. From there you will confront Dataset Bias and the "Right-Turn Trap," the classic behavioral-cloning failure mode where an unbalanced training set teaches a robot to favor one steering direction, and learn how data augmentation and recovery trajectories fix it. The chapter closes with a comprehensive interactive review suite that ties data augmentation, pipeline sequencing, failure diagnosis, and regression evaluation together in preparation for Lab 7. By the end, you should be able to explain why an end-to-end model is only as capable as the demonstrations it learns from.</p>
   </introduction>
   <xi:include href="./sec_behavioral_cloning_end_to_end_mappings.ptx" />

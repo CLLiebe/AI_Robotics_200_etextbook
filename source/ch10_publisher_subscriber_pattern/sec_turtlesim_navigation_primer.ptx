@@ -5,6 +5,10 @@
   <introduction>
     <p><term>TurtleSim</term> is the standard 2D simulator shipped with ROS 2. It presents a simple turtle inside a 2D canvas, making it an ideal testing ground for learning pub/sub control dynamics before deploying code to real hardware (like a Differential Drive mobile robot or a TurtleBot).</p>
     <p>Picture a simple screen canvas with a single turtle icon drawn on it. The turtle's state is described by its pose <m>(x, y, \theta)</m>: its 2D position on the canvas and the heading angle it currently faces.</p>
+    <figure align="center" xml:id="fig_turtlesim_canvas_pose">
+      <caption>TurtleSim represents a turtle's location and orientation with the pose <m>(x, y, \theta)</m> on a two-dimensional canvas.</caption>
+      <image source="ch10_publisher_subscriber_pattern/turtle.png" width="90%" alt="TurtleSim screen canvas showing a turtle at a pose defined by x position, y position, and heading angle theta"/>
+    </figure>
   </introduction>
 
   <subsection xml:id="subsec_turtlesim_key_topics">

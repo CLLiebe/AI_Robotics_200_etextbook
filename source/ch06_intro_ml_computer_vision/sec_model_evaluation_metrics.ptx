@@ -1,0 +1,219 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<section xml:id="sec_model_evaluation_metrics" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Model Evaluation: Classification, Confusion Matrices, and Regression Metrics</title>
+  <introduction>
+    <p>Once you train a machine learning model to detect objects or predict motor speeds, you need a way to measure how well it actually performs before deploying it to physical hardware. Evaluating a model relies on different metrics depending on whether the task is <term>Classification</term> (predicting discrete classes like "Obstacle" vs. "Free Space") or <term>Regression</term> (predicting continuous values like motor speed or object distance).</p>
+  </introduction>
+
+  <subsection xml:id="subsec_evaluating_classification">
+    <title>Evaluating Classification: The Confusion Matrix &amp; Accuracy</title>
+    <introduction>
+      <p>In classification, your model makes a discrete guess for every input. To see where it succeeds and where it makes dangerous mistakes, we organize its predictions into a <term>Confusion Matrix</term>.</p>
+      <p>A Confusion Matrix is a grid that compares the ground-truth actual labels against the model's predicted labels. For a binary obstacle-classification task, there are four possible outcomes:</p>
+      <figure align="center" xml:id="fig_confusion_matrix">
+        <caption>Confusion matrix outcomes for binary classification.</caption>
+        <image source="ch06_intro_ml_computer_vision/matrix.png" width="90%" alt="Confusion matrix showing true positive, false positive, false negative, and true negative outcomes"/>
+      </figure>
+    </introduction>
+
+    <subsubsection xml:id="subsubsec_confusion_matrix_outcomes">
+      <title>The Four Outcomes Explained</title>
+      <p>
+        <ol>
+          <li><p><em class="emphasis">True Positive (TP):</em> The actual object is an <em class="emphasis">Obstacle</em>, and the model predicted <em class="emphasis">Obstacle</em>. This is correct.</p></li>
+          <li><p><em class="emphasis">True Negative (TN):</em> The actual space is <em class="emphasis">Free Space</em>, and the model predicted <em class="emphasis">Free Space</em>. This is correct.</p></li>
+          <li><p><em class="emphasis">False Positive (FP):</em> The space is actually <em class="emphasis">Free Space</em>, but the model predicted <em class="emphasis">Obstacle</em>. This false alarm causes the robot to stop unnecessarily.</p></li>
+          <li><p><em class="emphasis">False Negative (FN):</em> The object is actually an <em class="emphasis">Obstacle</em>, but the model predicted <em class="emphasis">Free Space</em>. This dangerous miss can cause the robot to crash into the obstacle.</p></li>
+        </ol>
+      </p>
+      <p><term>Robotics Insight:</term> In robotics, not all errors are equal. A <em class="emphasis">False Positive</em> (stopping for a shadow) causes a minor delay, but a <em class="emphasis">False Negative</em> (failing to detect a wall) can damage physical hardware.</p>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_classification_accuracy">
+      <title>Classification Accuracy</title>
+      <p>Overall <term>Accuracy</term> measures the percentage of total predictions the model got correct:</p>
+      <me>\operatorname{Accuracy} = \frac{\mathrm{TP} + \mathrm{TN}}{\mathrm{TP} + \mathrm{TN} + \mathrm{FP} + \mathrm{FN}}</me>
+    </subsubsection>
+  </subsection>
+
+  <subsection xml:id="subsec_evaluating_regression">
+    <title>Evaluating Regression: MSE and <m>R^2</m> Score</title>
+    <introduction>
+      <p>When predicting continuous numerical values&#8212;such as estimating the distance to a VEX game element in meters or calculating linear velocity <m>v</m>&#8212;we cannot use a confusion matrix. Instead, we measure how far the predicted numbers are from the actual values.</p>
+      <program language="text">
+        <input>
+Actual Distance:     2.50 meters
+Predicted Distance:  2.10 meters  --&gt; Error = -0.40 meters
+        </input>
+      </program>
+    </introduction>
+
+    <subsubsection xml:id="subsubsec_mean_squared_error">
+      <title>Mean Squared Error (MSE)</title>
+      <p><term>Mean Squared Error (MSE)</term> calculates the average of the squared differences between the actual values <m>y</m> and the predicted values <m>\hat{y}</m>.</p>
+      <me>\operatorname{MSE} = \frac{1}{n} \sum_{i=1}^{n} \left(y_i - \hat{y}_i\right)^2</me>
+      <p><em class="emphasis">Why square the errors?</em></p>
+      <p>
+        <ol>
+          <li><p>Squaring turns all errors into positive numbers so positive and negative errors do not cancel each other out.</p></li>
+          <li><p>Squaring heavily penalizes large errors. Being off by <m>2\text{ meters}</m> is penalized four times as much as being off by <m>1\text{ meter}</m> because <m>2^2 = 4</m> while <m>1^2 = 1</m>. Lower MSE values indicate a better fit.</p></li>
+        </ol>
+      </p>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec_r_squared_score">
+      <title>R-Squared (<m>R^2</m>) Score (Coefficient of Determination)</title>
+      <p>While MSE describes squared error magnitude, <term><m>R^2</m></term> describes how well the model explains the variance in the dataset compared with a baseline that always predicts the dataset mean.</p>
+      <p>
+        <ul>
+          <li><m>R^2 = 1.0</m> (100%): Perfect predictions. Every prediction matches ground truth exactly.</li>
+          <li><m>R^2 = 0.0</m> (0%): The model performs no better than always predicting the dataset's average value.</li>
+          <li><m>R^2 &lt; 0.0</m> (negative): The model performs worse than always predicting the dataset average.</li>
+        </ul>
+      </p>
+    </subsubsection>
+  </subsection>
+
+  <reading-questions xml:id="subsec_model_evaluation_exercises">
+    <introduction>
+      <p><term>Check Your Understanding: 6.5</term></p>
+    </introduction>
+
+    <exercise label="ex_confusion_matrix_false_positive">
+      <title>Exercise 6.5.1: Identifying a False Positive</title>
+        <statement>
+          <p>A VEX AI robot's camera looks at an empty field tile and predicts "Red Ring Detected," causing the robot to lower its intake unnecessarily. Which confusion-matrix outcome does this represent?</p>
+        </statement>
+        <choices>
+          <choice>
+            <statement><p>True Positive (TP)</p></statement>
+            <feedback><p>Incorrect. There was no ring in the ground truth.</p></feedback>
+          </choice>
+          <choice>
+            <statement><p>True Negative (TN)</p></statement>
+            <feedback><p>Incorrect. The model predicted a positive target rather than correctly identifying empty space.</p></feedback>
+          </choice>
+          <choice correct="yes">
+            <statement><p>False Positive (FP)</p></statement>
+            <feedback><p>Correct. The ground truth is negative or empty, but the model incorrectly predicts a positive target.</p></feedback>
+          </choice>
+          <choice>
+            <statement><p>False Negative (FN)</p></statement>
+            <feedback><p>Incorrect. A false negative would miss a ring or obstacle that was actually present.</p></feedback>
+          </choice>
+        </choices>
+    </exercise>
+
+    <exercise label="ex_mse_squared_errors">
+      <title>Exercise 6.5.2: Why MSE Squares Errors</title>
+        <statement>
+          <p>When evaluating a regression model that predicts continuous motor speed, why do we square prediction errors when calculating MSE?</p>
+        </statement>
+        <choices>
+          <choice>
+            <statement><p>Squaring converts continuous predictions into discrete classification labels.</p></statement>
+            <feedback><p>Incorrect. MSE remains a regression metric for continuous values.</p></feedback>
+          </choice>
+          <choice correct="yes">
+            <statement><p>Squaring prevents negative and positive errors from canceling and penalizes larger errors more heavily.</p></statement>
+            <feedback><p>Correct. Squaring makes every contribution nonnegative and gives large errors greater influence.</p></feedback>
+          </choice>
+          <choice>
+            <statement><p>Squaring scales <m>R^2</m> values so they always remain above 100%.</p></statement>
+            <feedback><p>Incorrect. <m>R^2</m> can be less than zero and is a separate metric.</p></feedback>
+          </choice>
+          <choice>
+            <statement><p>Squaring allows Runestone to execute external C++ libraries.</p></statement>
+            <feedback><p>Incorrect. The mathematical operation is unrelated to library support.</p></feedback>
+          </choice>
+        </choices>
+    </exercise>
+
+    <exercise xml:id="subsubsec_model_evaluation_activecode">
+      <title>Exercise 6.5.3: ActiveCode Exercise &#8212; Pure Python Model Evaluation Metrics</title>
+      <statement>
+        <p>Runestone ActiveCode uses pure Python without external libraries such as <c>scikit-learn</c> or <c>numpy</c>, so this exercise implements the evaluation routines directly.</p>
+        <p>The two functions below calculate TP, TN, FP, and FN from binary labels and calculate the Mean Squared Error between actual and predicted distances.</p>
+        <program xml:id="ac_model_evaluation_metrics" interactive="activecode" language="python">
+          <input>
+def compute_confusion_matrix(actual, predicted):
+    tp = tn = fp = fn = 0
+
+    for a, p in zip(actual, predicted):
+        if a == 1 and p == 1:
+            tp += 1
+        elif a == 0 and p == 0:
+            tn += 1
+        elif a == 0 and p == 1:
+            fp += 1
+        elif a == 1 and p == 0:
+            fn += 1
+
+    accuracy = (tp + tn) / len(actual) if len(actual) &gt; 0 else 0.0
+    return {"TP": tp, "TN": tn, "FP": fp, "FN": fn, "Accuracy": accuracy}
+
+
+def compute_mse(actual_vals, predicted_vals):
+    total_squared_error = 0.0
+    n = len(actual_vals)
+
+    for a, p in zip(actual_vals, predicted_vals):
+        error = a - p
+        total_squared_error += error ** 2
+
+    return total_squared_error / n if n &gt; 0 else 0.0
+
+
+# Test Case 1: Classification Metrics
+actual_labels = [1, 1, 0, 0, 1, 0, 1, 0]
+predicted_labels = [1, 0, 0, 0, 1, 1, 1, 0]
+
+cm_results = compute_confusion_matrix(actual_labels, predicted_labels)
+print("--- Classification Evaluation ---")
+print(f"TP: {cm_results['TP']} | TN: {cm_results['TN']} | FP: {cm_results['FP']} | FN: {cm_results['FN']}")
+print(f"Overall Accuracy: {cm_results['Accuracy'] * 100:.1f}%\n")
+
+# Test Case 2: Regression Metrics (Distance in Meters)
+actual_distances = [1.2, 2.5, 0.8, 3.0]
+predicted_distances = [1.1, 2.7, 0.7, 2.8]
+
+mse_score = compute_mse(actual_distances, predicted_distances)
+print("--- Regression Evaluation ---")
+print(f"Mean Squared Error (MSE): {mse_score:.4f} m^2")
+          </input>
+        </program>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex_pp_confusion_matrix_logic" indent="show" language="python">
+      <title>Exercise 6.5.4: Parsons Problem &#8212; Assembling Confusion Matrix Logic</title>
+      <statement>
+        <p>Reorder the code blocks to construct the loop for counting True Positives and False Negatives in a binary classification evaluation script. Arrange the blocks to form a complete <c>count_positives</c> function that returns the TP and FN counts.</p>
+      </statement>
+      <blocks>
+        <block order="1">
+          <cline>def count_positives(actual, predicted):</cline>
+        </block>
+        <block order="2">
+          <cline>    tp = 0</cline>
+          <cline>    fn = 0</cline>
+        </block>
+        <block order="3">
+          <cline>    for a, p in zip(actual, predicted):</cline>
+        </block>
+        <block order="4">
+          <cline>        if a == 1 and p == 1:</cline>
+          <cline>            tp += 1</cline>
+        </block>
+        <block order="5">
+          <cline>        elif a == 1 and p == 0:</cline>
+          <cline>            fn += 1</cline>
+        </block>
+        <block order="6">
+          <cline>    return tp, fn</cline>
+        </block>
+      </blocks>
+    </exercise>
+  </reading-questions>
+</section>

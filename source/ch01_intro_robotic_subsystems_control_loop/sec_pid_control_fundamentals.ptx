@@ -7,8 +7,32 @@
     <me>e(t) = r(t) - y(t)</me>
     <p>It then calculates a control signal <m>u(t)</m> combining three distinct mathematical actions:</p>
     <me>u(t) = K_p e(t) + K_i \int_0^t e(\tau) \, d\tau + K_d \frac{de(t)}{dt}</me>
-    <p>To understand how these three terms work together, imagine <em class="emphasis">driving a car toward a red light at a stop line</em>:</p>
+    <p>To understand how these three terms work together, imagine <em class="emphasis">driving a car toward a red light at a stop light</em>:</p>
   </introduction>
+
+  <figure align="center" xml:id="fig_pid_control">
+    <caption>A PID controller combines proportional, integral, and derivative responses to drive a system toward its desired setpoint.</caption>
+    <image source="ch01_intro_robotic_subsystems_control_loop/PIDcontrol.png" width="90%" alt="Block diagram of a closed-loop PID controller with proportional, integral, and derivative paths"/>
+  </figure>
+
+  <subsection xml:id="subsec_pid_car_analogy">
+    <title>Breakdown of the Car Analogy</title>
+    <p>To connect the math <m>u(t) = K_p e(t) + K_i \int_0^t e(\tau) \, d\tau + K_d \frac{de(t)}{dt}</m> to driving a car toward a red light:</p>
+    <ul>
+      <li><em class="emphasis">Error <m>e(t)</m>:</em> The remaining distance between your car and the stop light.</li>
+      <li><em class="emphasis">Proportional Term (<m>K_p \cdot e(t)</m>) &#8212; Present Error:</em> Pushes the brake or gas proportional to how far away you are. If you are far away, press hard on the gas; as you get closer, ease off.</li>
+      <li><em class="emphasis">Integral Term (<m>K_i \int e(\tau) \, d\tau</m>) &#8212; Past Accumulation:</em> Accounts for persistent past error. If a slight uphill slope prevents the car from reaching the stop line despite <m>K_p</m>, error accumulates over time, gently building up extra throttle to nudge the car to the exact setpoint.</li>
+      <li><em class="emphasis">Derivative Term (<m>K_d \cdot \frac{de(t)}{dt}</m>) &#8212; Future Trend:</em> Looks at how fast the error is changing (your approach speed). If you are closing in fast, <m>\frac{de(t)}{dt}</m> is strongly negative, applying resistance (braking) early to prevent overshooting the stop line.</li>
+    </ul>
+  </subsection>
+
+  <subsection xml:id="subsec_pid_step_response_simulator">
+    <title>Interactive PID Simulator</title>
+    <p>Adjust the tuning gains (<m>K_p</m>, <m>K_i</m>, and <m>K_d</m>) to see how the system output responds to a step change in setpoint.</p>
+    <interactive xml:id="interactive_pid_step_response" iframe="pid-step-response-simulator.html" width="100%" aspect="1.1">
+      <shortdescription>Interactive graph with sliders for proportional, integral, and derivative gains</shortdescription>
+    </interactive>
+  </subsection>
 
   <subsection xml:id="subsec_pid_proportional_term">
     <title>The Proportional Term (P) &#8212; "How far am I right now?"</title>

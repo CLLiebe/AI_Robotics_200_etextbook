@@ -14,6 +14,11 @@
     <p>Picture the goal as a hole in the landscape that pulls the robot downhill toward it, and each obstacle as a hill that pushes the robot away as it climbs closer&#8212;the robot's position sits between them, pulled toward the goal and pushed away from every nearby obstacle at once.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_potential_field_hole_hill">
+    <caption>In an artificial potential field, the goal acts as an attractive hole while an obstacle acts as a repulsive hill.</caption>
+    <image source="ch04_reactive_navigation_obstacle_avoidance/holehill.png" width="85%" alt="Robot position pulled toward a goal represented as a hole and pushed away from an obstacle represented as a hill"/>
+  </figure>
+
   <subsection xml:id="subsec_apf_applications">
     <title>Real-World &amp; VEX Robotics Applications</title>
     <p>

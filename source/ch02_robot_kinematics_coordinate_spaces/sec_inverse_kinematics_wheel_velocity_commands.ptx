@@ -8,6 +8,11 @@
     <p>This is the direction that actually matters for programming a robot's autonomous behavior. A human, or an autonomous planning algorithm, thinks in terms of the robot's overall motion&#8212;"drive forward at 0.5 m/s while turning slightly left"&#8212;not in terms of individual motor speeds. But the motors themselves have no concept of "the robot"; each one only understands "spin at this many radians per second." Inverse kinematics is the translation layer that sits between the high-level intent and the low-level motor commands, and it is running, quietly, every single time a robot changes speed or direction.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_inverse_kinematics_mapping">
+    <caption>Inverse kinematics converts a target linear and angular velocity into individual left and right wheel-speed commands.</caption>
+    <image source="ch02_robot_kinematics_coordinate_spaces/inverseKin.png" width="90%" alt="Inverse kinematics mapping from target linear and angular velocity to left and right wheel-speed commands"/>
+  </figure>
+
   <subsection xml:id="subsec_inverse_kinematics_formula">
     <title>Inverse Kinematics Formula</title>
     <p>Rearranging the forward kinematics equations yields:</p>

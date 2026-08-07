@@ -6,6 +6,10 @@
     <p><term>Swarm Robotics</term> is a subfield of decentralized multi-robot systems inspired by biological collective behaviors seen in nature&#8212;such as ant colonies, bird flocks, and fish schools.</p>
     <p>A defining feature of swarm robotics is <term>Emergent Behavior</term>: complex, highly organized group patterns that arise from many individual agents following a small set of simple, local interaction rules without any top-down coordination.</p>
     <p>Picture a short list of simple local rules&#8212;avoid colliding with neighbors, match neighbor speed, stay close to the group center&#8212;handed to every individual robot. No single rule mentions the group's overall shape or path, yet when every robot follows those same three rules simultaneously, the whole fleet self-organizes into coordinated swarm motion, flowing together like R1, R2, and R3 moving as one connected chain.</p>
+    <figure align="center" xml:id="fig_local_rules_emergent_swarm_motion">
+      <caption>Simple local interaction rules can produce coordinated global swarm motion without a central leader.</caption>
+      <image source="ch08_soccer_competition_cargo_sorting/swarmmotion.png" width="95%" alt="Simple rules for collision avoidance, speed matching, and group cohesion producing coordinated motion by robots R1, R2, and R3"/>
+    </figure>
   </introduction>
 
   <subsection xml:id="subsec_boids_model">
@@ -19,6 +23,10 @@
       </ol>
     </p>
     <p>Picture three neighboring robots and how each rule nudges them: under Separation, two robots that drift too close push directly apart from each other; under Alignment, three robots pointed in different directions all rotate to match a shared heading; under Cohesion, robots scattered around empty space steer inward toward their shared center point.</p>
+    <figure align="center" xml:id="fig_boids_separation_alignment_cohesion">
+      <caption>The Boids model combines separation, alignment, and cohesion to create flocking behavior.</caption>
+      <image source="ch08_soccer_competition_cargo_sorting/boids.png" width="95%" alt="Diagrams showing separation pushing nearby agents apart, alignment matching their direction, and cohesion pulling them toward the group"/>
+    </figure>
   </subsection>
 
   <subsection xml:id="subsec_stigmergy">

@@ -16,6 +16,10 @@
         <li>A <c>motor_driver_node</c> responsible for pushing PWM signals to physical motors.</li>
       </ul>
     </p>
+    <figure align="center" xml:id="fig_ros2_camera_topic_nodes">
+      <caption>A camera driver node publishes images on a topic that a pedestrian detector node receives.</caption>
+      <image source="ch09_intro_ros2_architecture/nodes.png" width="90%" alt="Camera Driver Node A publishing camera images through the camera image topic to Pedestrian Detector Node B"/>
+    </figure>
   </subsection>
 
   <subsection xml:id="subsec_topics_pubsub">
@@ -36,6 +40,10 @@
       </ul>
     </p>
     <p>The <c>battery_monitor</c> node publishes onto the <c>/battery_status</c> topic, and both the <c>ui_display</c> node and the <c>fleet_mgmt</c> node subscribe independently to that same topic&#8212;neither subscriber needs to know the other exists.</p>
+    <figure align="center" xml:id="fig_ros2_publish_subscribe_battery_status">
+      <caption>Multiple subscriber nodes can independently receive data published to the same ROS 2 topic.</caption>
+      <image source="ch09_intro_ros2_architecture/subscribers.png" width="90%" alt="Battery monitor node publishing to the battery status topic with UI display and fleet management nodes subscribing independently"/>
+    </figure>
   </subsection>
 
   <subsection xml:id="subsec_messages_msg_files">

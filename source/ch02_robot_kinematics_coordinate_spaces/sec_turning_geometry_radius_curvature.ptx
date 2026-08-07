@@ -23,6 +23,10 @@
         <li><p><em class="emphasis">Pivot Turn</em> <m>(v_L = 0</m> or <m>v_R = 0)</m>: <m>R = \frac{L}{2}</m> (the robot rotates around the stationary wheel).</p></li>
       </ol>
     </p>
+    <figure align="center" xml:id="fig_instantaneous_center_rotation">
+      <caption>The instantaneous center of rotation and turn radius <m>R</m> produced by unequal left and right wheel speeds.</caption>
+      <image source="ch02_robot_kinematics_coordinate_spaces/ICR.png" width="60%" alt="Differential drive wheel velocities and track width forming a turn radius to the instantaneous center of rotation"/>
+    </figure>
   </subsection>
 
   <subsection xml:id="subsec_turning_geometry_real_world_vex_examples">

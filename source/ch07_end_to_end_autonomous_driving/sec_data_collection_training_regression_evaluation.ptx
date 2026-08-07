@@ -1,8 +1,19 @@
 <?xml version='1.0' encoding='utf-8'?>
 
 <section xml:id="sec_data_collection_training_regression_evaluation" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Data Collection, Training Loops, &amp; Regression Evaluation</title>
+  <title>Training Loops &amp; Regression Evaluation</title>
   <introduction>
+    <p>Because steering a robot involves selecting a value along a continuous spectrum (e.g., steering anywhere from <m>-30^\circ</m> to <m>+30^\circ</m>), behavioral cloning operates as a <term>regression</term> task.</p>
+    <p>To determine how accurately our model has cloned the expert's behavior during a training loop, we must evaluate its performance mathematically. The standard metric used to calculate this error is the <term>Mean Squared Error (MSE)</term>. MSE measures the average squared difference between the model's predicted steering values and the true expert labels across the dataset:</p>
+    <me>\operatorname{MSE} = \frac{1}{n} \sum_{i=1}^{n} \left(y_i - \hat{y}_i\right)^2</me>
+    <p>Where:</p>
+    <p>
+      <ul>
+        <li><m>y_i</m> is the actual target command provided by the expert driver.</li>
+        <li><m>\hat{y}_i</m> is the command predicted by the autonomous driving network.</li>
+        <li><m>n</m> is the total number of data samples evaluated.</li>
+      </ul>
+    </p>
     <p><term>The Data Collection Loop</term></p>
     <p>A behavioral cloning model is only as good as the data used to train it. The end-to-end training loop follows four main steps: Record Human Drive &#8594; Preprocess Data &#8594; Train Model (Regression) &#8594; Evaluate &amp; Deploy.</p>
     <p>
@@ -17,6 +28,11 @@
 
   <subsection xml:id="subsec_data_collection_exercises">
     <title>Section 7.2 Interactive Exercises</title>
+
+    <figure align="center" xml:id="fig_traditional_vs_end_to_end_pipeline">
+      <caption>Traditional modular pipelines chain together separate object detection and path planning stages, while end-to-end pipelines map vision input directly to motor control through a single ML model.</caption>
+      <image source="ch07_end_to_end_autonomous_driving/traditional_vs_end_to_end_pipeline.png" width="100%" alt="Comparison of a traditional modular robotics pipeline with separate object detection and path planning stages versus an end-to-end pipeline that maps vision sensor input directly to motor control through a single ML model."/>
+    </figure>
 
     <subsubsection xml:id="subsubsec_regression_evaluation_loop_activecode">
       <title>Exercise 7.2.1: ActiveCode Exercise &#8212; Building a Motor Command Regression Evaluation Loop</title>

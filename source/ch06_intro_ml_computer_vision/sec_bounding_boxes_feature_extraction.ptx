@@ -18,6 +18,10 @@
     <me>\text{Height } (H) = y_{\max} - y_{\min}</me>
     <me>C_x = x_{\min} + \frac{W}{2}, \quad C_y = y_{\min} + \frac{H}{2}</me>
     <p>Picture the bounding box as a rectangle anchored at <m>(x_{\min}, y_{\min})</m> in its top-left corner and stretching to <m>(x_{\max}, y_{\max})</m> in its bottom-right corner, with its width <m>W</m> running along the top edge, its height <m>H</m> running along the left edge, and its center point <m>(C_x, C_y)</m> sitting exactly in the middle.</p>
+    <figure align="center" xml:id="fig_bounding_box_extraction_example">
+      <caption>A bounding box is the smallest axis-aligned rectangle enclosing all pixels detected as part of a target object.</caption>
+      <image source="ch06_intro_ml_computer_vision/bounding.png" width="80%" alt="Bounding box extraction example."/>
+    </figure>
   </introduction>
 
   <subsection xml:id="subsec_bounding_box_real_world_applications">

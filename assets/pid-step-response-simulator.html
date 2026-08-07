@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PID Step Response Simulator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f8f9fa;
+      color: #212529;
+      font-family: system-ui, sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 350px;
+      background: #0f172a;
+      border-radius: 6px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-size: 0.9em;
+      font-weight: bold;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .value {
+      color: #2563eb;
+      font-weight: normal;
+    }
+
+    @media (max-width: 560px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h2>PID Step Response Simulator</h2>
+    <canvas id="simCanvas" aria-label="Graph of the simulated system output and target setpoint">
+      Your browser does not support the canvas element.
+    </canvas>
+
+    <div class="controls">
+      <div class="control-group">
+        <label for="kp">Proportional (K<sub>p</sub>): <span id="kpVal" class="value">1.5</span></label>
+        <input type="range" id="kp" min="0" max="10" step="0.1" value="1.5">
+      </div>
+      <div class="control-group">
+        <label for="ki">Integral (K<sub>i</sub>): <span id="kiVal" class="value">0.5</span></label>
+        <input type="range" id="ki" min="0" max="5" step="0.05" value="0.5">
+      </div>
+      <div class="control-group">
+        <label for="kd">Derivative (K<sub>d</sub>): <span id="kdVal" class="value">0.2</span></label>
+        <input type="range" id="kd" min="0" max="5" step="0.05" value="0.2">
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("simCanvas");
+    const context = canvas.getContext("2d");
+    const kpInput = document.getElementById("kp");
+    const kiInput = document.getElementById("ki");
+    const kdInput = document.getElementById("kd");
+
+    function resizeCanvas() {
+      const devicePixelRatio = window.devicePixelRatio || 1;
+      canvas.width = Math.round(canvas.clientWidth * devicePixelRatio);
+      canvas.height = Math.round(canvas.clientHeight * devicePixelRatio);
+      context.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+      simulate();
+    }
+
+    function simulate() {
+      const proportionalGain = Number.parseFloat(kpInput.value);
+      const integralGain = Number.parseFloat(kiInput.value);
+      const derivativeGain = Number.parseFloat(kdInput.value);
+
+      document.getElementById("kpVal").textContent = proportionalGain;
+      document.getElementById("kiVal").textContent = integralGain;
+      document.getElementById("kdVal").textContent = derivativeGain;
+
+      const timeStep = 0.02;
+      const steps = 300;
+      const setpoint = 1;
+      const mass = 1;
+      const damping = 0.8;
+
+      let output = 0;
+      let velocity = 0;
+      let integral = 0;
+      let previousError = setpoint - output;
+      const history = [];
+
+      for (let step = 0; step < steps; step += 1) {
+        const error = setpoint - output;
+        integral += error * timeStep;
+        const derivative = (error - previousError) / timeStep;
+        const controlSignal =
+          proportionalGain * error +
+          integralGain * integral +
+          derivativeGain * derivative;
+
+        const acceleration = (controlSignal - damping * velocity) / mass;
+        velocity += acceleration * timeStep;
+        output += velocity * timeStep;
+        previousError = error;
+        history.push(output);
+      }
+
+      draw(history, setpoint);
+    }
+
+    function draw(data, setpoint) {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      const margin = 40;
+      const graphWidth = width - margin * 2;
+      const graphHeight = height - margin * 2;
+
+      context.clearRect(0, 0, width, height);
+
+      const targetY = height - margin - (setpoint / 2) * graphHeight;
+      context.beginPath();
+      context.setLineDash([5, 5]);
+      context.strokeStyle = "#ef4444";
+      context.lineWidth = 1;
+      context.moveTo(margin, targetY);
+      context.lineTo(width - margin, targetY);
+      context.stroke();
+      context.setLineDash([]);
+
+      context.beginPath();
+      context.strokeStyle = "#38bdf8";
+      context.lineWidth = 2.5;
+
+      data.forEach((value, index) => {
+        const x = margin + (index / (data.length - 1)) * graphWidth;
+        const y = height - margin - (value / 2) * graphHeight;
+
+        if (index === 0) {
+          context.moveTo(x, y);
+        } else {
+          context.lineTo(x, y);
+        }
+      });
+
+      context.stroke();
+    }
+
+    [kpInput, kiInput, kdInput].forEach((input) => {
+      input.addEventListener("input", simulate);
+    });
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+  </script>
+</body>
+</html>

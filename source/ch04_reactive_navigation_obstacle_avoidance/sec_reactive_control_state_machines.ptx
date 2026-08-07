@@ -7,6 +7,11 @@
     <p><term>Reactive Navigation</term> focuses on rapid, local decision-making. Instead of storing a full map or computing complex paths, a reactive robot reads its real-time sensor data and immediately maps those inputs directly to actuator commands: sensors such as distance and IR readings feed into behavior logic built from if/elif/else rules, which in turn drives the actuators (drive motors) directly, with no map or planner in between.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_reactive_control_flow">
+    <caption>A reactive controller maps sensor readings directly through behavior rules to actuator commands.</caption>
+    <image source="ch04_reactive_navigation_obstacle_avoidance/reactivestate.png" width="90%" alt="Reactive control flow from distance and infrared sensors through behavior logic to drive-motor actuators"/>
+  </figure>
+
   <subsection xml:id="subsec_reactive_applications">
     <title>Real-World &amp; VEX Robotics Applications</title>
     <p>
@@ -20,8 +25,38 @@
   <subsection xml:id="subsec_fsm_structure">
     <title>Structuring Reactive Logic: Finite State Machines (FSM)</title>
     <p>When writing reactive code, raw if/else statements can quickly turn into disorganized "spaghetti code." To prevent this, roboticists organize reactive control using a <term>Finite State Machine (FSM)</term>.</p>
+    <figure align="center" xml:id="fig_finite_state_machine">
+      <caption>A two-state finite state machine transitions between driving forward and turning left based on the measured obstacle distance.</caption>
+      <image source="ch04_reactive_navigation_obstacle_avoidance/finite.png" width="75%" alt="Finite state machine transitioning between drive forward and turn left at a distance threshold of 0.5 meters"/>
+    </figure>
     <p>An FSM breaks the robot's behavior into a set of discrete, mutually exclusive <term>states</term> (e.g., <c>DRIVE_FORWARD</c>, <c>TURN_LEFT</c>, <c>REVERSE</c>). The robot remains in its current state until a specific sensor reading triggers a <term>transition</term> to a new state.</p>
     <p>Consider a two-state FSM built from just <c>DRIVE_FORWARD</c> and <c>TURN_LEFT</c>. While in <c>DRIVE_FORWARD</c>, the robot keeps driving forward as long as the front distance reading stays at or above 0.5 meters; the moment that distance drops below 0.5 meters, it transitions to <c>TURN_LEFT</c>. While in <c>TURN_LEFT</c>, the robot keeps turning in place as long as the front distance stays below 0.5 meters; once the distance rises back to 0.5 meters or more, it transitions back to <c>DRIVE_FORWARD</c>.</p>
+    <ul>
+      <li>
+        <p><em class="emphasis">State 1: <c>DRIVE_FORWARD</c> (Default State)</em></p>
+        <ul>
+          <li><p><em class="emphasis">Action:</em> The robot drives straight, searching for an endpoint.</p></li>
+          <li><p><em class="emphasis">Transition Trigger:</em> <c>Sensor value (distance &lt; threshold) = TRUE</c>.</p></li>
+        </ul>
+        <p><em class="emphasis">If the condition is met, the system transitions to State 2.</em></p>
+      </li>
+      <li>
+        <p><em class="emphasis">State 2: <c>OBSTACLE_DETECTED</c> (The Reaction State)</em></p>
+        <ul>
+          <li><p><em class="emphasis">Action:</em> The robot immediately stops its wheels (a safety pause).</p></li>
+          <li><p><em class="emphasis">Transition Trigger:</em> <c>State_2_Action_Completed = TRUE</c>.</p></li>
+        </ul>
+        <p><em class="emphasis">A non-blocking state to quickly check the situation and decide the next move.</em></p>
+      </li>
+      <li>
+        <p><em class="emphasis">State 3: <c>TURN_LEFT</c> (Correction State)</em></p>
+        <ul>
+          <li><p><em class="emphasis">Action:</em> The robot executes a pivot (e.g., a 90-degree left turn).</p></li>
+          <li><p><em class="emphasis">Transition Trigger:</em> <c>State_3_Action_Completed = TRUE</c>.</p></li>
+        </ul>
+        <p><em class="emphasis">Once the rotation is complete, the robot returns to the Default State.</em></p>
+      </li>
+    </ul>
   </subsection>
 
   <subsection xml:id="subsec_fsm_cognitive_load">

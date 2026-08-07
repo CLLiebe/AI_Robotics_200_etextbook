@@ -7,6 +7,11 @@
     <p>Both paradigms start from the same root, Machine Learning, and both begin with a set of Features <m>(X)</m>. Supervised Learning pairs those features with Target Labels <m>(y)</m>&#8212;for example, an image paired with the label "Stop Sign"&#8212;and learns from that labeled data. Unsupervised Learning instead works from Features <m>(X)</m> alone, with no labels at all&#8212;for example, a point cloud with no ground truth&#8212;and must find its own natural clusters within the raw data.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_supervised_unsupervised_learning">
+    <caption>Supervised learning trains from labeled examples, while unsupervised learning discovers structure in unlabeled data.</caption>
+    <image source="ch06_intro_ml_computer_vision/ML.png" width="90%" alt="Comparison of supervised learning with labeled data and unsupervised learning with unlabeled data"/>
+  </figure>
+
   <subsection xml:id="subsec_supervised_learning_with_teacher">
     <title>Supervised Learning: Learning with a Teacher</title>
     <p>Imagine teaching a child to recognize fruits. You show them an apple and explicitly say, <em class="emphasis">"This is an apple."</em> You show them a banana and say, <em class="emphasis">"This is a banana."</em></p>

@@ -7,6 +7,11 @@
     <p>The paradox runs in a circle: to build an accurate map, the robot needs to know its exact position, but to determine its exact position, the robot needs an accurate map.</p>
   </introduction>
 
+  <figure align="center" xml:id="fig_slam_circular_dependency">
+    <caption>SLAM resolves the circular dependency between localization and mapping by estimating the robot's pose and the map together.</caption>
+    <image source="ch05_spatial_mapping_localization_basics/slam.png" width="90%" alt="Infinity-loop diagram showing that localization depends on a map while mapping depends on an accurate robot position"/>
+  </figure>
+
   <subsection xml:id="subsec_why_slam_is_hard">
     <title>Why SLAM is Hard: The Core Paradox</title>
     <p>
